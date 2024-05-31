@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "GbBGksDBmmaDa7apejZaDNB/J+Ov47I7c6sUR3w+LiRLUpQ8elJ5jvnBsIhwQlu1A9g5zitUPK3duLKuPDL1fw==",
+  "dgSpecHash": "SLXordNDd+sN9aWWNZQ3wu7xM85QQ5N2ylrh9u7Ql9iLbsl7OYS63mWB2yZGLsgMWWSbS0ghh58Ra6/bWbc2ww==",
   "success": true,
-  "projectFilePath": "C:\\Users\\leroy\\source\\repos\\Shop\\ShopWebApi\\ShopWebApi.csproj",
+  "projectFilePath": "C:\\Users\\leroy\\source\\repos\\shop\\ShopWebApi\\ShopWebApi.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\leroy\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\leroy\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",

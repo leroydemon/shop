@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\leroy\\source\\repos\\Shop\\ShopWebApi\\ShopWebApi.csproj": {}
+    "C:\\Users\\leroy\\source\\repos\\shop\\ShopWebApi\\ShopWebApi.csproj": {}
   },
   "projects": {
-    "C:\\Users\\leroy\\source\\repos\\Shop\\ShopWebApi\\ShopWebApi.csproj": {
+    "C:\\Users\\leroy\\source\\repos\\shop\\ShopWebApi\\ShopWebApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\leroy\\source\\repos\\Shop\\ShopWebApi\\ShopWebApi.csproj",
+        "projectUniqueName": "C:\\Users\\leroy\\source\\repos\\shop\\ShopWebApi\\ShopWebApi.csproj",
         "projectName": "ShopWebApi",
-        "projectPath": "C:\\Users\\leroy\\source\\repos\\Shop\\ShopWebApi\\ShopWebApi.csproj",
+        "projectPath": "C:\\Users\\leroy\\source\\repos\\shop\\ShopWebApi\\ShopWebApi.csproj",
         "packagesPath": "C:\\Users\\leroy\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\leroy\\source\\repos\\Shop\\ShopWebApi\\obj\\",
+        "outputPath": "C:\\Users\\leroy\\source\\repos\\shop\\ShopWebApi\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\leroy\\AppData\\Roaming\\NuGet\\NuGet.Config",
