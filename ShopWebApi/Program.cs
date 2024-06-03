@@ -1,8 +1,15 @@
+using BussinessLogicLevel.Interfaces;
+using BussinessLogicLevel.Services;
+using DbLevel.Data;
+using DbLevel.Interface;
+using DbLevel.Repository;
 using Microsoft.EntityFrameworkCore;
-using ShopWebApi.Data;
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -10,7 +17,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("ShopWebApi")));
 
 var app = builder.Build();
 

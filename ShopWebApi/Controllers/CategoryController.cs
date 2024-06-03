@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using BussinessLogicLevel.Interfaces;
+using BussinessLogicLevel.Services;
+using DbLevel.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using ShopWebApi.Data;
-using System.Collections;
-using System.Numerics;
+
 
 namespace ShopWebApi.Controllers
 {
@@ -10,62 +11,41 @@ namespace ShopWebApi.Controllers
     [ApiController]
     public class CategoryController : ControllerBase
     {
-        private readonly ApplicationDbContext _db;
-        public CategoryController(ApplicationDbContext db)
+        private readonly ICategoryService _categoryService;
+        public CategoryController(ICategoryService categoryService)
         {
-            _db = db;
+            _categoryService = categoryService;
         }
 
-        [HttpPost]
-        public IActionResult Post([FromBody] Category category)
+        [HttpGet("all")]
+        public IActionResult GetAll()
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest();
-            }
-            _db.Categories.Add(category);
-            _db.SaveChanges();
-            return Ok();
+            var item = _categoryService.GetAll();
+            return Ok(item);
         }
         [HttpGet("{id:int}")]
-        public IActionResult Get(int id)
+        public IActionResult GetProductById(int id)
         {
-            var item = _db.Categories.Find(id);
-            if(item == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                return Ok(item);
-            }
+            var item = _categoryService.GetCategoryById(id);
+            return Ok(item);
         }
-        [HttpPut]
-        public IActionResult Update(int id,[FromForm] Category category)
+        [HttpPost]
+        public IActionResult Add(Category category)
         {
-            var item = _db.Categories.Find(id);
-            if(item == null)
-            {
-                return NotFound();
-            }
-            item.Quantity = category.Quantity;
-            item.Description = category.Description;
-            item.Name = category.Name;
-            _db.SaveChanges();
-            return Ok(category);
-        }
-        [HttpDelete]
-        public IActionResult Delete(int? id)
-        {
-            var item = _db.Categories.Find(id);
-            if (item == null)
-            {
-                return NotFound();
-            }
-            _db.Categories.Remove(item);
-            _db.SaveChanges();
+            _categoryService.Add(category);
             return Ok();
         }
-
+        [HttpPut]
+        public IActionResult Update(int id, [FromForm] Category category)
+        {
+            _categoryService.Update(id, category);
+            return Ok();
+        }
+        [HttpDelete("{id:int}")]
+        public IActionResult Delete(int id)
+        {
+            _categoryService.Delete(id);
+            return Ok();
+        }
     }
 }

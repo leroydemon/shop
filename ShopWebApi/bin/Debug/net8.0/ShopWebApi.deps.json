@@ -8,6 +8,7 @@
     ".NETCoreApp,Version=v8.0": {
       "ShopWebApi/1.0.0": {
         "dependencies": {
+          "BussinessLogicLevel": "1.0.0",
           "Microsoft.EntityFrameworkCore": "8.0.6",
           "Microsoft.EntityFrameworkCore.SqlServer": "8.0.6",
           "Microsoft.EntityFrameworkCore.Tools": "8.0.6",
@@ -904,6 +905,23 @@
             "fileVersion": "6.0.21.52210"
           }
         }
+      },
+      "BussinessLogicLevel/1.0.0": {
+        "dependencies": {
+          "DbLevel": "1.0.0"
+        },
+        "runtime": {
+          "BussinessLogicLevel.dll": {}
+        }
+      },
+      "DbLevel/1.0.0": {
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore": "8.0.6",
+          "Microsoft.EntityFrameworkCore.SqlServer": "8.0.6"
+        },
+        "runtime": {
+          "DbLevel.dll": {}
+        }
       }
     }
   },
@@ -1486,6 +1504,16 @@
       "sha512": "sha512-IXoJOXIqc39AIe+CIR7koBtRGMiCt/LPM3lI+PELtDIy9XdyeSrwXFdWV9dzJ2Awl0paLWUaknLxFQ5HpHZUog==",
       "path": "system.windows.extensions/6.0.0",
       "hashPath": "system.windows.extensions.6.0.0.nupkg.sha512"
+    },
+    "BussinessLogicLevel/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "DbLevel/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
     }
   }
 }

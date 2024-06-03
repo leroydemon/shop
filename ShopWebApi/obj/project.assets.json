@@ -1589,6 +1589,33 @@
             "rid": "win"
           }
         }
+      },
+      "BussinessLogicLevel/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "dependencies": {
+          "DbLevel": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/BussinessLogicLevel.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/BussinessLogicLevel.dll": {}
+        }
+      },
+      "DbLevel/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore": "8.0.6",
+          "Microsoft.EntityFrameworkCore.SqlServer": "8.0.6"
+        },
+        "compile": {
+          "bin/placeholder/DbLevel.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/DbLevel.dll": {}
+        }
       }
     }
   },
@@ -4512,10 +4539,21 @@
         "system.windows.extensions.nuspec",
         "useSharedDesignerContext.txt"
       ]
+    },
+    "BussinessLogicLevel/1.0.0": {
+      "type": "project",
+      "path": "../BussinessLogicLevel/BussinessLogicLevel.csproj",
+      "msbuildProject": "../BussinessLogicLevel/BussinessLogicLevel.csproj"
+    },
+    "DbLevel/1.0.0": {
+      "type": "project",
+      "path": "../ApplicationDbContext/DbLevel.csproj",
+      "msbuildProject": "../ApplicationDbContext/DbLevel.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net8.0": [
+      "BussinessLogicLevel >= 1.0.0",
       "Microsoft.EntityFrameworkCore >= 8.0.6",
       "Microsoft.EntityFrameworkCore.SqlServer >= 8.0.6",
       "Microsoft.EntityFrameworkCore.Tools >= 8.0.6",
@@ -4528,11 +4566,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\leroy\\source\\repos\\Shop\\ShopWebApi\\ShopWebApi.csproj",
+      "projectUniqueName": "C:\\Users\\leroy\\source\\repos\\shop\\ShopWebApi\\ShopWebApi.csproj",
       "projectName": "ShopWebApi",
-      "projectPath": "C:\\Users\\leroy\\source\\repos\\Shop\\ShopWebApi\\ShopWebApi.csproj",
+      "projectPath": "C:\\Users\\leroy\\source\\repos\\shop\\ShopWebApi\\ShopWebApi.csproj",
       "packagesPath": "C:\\Users\\leroy\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\leroy\\source\\repos\\Shop\\ShopWebApi\\obj\\",
+      "outputPath": "C:\\Users\\leroy\\source\\repos\\shop\\ShopWebApi\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\leroy\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -4548,7 +4586,11 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\leroy\\source\\repos\\shop\\BussinessLogicLevel\\BussinessLogicLevel.csproj": {
+              "projectPath": "C:\\Users\\leroy\\source\\repos\\shop\\BussinessLogicLevel\\BussinessLogicLevel.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
