@@ -16,34 +16,34 @@ namespace ShopWebApi.Controllers
         }
 
         [HttpGet("all")]
-        public IActionResult GetAll() 
+        public async Task<IActionResult> GetAllAsync() 
         { 
-            var item = _productService.GetAll();
+            var item = await _productService.GetAllAsync();
             return Ok(item);
         }
         [HttpGet("{id:int}")]
-        public IActionResult GetProductById(int id) 
+        public async Task<IActionResult> GetProductByIdAsync(int id) 
         {
-            var item = _productService.GetProductById(id);
+            var item = await _productService.GetProductByIdAsync(id);
             return Ok(item);
         }
         [HttpPost]
-        public IActionResult Add(Product product)
+        public async Task<IActionResult> AddAsync(Product product)
         {
-            _productService.Add(product);
+            await _productService.AddAsync(product);
             
             return Ok();
         }
         [HttpPut]
-        public IActionResult Update(int id, [FromForm] Product product)
+        public async Task<IActionResult> UpdateAsync(int id, [FromForm] Product product)
         {
-            _productService.Update(id, product);
+            await _productService.UpdateAsync(id, product);
             return Ok();
         }
         [HttpDelete]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> DeleteAsync(int id)
         {
-            _productService.Delete(id);
+            await _productService.DeleteAsync(id);
             return Ok();
         }
     }

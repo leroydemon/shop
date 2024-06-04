@@ -6,10 +6,10 @@ namespace DbLevel.Interface
 {
     public interface IProductRepository
     {
-        Task Add(Product product);
-        Task Delete(int id);
-        Product GetProductById(int id);
-        Task Update(int id, Product product);
-        IEnumerable<Product> GetAll();
+        Task AddAsync(Product product);
+        Task DeleteAsync(Product product);
+        Task<Product> GetProductByIdAsync(int id);
+        Task UpdateAsync(int id, Product product);
+        Task<IEnumerable<Product>> GetAllAsync();
     }
 }

@@ -1,8 +1,7 @@
-﻿
-
-using DbLevel.Data;
+﻿using DbLevel.Data;
 using DbLevel.Interface;
 using DbLevel.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace DbLevel.Repository
 {
@@ -14,33 +13,33 @@ namespace DbLevel.Repository
             _context = context;
         }
 
-        public async Task Add(Category category)
+        public async Task AddAsync(Category category)
         {
-            _context.Categories.Add(category);
+            await _context.Categories.AddAsync(category);
             await _context.SaveChangesAsync();
         }
 
-        public async Task Delete(Category category)
+        public async Task DeleteAsync(Category category)
         {
             _context.Categories.Remove(category);
             await _context.SaveChangesAsync();
         }
 
-        public Category GetProductById(int id)
+        public async Task<Category> GetProductByIdAsync(int id)
         {
-            return _context.Categories.Find(id);
+            return await _context.Categories.FindAsync(id);
         }
 
-        public async Task Update(int id, Category category)
+        public async Task UpdateAsync(int id, Category category)
         {
-            var item = _context.Categories.Find(id);
+            var item = await _context.Categories.FindAsync(id);
             item.Name = category.Name;
             await _context.SaveChangesAsync();
         }
 
-        public IEnumerable<Category> GetAll()
+        public async Task<IEnumerable<Category>> GetAllAsync()
         {
-            return _context.Categories.ToList();
+            return await _context.Categories.ToListAsync();
         }
       
     }

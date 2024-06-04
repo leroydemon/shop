@@ -14,30 +14,30 @@ namespace BussinessLogicLevel.Services
             _categoryRepository = categoryRepository;
 
         }
-        public void Add(Category product)
+        public async Task AddAsync(Category product)
         {
-            _categoryRepository.Add(product);
+           await _categoryRepository.AddAsync(product);
         }
 
-        public void Delete(int id)
+        public async Task DeleteAsync(int id)
         {
-             var item = _categoryRepository.GetProductById(id);
-            _categoryRepository.Delete(item);
+             var item = await _categoryRepository.GetProductByIdAsync(id);
+            await _categoryRepository.DeleteAsync(item);
+        }
+        public async Task<IEnumerable<Category>> GetAllAsync()
+        {
+            return await _categoryRepository.GetAllAsync();
         }
 
-        public IEnumerable<Category> GetAll()
+
+        public async Task<Category> GetCategoryByIdAsync(int id)
         {
-            return _categoryRepository.GetAll();
+            return await _categoryRepository.GetProductByIdAsync(id);
         }
 
-        public Category GetCategoryById(int id)
+        public async Task UpdateAsync(int id, Category product)
         {
-            return _categoryRepository.GetProductById(id);
-        }
-
-        public void Update(int id, Category product)
-        {
-            _categoryRepository.Update(id, product);
+            await _categoryRepository.UpdateAsync(id, product);
         }
     }
 }

@@ -18,34 +18,34 @@ namespace ShopWebApi.Controllers
         }
 
         [HttpGet("all")]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAllAsync()
         {
-            var item = _categoryService.GetAll();
+            var item = await _categoryService.GetAllAsync();
             return Ok(item);
         }
         [HttpGet("{id:int}")]
-        public IActionResult GetProductById(int id)
+        public async Task<IActionResult> GetProductByIdAsync(int id)
         {
-            var item = _categoryService.GetCategoryById(id);
+            var item = await _categoryService.GetCategoryByIdAsync(id);
             return Ok(item);
         }
         [HttpPost]
-        public IActionResult Add(Category category)
+        public async Task<IActionResult> AddAsync(Category category)
         {
-            _categoryService.Add(category);
+            await _categoryService.AddAsync(category);
             return Ok();
         }
         [HttpPut]
-        public IActionResult Update(int id, [FromForm] Category category)
+        public async Task<IActionResult> UpdateAsync(int id, [FromForm] Category category)
         {
-            _categoryService.Update(id, category);
+            await _categoryService.UpdateAsync(id, category);
             return Ok();
         }
         [HttpDelete("{id:int}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> DeleteAsync(int id)
         {
-            _categoryService.Delete(id);
-            return Ok();
+             await _categoryService.DeleteAsync(id);
+             return Ok();
         }
     }
 }
