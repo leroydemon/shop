@@ -5,10 +5,10 @@ namespace DbLevel.Interface
 {
     public interface ICategoryRepository
     {
-        IEnumerable<Category> GetAll();
-        Category GetProductById(int id);
-        Task Add(Category category);
-        Task Delete(Category category);
-        Task Update(int id, Category category);
+        Task<IEnumerable<Category>> GetAllAsync();
+        Task<Category> GetProductByIdAsync(int id);
+        Task AddAsync(Category category);
+        Task DeleteAsync(Category category);
+        Task UpdateAsync(int id, Category category);
     }
 }

@@ -5,10 +5,10 @@ namespace BussinessLogicLevel.Interfaces
 {
     public interface ICategoryService
     {
-        IEnumerable<Category> GetAll();
-        Category GetCategoryById(int id);
-        void Add(Category category);
-        void Update(int id, Category category);
-        void Delete(int id);
+        Task<IEnumerable<Category>> GetAllAsync();
+        Task<Category> GetCategoryByIdAsync(int id);
+        Task AddAsync(Category category);
+        Task UpdateAsync(int id, Category category);
+        Task DeleteAsync(int id);
     }
 }

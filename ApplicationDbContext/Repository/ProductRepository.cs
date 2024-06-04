@@ -1,6 +1,7 @@
 ﻿using DbLevel.Data;
 using DbLevel.Interface;
 using DbLevel.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,33 +18,31 @@ namespace DbLevel.Repository
         {
             _context = context;
         }
-        public async Task Add(Product product)
+        public async Task AddAsync(Product product)
         {
-            _context.Products.Add(product);
+            await _context.Products.AddAsync(product);
             await _context.SaveChangesAsync();
         }
 
-        public async Task Delete(int id)
+        public async Task DeleteAsync(Product item)
         {
-            var item = _context.Products.Find(id);
-
             _context.Products.Remove(item);
             await _context.SaveChangesAsync();
         }
 
-        public Product GetProductById(int id)
+        public async Task<Product> GetProductByIdAsync(int id)
         {
-            return _context.Products.Find(id);
+            return await _context.Products.FindAsync(id);
         }
 
-        public IEnumerable<Product> GetAll()
+        public async Task<IEnumerable<Product>> GetAllAsync()
         {
-            return _context.Products.ToList();
+            return await _context.Products.ToListAsync();
         }
 
-        public async Task Update(int id, Product product)
+        public async Task UpdateAsync(int id, Product product)
         {
-            var item = _context.Products.Find(id);
+            var item = await _context.Products.FindAsync(id);
 
             item.Name = product.Name;
             item.Description = product.Description;
