@@ -47,8 +47,7 @@ namespace DbLevel.Repository
 
             item.Name = product.Name;
             item.Description = product.Description;
-            item.Price = product.Price;
-            item.Quantity = product.Quantity;
+            item.UnitPrice = product.UnitPrice;
             await _context.SaveChangesAsync();
         }
     }
