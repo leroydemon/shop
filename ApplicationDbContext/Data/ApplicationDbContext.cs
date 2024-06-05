@@ -1,4 +1,5 @@
-﻿using DbLevel.Models;
+﻿using DbLevel.DbConfiguration;
+using DbLevel.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DbLevel.Data
@@ -19,14 +20,9 @@ namespace DbLevel.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Category>(entity =>
-            {
-                entity.Property(n => n.Name).IsRequired();
-            });
-            modelBuilder.Entity<Product>().Property(n => n.UnitPrice).HasPrecision(18, 2);
-            modelBuilder.Entity<Cart>().Property(n => n.UnitPrice).HasPrecision(18, 2);
-            modelBuilder.Entity<Cart>().Property(n => n.TotalPrice).HasPrecision(18, 2);
-
+            modelBuilder.ApplyConfiguration(new CartConfiguration());
+            modelBuilder.ApplyConfiguration(new ProductConfiguration());
+            modelBuilder.ApplyConfiguration(new CategoryConfiguration());
         }
     }
 }

@@ -6,10 +6,10 @@ namespace DbLevel.Models
 {
     public  class Product
     {
-        public int Id { get; set; }
-        public int? CategoryId { get; set; }
-        public int StorageId { get; set; }
-        public int BrandId { get; set; }
+        public Guid Id { get; set; }
+        public Guid? CategoryId { get; set; }
+        public Guid StorageId { get; set; }
+        public Guid BrandId { get; set; }
         public Size Size { get; set; }
         public Gender Gender { get; set; }
         public Season Season { get; set; }

@@ -3,10 +3,10 @@ namespace DbLevel.Models
 {
     public class Cart
     {
-        public int Id { get; set; }
-        public int ProductStorageId { get; set; }
-        public int UserId { get; set; }
-        public List<Product> ProductList { get; set; }
+        public Guid Id { get; set; }
+        public Guid ProductStorageId { get; set; }
+        public Guid UserId { get; set; }
+        public IEnumerable<Product> ProductList { get; set; }
         public decimal UnitPrice { get; set; }
         public decimal TotalPrice { get; set; }
         public int ProductAmount { get; set; }

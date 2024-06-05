@@ -2,9 +2,9 @@
 {
     public class ProductStorage
     {
-        public int Id { get; set; }
-        public int StorageId { get; set; }
-        public int ProductId { get; set; }
+        public Guid Id { get; set; }
+        public Guid StorageId { get; set; }
+        public Guid ProductId { get; set; }
         public int Quantity { get; set; }
     }
 }
