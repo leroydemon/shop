@@ -18,5 +18,6 @@ namespace DbLevel.Models
         public decimal? UnitPrice { get; set; }
         public string? Description { get; set; } = null;
 
+
     }
 }
