@@ -22,7 +22,6 @@ namespace DbLevel.Data
         {
             modelBuilder.ApplyConfiguration(new CartConfiguration());
             modelBuilder.ApplyConfiguration(new ProductConfiguration());
-            modelBuilder.ApplyConfiguration(new CategoryConfiguration());
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using BussinessLogicLevel.Interfaces;
 using BussinessLogicLevel.Services;
 using DbLevel.Models;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,9 +14,11 @@ namespace ShopWebApi.Controllers
     public class CategoryController : ControllerBase
     {
         private readonly ICategoryService _categoryService;
-        public CategoryController(ICategoryService categoryService)
+        private readonly IValidator<Category> _validator;
+        public CategoryController(ICategoryService categoryService, IValidator<Category> validator)
         {
             _categoryService = categoryService;
+            _validator = validator;
         }
 
         [HttpGet("all")]
@@ -32,12 +36,26 @@ namespace ShopWebApi.Controllers
         [HttpPost]
         public async Task<IActionResult> AddAsync(Category category)
         {
+            var result = await _validator.ValidateAsync(category);
+
+            if(!result.IsValid)
+            {
+                result.AddToModelState(this.ModelState);
+                return BadRequest(result.ToString());
+            }
             await _categoryService.AddAsync(category);
             return Ok();
         }
         [HttpPut]
         public async Task<IActionResult> UpdateAsync(int id, [FromForm] Category category)
         {
+            var result = await _validator.ValidateAsync(category);
+
+            if (!result.IsValid)
+            {
+                result.AddToModelState(this.ModelState);
+                return BadRequest(result.ToString());
+            }
             await _categoryService.UpdateAsync(id, category);
             return Ok();
         }
