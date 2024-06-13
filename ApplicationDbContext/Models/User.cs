@@ -12,6 +12,7 @@ namespace DbLevel.Models
         public string? Phone { get; set; }
         public string? Login { get; set; }
         public string? Password { get; set; }
+        public DateTime DateOfBirth { get; set; }
         public IEnumerable<Product>? FavoriteList { get; set; } 
 
     }

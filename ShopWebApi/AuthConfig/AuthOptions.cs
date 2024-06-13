@@ -7,7 +7,7 @@ namespace ShopWebApi.AuthConfig
     {
         public const string ISSUER = "EgorServer";
         public const string AUDIENCE = "EgorClient";
-        const string KEY = "mysupersecret_secretsecretsecretkey!123";
+        const string KEY = "SecretKeySecretKeySecretKeySecretKeySecretKeySecretKeySecretKey";
         public static SymmetricSecurityKey GetSymmetricSecurityKey() => new SymmetricSecurityKey(Encoding.UTF8.GetBytes(KEY));
     }
 }
