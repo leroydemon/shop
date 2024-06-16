@@ -8,7 +8,7 @@ namespace DbLevel.Models
     {
         public Guid Id { get; set; }
         public Guid? CategoryId { get; set; }
-        public Guid StorageId { get; set; }
+        public Guid? StorageId { get; set; }
         public Guid BrandId { get; set; }
         public Size Size { get; set; }
         public Gender Gender { get; set; }

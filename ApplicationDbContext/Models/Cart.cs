@@ -9,6 +9,5 @@ namespace DbLevel.Models
         public IEnumerable<Product> ProductList { get; set; }
         public decimal UnitPrice { get; set; }
         public decimal TotalPrice { get; set; }
-        public int ProductAmount { get; set; }
     }
 }
