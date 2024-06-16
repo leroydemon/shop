@@ -1,5 +1,6 @@
 ﻿using DbLevel.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 using System.Security.Claims;
 
 namespace ShopWebApi
@@ -10,8 +11,10 @@ namespace ShopWebApi
         {
             using (var scope = serviceProvider.CreateScope())
             {
-                var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+                var roleManager = scope.ServiceProvider
+                    .GetRequiredService<RoleManager<IdentityRole>>();
+                var userManager = scope.ServiceProvider
+                    .GetRequiredService<UserManager<User>>();
 
                 var powerUser = new User
                 {

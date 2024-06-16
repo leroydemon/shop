@@ -38,6 +38,7 @@ namespace ShopWebApi.Controllers
             return Ok(item);
         }
         [HttpPost]
+        //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> AddAsync(Category category)
         {
             var result = await _validator.ValidateAsync(category);
@@ -51,6 +52,7 @@ namespace ShopWebApi.Controllers
             return Ok();
         }
         [HttpPut]
+        //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateAsync(int id, [FromForm] Category category)
         {
             var result = await _validator.ValidateAsync(category);
@@ -64,6 +66,7 @@ namespace ShopWebApi.Controllers
             return Ok();
         }
         [HttpDelete("{id:int}")]
+        //[Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
         public async Task<IActionResult> DeleteAsync(int id)
         {
              await _categoryService.DeleteAsync(id);

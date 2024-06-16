@@ -10,7 +10,8 @@ namespace DbLevel.DbConfiguration
     {
         public void Configure(EntityTypeBuilder<Category> builder)
         {
-            builder.Property(n => n.Name).IsRequired();
+            builder.Property(n => n.Name)
+                   .IsRequired();
         }
     }
 }
