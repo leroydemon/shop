@@ -1,6 +1,7 @@
 ﻿using BussinessLogicLevel.Interfaces;
 using BussinessLogicLevel.Requests;
 using DbLevel.Models;
+using Infrastucture.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -19,11 +20,13 @@ namespace ShopWebApi.Controllers
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly ILogger<AccountController> _logger;
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, ILogger<AccountController> logger)
+        private readonly TokenGeneratorService _tokenGenerator;
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, ILogger<AccountController> logger, TokenGeneratorService tokenGenerator)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            _tokenGenerator = tokenGenerator;
         }
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterRequest request)
@@ -43,11 +46,7 @@ namespace ShopWebApi.Controllers
             if (result.Succeeded)
             {
                 var user = await _userManager.FindByEmailAsync(input.Email);
-                if (User.IsInRole("Admin"))
-                {
-
-                }
-                var token = GenerateJwtToken(user);
+                var token = _tokenGenerator.GenerateJwtToken(user);
                 return Ok(new { Token = token });
             }
             return Unauthorized();
@@ -66,46 +65,5 @@ namespace ShopWebApi.Controllers
                 return BadRequest();
             }
         }
-        
-        [HttpGet("Admin")]
-        [Authorize( Roles = "Admin")]    
-        public IActionResult AdminOnly()
-        {
-            return Ok("admin's page");
-        }
-        [Authorize(Policy = "Over18")]
-        [HttpGet("adult")]
-        public IActionResult AdultOnly()
-        {
-            return Ok("this page only for 18 years old");
-        }
-        [HttpGet("getroles")]
-        private string GenerateJwtToken(IdentityUser user)
-        {
-            List<Claim> claims = new List<Claim>
-            {
-                new Claim(JwtRegisteredClaimNames.Sub, user.Email),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            };
-            if (user.Email == "Admin")
-            {
-                claims.Add(new Claim(ClaimTypes.Role, "Admin"));
-            }
-            else
-            {
-                claims.Add(new Claim(ClaimTypes.Role, "User"));
-            }
-            var key = AuthOptions.GetSymmetricSecurityKey();
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-            var jwt = new JwtSecurityToken(
-            issuer: AuthOptions.ISSUER,
-            audience: AuthOptions.AUDIENCE,
-            claims: claims,
-            expires: DateTime.Now.AddMinutes(30),
-            signingCredentials: creds);
-
-            return new JwtSecurityTokenHandler().WriteToken(jwt);
-        } 
     }
 }

@@ -31,18 +31,21 @@ namespace ShopWebApi.Controllers
             return Ok(item);
         }
         [HttpPost]
+        //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> AddAsync(Category category)
         {
             await _categoryService.AddAsync(category);
             return Ok();
         }
         [HttpPut]
+        //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateAsync(int id, [FromForm] Category category)
         {
             await _categoryService.UpdateAsync(id, category);
             return Ok();
         }
         [HttpDelete("{id:int}")]
+        //[Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
         public async Task<IActionResult> DeleteAsync(int id)
         {
              await _categoryService.DeleteAsync(id);
