@@ -1,10 +1,12 @@
 ﻿using DbLevel.DbConfiguration;
 using DbLevel.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace DbLevel.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<User>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
@@ -15,11 +17,11 @@ namespace DbLevel.Data
         public DbSet<Order> Orders { get; set; }
         public DbSet<ProductStorage> ProductStorages { get; set; }
         public DbSet<Storage> Storages { get; set; }
-        public DbSet<User> Users { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfiguration(new CartConfiguration());
             modelBuilder.ApplyConfiguration(new ProductConfiguration());
         }

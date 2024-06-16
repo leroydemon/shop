@@ -1,8 +1,12 @@
 ﻿using BussinessLogicLevel.Interfaces;
 using BussinessLogicLevel.Services;
 using DbLevel.Models;
+<<<<<<< HEAD
 using FluentValidation;
 using FluentValidation.AspNetCore;
+=======
+using Microsoft.AspNetCore.Authorization;
+>>>>>>> feature/validationfixed
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
