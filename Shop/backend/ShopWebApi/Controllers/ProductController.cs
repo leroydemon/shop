@@ -2,7 +2,6 @@
 using BussinessLogicLevel.Interfaces;
 using DbLevel.Models;
 using Infrastucture.DtoModels;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ShopWebApi.Controllers
@@ -20,13 +19,15 @@ namespace ShopWebApi.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("all")]
+        [HttpGet]
         //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllAsync() 
         { 
-            var item = await _productService.GetAllAsync();
-            return Ok(item);
+            var items = await _productService.GetAllAsync();
+
+            return Ok(items);
         }
+
         [HttpGet("{id:int}")]
         //[Authorize(Roles = "Admin")]    
         public async Task<IActionResult> GetProductByIdAsync(int id) 
@@ -35,9 +36,12 @@ namespace ShopWebApi.Controllers
             {
                 BadRequest(ModelState);
             }
+
             var item = await _productService.GetProductByIdAsync(id);
+
             return Ok(item);
         }
+
         [HttpPost]
         //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> AddAsync(ProductDto productDto)
@@ -47,18 +51,25 @@ namespace ShopWebApi.Controllers
             
             return Ok();
         }
+
         [HttpPut]
         //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateAsync(int id, [FromForm] ProductDto productDto)
         {
+            // 1. For what?
+            // 2. In this controller you have such a validation, in other - nope
+
             if (!ModelState.IsValid)
             {
                 BadRequest(ModelState);
             }
+
             var product = _mapper.Map<Product>(productDto);
             await _productService.UpdateAsync(id, product);
+
             return Ok();
         }
+
         [HttpDelete]
         //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteAsync(int id)
@@ -67,7 +78,9 @@ namespace ShopWebApi.Controllers
             {
                 BadRequest(ModelState);
             }
+
             await _productService.DeleteAsync(id);
+
             return Ok();
         }
     }

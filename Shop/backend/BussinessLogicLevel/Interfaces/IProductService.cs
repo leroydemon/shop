@@ -1,14 +1,11 @@
-﻿
-using DbLevel.Models;
-
-namespace BussinessLogicLevel.Interfaces
+﻿namespace BussinessLogicLevel.Interfaces
 {
     public interface IProductService
     {
-        Task<IEnumerable<Product>> GetAllAsync();
-        Task<Product> GetProductByIdAsync(int id);
-        Task AddAsync(Product product);
-        Task UpdateAsync(int id, Product product);
-        Task DeleteAsync(int id);
+        Task<IEnumerable<ProductDto>> GetAllAsync();
+        Task<ProductDto> GetProductByIdAsync(int id);
+        Task<ProductDto> AddAsync(ProductDto product);
+        Task<ProductDto> UpdateAsync(int id, ProductDto product);
+        Task<int> DeleteAsync(int id);
     }
 }

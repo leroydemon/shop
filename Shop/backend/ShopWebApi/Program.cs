@@ -17,6 +17,9 @@ using ShopWebApi;
 using ShopWebApi.AuthConfig;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Create separate class with extension method and move all logic to sepatate methods and call it in this class
+
 builder.Services.AddScoped<TokenGeneratorService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
