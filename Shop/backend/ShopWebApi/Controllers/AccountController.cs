@@ -26,7 +26,7 @@ namespace ShopWebApi.Controllers
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
-            _tokenGenerator = tokenGenerator;
+            _tokenGenerator = tokenGenerator; 
         }
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterRequest request)
