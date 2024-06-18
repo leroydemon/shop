@@ -8,8 +8,10 @@ namespace Infrastucture
     {
         public MappingProfile()
         {
+            //separeate file per model
             CreateMap<User, UserDto>()
                 .ReverseMap();
+
             CreateMap<Product, ProductDto>()
                 .ReverseMap();
         }

@@ -5,6 +5,7 @@ namespace ShopWebApi.AuthConfig
 {
     public class AuthOptions
     {
+        // move all settings to appsettings.json
         public const string ISSUER = "EgorServer";
         public const string AUDIENCE = "EgorClient";
         const string KEY = "SecretKeySecretKeySecretKeySecretKeySecretKeySecretKeySecretKey";

@@ -1,14 +1,11 @@
-﻿
-using DbLevel.Models;
-
-namespace BussinessLogicLevel.Interfaces
+﻿namespace BussinessLogicLevel.Interfaces
 {
     public interface ICategoryService
     {
-        Task<IEnumerable<Category>> GetAllAsync();
-        Task<Category> GetCategoryByIdAsync(int id);
-        Task AddAsync(Category category);
-        Task UpdateAsync(int id, Category category);
-        Task DeleteAsync(int id);
+        Task<IEnumerable<CategoryDto>> GetAllAsync();
+        Task<CategoryDto> GetCategoryByIdAsync(int id);
+        Task<CategoryDto> AddAsync(CategoryDto category);
+        Task<CategoryDto> UpdateAsync(int id, CategoryDto category);
+        Task<int> DeleteAsync(int id);
     }
 }

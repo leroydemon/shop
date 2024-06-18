@@ -42,6 +42,7 @@ namespace DbLevel.Repository
 
         public async Task UpdateAsync(int id, Product product)
         {
+            // move mapping to service level and call only update here
             var item = await _context.Products.FindAsync(id);
 
             item.Name = product.Name;
