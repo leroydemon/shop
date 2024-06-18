@@ -13,14 +13,17 @@ namespace ShopWebApi.Controllers
     public class CategoryController : ControllerBase
     {
         private readonly ICategoryService _categoryService;
-        public CategoryController(ICategoryService categoryService)
+        private readonly ILogger<CategoryController> _logger;
+        public CategoryController(ICategoryService categoryService, ILogger<CategoryController> logger)
         {
             _categoryService = categoryService;
+            _logger = logger;
         }
 
         [HttpGet("all")]
         public async Task<IActionResult> GetAllAsync()
         {
+            _logger.LogInformation("Я работаю!");
             var item = await _categoryService.GetAllAsync();
             return Ok(item);
         }

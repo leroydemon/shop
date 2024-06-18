@@ -11,10 +11,10 @@ using Infrastucture.Validators;
 using Microsoft.EntityFrameworkCore;
 using Infrastucture.Extentions;
 using ShopWebApi;
+using Microsoft.Extensions.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Create separate class with extension method and move all logic to sepatate methods and call it in this class
 
 builder.Services.AddScoped<TokenGeneratorService>();
 builder.Services.AddScoped<IProductService, ProductService>();
@@ -26,15 +26,12 @@ builder.Services.AddAuthorizationService(builder.Configuration);
 builder.Services.AddCustomAuthorization();
 builder.Services.AddCustomIdentity();
 builder.Services.AddScopedService();
-
 builder.Services.ServiceCollections(builder.Configuration);
+builder.Services.AddLoggingService();
 
 
 var app = builder.Build();
 
-
-
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
