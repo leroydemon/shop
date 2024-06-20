@@ -1,7 +1,5 @@
-﻿
-using DbLevel.Models;
+﻿using DbLevel.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DbLevel.DbConfiguration
@@ -10,8 +8,9 @@ namespace DbLevel.DbConfiguration
     {
         public void Configure(EntityTypeBuilder<Category> builder)
         {
-            builder.Property(n => n.Name)
-                   .IsRequired();
+            builder
+                .Property(n => n.Name)
+                .IsRequired();
         }
     }
 }

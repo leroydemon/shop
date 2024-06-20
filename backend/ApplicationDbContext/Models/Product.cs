@@ -1,6 +1,4 @@
-﻿
-
-using DbLevel.Enum;
+﻿using DbLevel.Enum;
 
 namespace DbLevel.Models
 {
@@ -17,7 +15,5 @@ namespace DbLevel.Models
         public string Name { get; set; }
         public decimal? UnitPrice { get; set; }
         public string? Description { get; set; } = null;
-
-
     }
 }

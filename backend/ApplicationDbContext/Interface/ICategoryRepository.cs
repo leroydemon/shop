@@ -7,8 +7,8 @@ namespace DbLevel.Interface
     {
         Task<IEnumerable<Category>> GetAllAsync();
         Task<Category> GetProductByIdAsync(int id);
-        Task AddAsync(Category category);
-        Task DeleteAsync(Category category);
-        Task UpdateAsync(int id, Category category);
+        Task<Category> AddAsync(Category category);
+        Task<int> DeleteAsync(int id);
+        Task<Category> UpdateAsync(Category category);
     }
 }
