@@ -1,5 +1,4 @@
-﻿
-using DbLevel.Data;
+﻿using DbLevel.Data;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Infrastucture.Validators;
@@ -24,7 +23,6 @@ namespace Infrastucture.Extentions
             services.AddFluentValidationAutoValidation();
             services.AddFluentValidationClientsideAdapters();
             services.AddValidatorsFromAssembly(typeof(ProductDtoValidator).Assembly);
-            services.AddLogging();
             return services;
         }
     }

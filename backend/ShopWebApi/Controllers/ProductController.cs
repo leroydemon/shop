@@ -12,57 +12,54 @@ namespace ShopWebApi.Controllers
     {
         private readonly IProductService _productService;
         private readonly IMapper _mapper;
+        private readonly ILogger<CategoryController> _logger;
 
-        public ProductController(IProductService productService, IMapper mapper)
+        public ProductController(IProductService productService, IMapper mapper, ILogger<CategoryController> logger)
         {
             _productService = productService;
             _mapper = mapper;
+            _logger = logger;
         }
 
         [HttpGet]
         //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllAsync() 
         { 
-            var items = await _productService.GetAllAsync();
-
-            return Ok(items);
+            var item = await _productService.GetAllAsync();
+            _logger.LogInformation("method works correctly");
+            return Ok(item);
         }
 
         [HttpGet("{id:int}")]
         //[Authorize(Roles = "Admin")]    
         public async Task<IActionResult> GetProductByIdAsync(int id) 
         {
-            if (!ModelState.IsValid)
-            {
-                BadRequest(ModelState);
-            }
-
             var item = await _productService.GetProductByIdAsync(id);
-
+            _logger.LogInformation("method works correctly");
             return Ok(item);
         }
 
         [HttpPost]
         //[Authorize(Roles = "Admin")]
-        public async Task<IActionResult> AddAsync(ProductDto productDto)
+        public async Task<IActionResult> AddAsync([FromBody] ProductDto productDto)
         {
             var product = _mapper.Map<Product>(productDto);   
             await _productService.AddAsync(product);
-            
-            return Ok();
+            _logger.LogInformation("method works correctly");
+            return Created();
         }
 
         [HttpPut]
         //[Authorize(Roles = "Admin")]
-        public async Task<IActionResult> UpdateAsync([FromForm] ProductDto productDto)
+        public async Task<IActionResult> UpdateAsync([FromBody] ProductDto productDto)
         {
             if (!ModelState.IsValid)
             {
                 BadRequest(ModelState);
             }
             var product = _mapper.Map<Product>(productDto);
-            await _productService.UpdateAsync(id, product);
-
+            await _productService.UpdateAsync(product);
+            _logger.LogInformation("method works correctly");
             return Ok();
         }
         [HttpDelete]
@@ -75,7 +72,7 @@ namespace ShopWebApi.Controllers
             }
 
             await _productService.DeleteAsync(id);
-
+            _logger.LogInformation("method works correctly");
             return Ok();
         }
     }

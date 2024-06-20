@@ -7,7 +7,7 @@ namespace DbLevel.Interface
         Task<Product> AddAsync(Product product);
         Task<int> DeleteAsync(int id);
         Task<Product> GetProductByIdAsync(int id);
-        Task<Product> UpdateAsync(Product product);
+        Task UpdateAsync(Product product);
         Task<IEnumerable<Product>> GetAllAsync();
     }
 }

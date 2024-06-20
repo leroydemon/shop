@@ -2,11 +2,6 @@
 using DbLevel.Interface;
 using DbLevel.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DbLevel.Repository
 {
@@ -32,7 +27,7 @@ namespace DbLevel.Repository
 
         public async Task<Product> GetProductByIdAsync(int id)
         {
-            return await _context.Products.FindAsync(id);
+            return await _context.Products.FindAsync(id) ?? throw new Exception();
         }
 
         public async Task<IEnumerable<Product>> GetAllAsync()
@@ -40,7 +35,7 @@ namespace DbLevel.Repository
             return await _context.Products.ToListAsync();
         }
 
-        public async Task Update(Product product)
+        public async Task UpdateAsync(Product product)
         {
             // move mapping to service level and call only update here
             var item = await _context.Products.FindAsync(id);

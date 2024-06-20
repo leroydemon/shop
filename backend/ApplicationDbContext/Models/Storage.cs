@@ -1,5 +1,4 @@
-﻿
-namespace DbLevel.Models
+﻿namespace DbLevel.Models
 {
     public class Storage
     {

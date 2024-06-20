@@ -1,4 +1,6 @@
-﻿namespace BussinessLogicLevel.Interfaces
+﻿using DbLevel.Models;
+
+namespace BussinessLogicLevel.Interfaces
 {
     public interface ICategoryService
     {

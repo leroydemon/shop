@@ -9,15 +9,17 @@ namespace ShopWebApi.Controllers
     public class CategoryController : ControllerBase
     {
         private readonly ICategoryService _categoryService;
-
-        public CategoryController(ICategoryService categoryService)
+        private readonly ILogger<CategoryController> _logger;
+        public CategoryController(ICategoryService categoryService, ILogger<CategoryController> logger)
         {
             _categoryService = categoryService;
+            _logger = logger;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAllAsync()
         {
+            _logger.LogInformation("Я работаю!");
             var item = await _categoryService.GetAllAsync();
 
             return Ok(item);
@@ -33,7 +35,7 @@ namespace ShopWebApi.Controllers
 
         [HttpPost]
         //[Authorize(Roles = "Admin")]
-        public async Task<IActionResult> AddAsync(Category category)
+        public async Task<IActionResult> AddAsync([FromBody] Category category)
         {
             await _categoryService.AddAsync(category);
 
