@@ -2,14 +2,8 @@
 using BussinessLogicLevel.Requests;
 using DbLevel.Models;
 using Infrastucture.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using ShopWebApi.AuthConfig;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 
 namespace ShopWebApi.Controllers
 {
@@ -21,12 +15,14 @@ namespace ShopWebApi.Controllers
         private readonly SignInManager<User> _signInManager;
         private readonly ILogger<AccountController> _logger;
         private readonly TokenGeneratorService _tokenGenerator;
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, ILogger<AccountController> logger, TokenGeneratorService tokenGenerator)
+        private readonly IUserService _userService;
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, ILogger<AccountController> logger, TokenGeneratorService tokenGenerator, IUserService userService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _tokenGenerator = tokenGenerator;
+            _userService = userService;
         }
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterRequest request)
@@ -47,16 +43,19 @@ namespace ShopWebApi.Controllers
             {
                 var user = await _userManager.FindByEmailAsync(input.Email);
                 var token = _tokenGenerator.GenerateJwtToken(user);
+                await _userService.SetUserOnlineAsync(user.Id);
                 return Ok(new { Token = token });
             }
             return Unauthorized();
         }
         [HttpGet("logout")]
-        public async Task<IActionResult> LogOut()
+        public async Task<IActionResult> LogOut(string userId)
         {
+            var user = await _userService.GetByIdAsync(userId);
             await _signInManager.SignOutAsync();
             if (_signInManager.SignOutAsync().IsCompleted)
             {
+                await _userService.SetUserOfflineAsync(user.Id);
                 _logger.LogInformation("User logged out");
                 return Ok();
             }

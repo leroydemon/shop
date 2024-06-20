@@ -1,5 +1,4 @@
-﻿
-using DbLevel.Models;
+﻿using DbLevel.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

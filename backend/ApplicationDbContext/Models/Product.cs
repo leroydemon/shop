@@ -1,6 +1,4 @@
-﻿
-
-using DbLevel.Enum;
+﻿using DbLevel.Enum;
 
 namespace DbLevel.Models
 {

@@ -1,6 +1,4 @@
-﻿
-using DbLevel.Enum;
-
+﻿using DbLevel.Enum;
 
 namespace Infrastucture.DtoModels
 {
@@ -14,7 +12,7 @@ namespace Infrastucture.DtoModels
         public Gender Gender { get; set; }
         public Season Season { get; set; }
         public Purpose Propose { get; set; }
-        public string Name { get; set; }
+        public string? Name { get; set; }
         public decimal? UnitPrice { get; set; }
         public string? Description { get; set; } = null;
     }

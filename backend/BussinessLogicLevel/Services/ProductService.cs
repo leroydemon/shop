@@ -1,7 +1,6 @@
 ﻿  using BussinessLogicLevel.Interfaces;
 using DbLevel.Interface;
 using DbLevel.Models;
-using DbLevel.Repository;
 
 namespace BussinessLogicLevel.Services
 {
@@ -36,9 +35,9 @@ namespace BussinessLogicLevel.Services
             return await _productRepository.GetProductByIdAsync(id);
         }
 
-        public async Task Update(Product product)
+        public async Task UpdateAsync(Product product)
         {
-            await _productRepository.Update(product);
+            await _productRepository.UpdateAsync(product);
         }
     }
 }

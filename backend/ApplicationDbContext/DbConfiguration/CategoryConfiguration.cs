@@ -1,7 +1,5 @@
-﻿
-using DbLevel.Models;
+﻿using DbLevel.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DbLevel.DbConfiguration

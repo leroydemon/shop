@@ -1,6 +1,4 @@
-﻿
-
-using DbLevel.Models;
+﻿using DbLevel.Models;
 
 namespace DbLevel.Interface
 {
@@ -9,7 +7,7 @@ namespace DbLevel.Interface
         Task AddAsync(Product product);
         Task DeleteAsync(Product product);
         Task<Product> GetProductByIdAsync(int id);
-        Task Update(Product product);
+        Task UpdateAsync(Product product);
         Task<IEnumerable<Product>> GetAllAsync();
     }
 }

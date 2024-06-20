@@ -1,5 +1,4 @@
 ﻿
-
 namespace BussinessLogicLevel.Requests
 {
     public class RegisterRequest

@@ -2,7 +2,6 @@
 using DbLevel.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
 
 namespace DbLevel.Data
 {
@@ -17,6 +16,7 @@ namespace DbLevel.Data
         public DbSet<Order> Orders { get; set; }
         public DbSet<ProductStorage> ProductStorages { get; set; }
         public DbSet<Storage> Storages { get; set; }
+        public DbSet<PromoCode> PromoCodes { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

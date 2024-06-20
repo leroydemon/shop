@@ -1,5 +1,4 @@
-﻿
-using DbLevel.Data;
+﻿using DbLevel.Data;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Infrastucture.Validators;

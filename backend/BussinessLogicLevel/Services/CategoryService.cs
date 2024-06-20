@@ -1,7 +1,6 @@
 ﻿using BussinessLogicLevel.Interfaces;
 using DbLevel.Interface;
 using DbLevel.Models;
-using DbLevel.Repository;
 
 namespace BussinessLogicLevel.Services
 {

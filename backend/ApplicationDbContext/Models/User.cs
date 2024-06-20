@@ -1,6 +1,4 @@
-﻿
-using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
 
 namespace DbLevel.Models
 {
@@ -10,7 +8,8 @@ namespace DbLevel.Models
         public string? Surname { get; set; }
         public string? Phone { get; set; }
         public DateTime DateOfBirth { get; set; }
-        public IEnumerable<Product>? FavoriteList { get; set; } 
+        public IEnumerable<Product>? FavoriteList { get; set; }
+        public bool IsOnline { get; set; } = false;
 
     }
 }

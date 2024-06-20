@@ -1,5 +1,4 @@
-﻿
-using DbLevel.Models;
+﻿using DbLevel.Models;
 
 namespace DbLevel.Interface
 {

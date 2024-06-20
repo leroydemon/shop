@@ -1,8 +1,5 @@
 ﻿using BussinessLogicLevel.Interfaces;
-using BussinessLogicLevel.Services;
 using DbLevel.Models;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -35,14 +32,14 @@ namespace ShopWebApi.Controllers
         }
         [HttpPost]
         //[Authorize(Roles = "Admin")]
-        public async Task<IActionResult> AddAsync(Category category)
+        public async Task<IActionResult> AddAsync([FromBody] Category category)
         {
             await _categoryService.AddAsync(category);
             return Ok();
         }
         [HttpPut]
         //[Authorize(Roles = "Admin")]
-        public async Task<IActionResult> UpdateAsync(int id, [FromForm] Category category)
+        public async Task<IActionResult> UpdateAsync(int id, [FromBody] Category category)
         {
             await _categoryService.UpdateAsync(id, category);
             return Ok();

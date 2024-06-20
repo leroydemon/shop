@@ -1,5 +1,4 @@
-﻿
-using DbLevel.Models;
+﻿using DbLevel.Models;
 using FluentValidation;
 
 namespace Infrastucture.Validators

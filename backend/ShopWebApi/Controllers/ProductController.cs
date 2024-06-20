@@ -2,7 +2,6 @@
 using BussinessLogicLevel.Interfaces;
 using DbLevel.Models;
 using Infrastucture.DtoModels;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ShopWebApi.Controllers
@@ -27,34 +26,33 @@ namespace ShopWebApi.Controllers
         public async Task<IActionResult> GetAllAsync() 
         { 
             var item = await _productService.GetAllAsync();
+            _logger.LogInformation("method works correctly");
             return Ok(item);
         }
         [HttpGet("{id:int}")]
         //[Authorize(Roles = "Admin")]    
         public async Task<IActionResult> GetProductByIdAsync(int id) 
         {
-            if (!ModelState.IsValid)
-            {
-                BadRequest(ModelState);
-            }
             var item = await _productService.GetProductByIdAsync(id);
+            _logger.LogInformation("method works correctly");
             return Ok(item);
         }
         [HttpPost]
         //[Authorize(Roles = "Admin")]
-        public async Task<IActionResult> AddAsync(ProductDto productDto)
+        public async Task<IActionResult> AddAsync([FromBody] ProductDto productDto)
         {
             var product = _mapper.Map<Product>(productDto);   
             await _productService.AddAsync(product);
-            
-            return Ok();
+            _logger.LogInformation("method works correctly");
+            return Created();
         }
         [HttpPut]
         //[Authorize(Roles = "Admin")]
-        public async Task<IActionResult> UpdateAsync([FromForm] ProductDto productDto)
+        public async Task<IActionResult> UpdateAsync([FromBody] ProductDto productDto)
         {
             var product = _mapper.Map<Product>(productDto);
-            await _productService.Update(product);
+            await _productService.UpdateAsync(product);
+            _logger.LogInformation("method works correctly");
             return Ok();
         }
         [HttpDelete]
@@ -62,6 +60,7 @@ namespace ShopWebApi.Controllers
         public async Task<IActionResult> DeleteAsync(int id)
         {
             await _productService.DeleteAsync(id);
+            _logger.LogInformation("method works correctly");
             return Ok();
         }
     }

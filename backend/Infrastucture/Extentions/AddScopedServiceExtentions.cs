@@ -1,5 +1,4 @@
-﻿
-using BussinessLogicLevel.Interfaces;
+﻿using BussinessLogicLevel.Interfaces;
 using BussinessLogicLevel.Services;
 using DbLevel.Interface;
 using DbLevel.Repository;
@@ -13,10 +12,12 @@ namespace Infrastucture.Extentions
         public static IServiceCollection AddScopedService(this IServiceCollection services)
         {
             services.AddScoped<TokenGeneratorService>();
-            services.AddScoped<IProductService, ProductService>();
-            services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IProductService, ProductService>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IUserService, UserService>();
             return services;
         }
     }

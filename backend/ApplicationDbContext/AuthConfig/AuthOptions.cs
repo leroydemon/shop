@@ -1,6 +1,4 @@
-﻿using Microsoft.IdentityModel.Tokens;
-using System.Text;
-
+﻿
 namespace ShopWebApi.AuthConfig
 {
     public class AuthOptions
