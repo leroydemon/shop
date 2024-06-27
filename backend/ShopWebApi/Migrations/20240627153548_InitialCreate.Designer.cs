@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ShopWebApi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240626214357_repeat")]
-    partial class repeat
+    [Migration("20240627153548_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -128,9 +128,6 @@ namespace ShopWebApi.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("ProductStorageId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Propose")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -173,6 +170,10 @@ namespace ShopWebApi.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("StorageId");
 
                     b.ToTable("ProductStorages");
                 });
@@ -257,6 +258,9 @@ namespace ShopWebApi.Migrations
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
@@ -455,6 +459,21 @@ namespace ShopWebApi.Migrations
                         .HasForeignKey("UserId");
                 });
 
+            modelBuilder.Entity("DbLevel.Models.ProductStorage", b =>
+                {
+                    b.HasOne("DbLevel.Models.Product", null)
+                        .WithMany("ProductStorage")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DbLevel.Models.Storage", null)
+                        .WithMany("ProductStorage")
+                        .HasForeignKey("StorageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -504,6 +523,16 @@ namespace ShopWebApi.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("DbLevel.Models.Product", b =>
+                {
+                    b.Navigation("ProductStorage");
+                });
+
+            modelBuilder.Entity("DbLevel.Models.Storage", b =>
+                {
+                    b.Navigation("ProductStorage");
                 });
 
             modelBuilder.Entity("DbLevel.Models.User", b =>

@@ -7,8 +7,12 @@ namespace Infrastucture.Validators
     {
         public ProductDtoValidator()
         {
-             RuleFor(x => x.Name)
-                .NotEmpty();
+            RuleFor(x => x.Name)
+               .NotEmpty();
+            RuleFor(x => x.UnitPrice)
+               .NotEmpty();
+            RuleFor(x => x.BrandId)
+              .NotEmpty();
         }
     }
 }

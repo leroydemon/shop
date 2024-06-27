@@ -23,7 +23,7 @@ namespace BussinessLogicLevel.Services
             var cart = await _cartRepository.GetByIdAsync(cartId);
             var product = await _productRepo.GetByIdAsync(productId);
 
-            var productList = DeserializeProductList(cart.ProductListJson);
+            var productList = JsonSerializer.Deserialize<Dictionary<Guid, int>>(cart.ProductListJson);
 
             if (!productList.ContainsKey(product.Id))
             {
@@ -35,7 +35,7 @@ namespace BussinessLogicLevel.Services
             }
             cart.TotalPrice += product.UnitPrice * quantity;
             cart.ProductAmount = productList.Count;
-            cart.ProductListJson = SerializeProductList(productList);
+            cart.ProductListJson = JsonSerializer.Serialize(productList);
 
             await _cartRepository.SaveChangesAsync();
             return _mapper.Map<CartDto>(cart);
@@ -61,7 +61,7 @@ namespace BussinessLogicLevel.Services
         {
             var cart = await _cartRepository.GetByIdAsync(cartId);
             var product = await _productRepo.GetByIdAsync(productId);
-            var productList = DeserializeProductList(cart.ProductListJson);
+            var productList = JsonSerializer.Deserialize<Dictionary<Guid, int>>(cart.ProductListJson);
 
             if (productList.ContainsKey(productId))
             {
@@ -80,7 +80,7 @@ namespace BussinessLogicLevel.Services
                 cart.TotalPrice -= product.UnitPrice * finalQuantity;
                 cart.ProductAmount = productList.Count;
             }
-            cart.ProductListJson = SerializeProductList(productList);
+            cart.ProductListJson = JsonSerializer.Serialize(productList);
             await _cartRepository.SaveChangesAsync();
         }
         public async Task<Cart> CreateCart(Guid userId)
@@ -94,28 +94,6 @@ namespace BussinessLogicLevel.Services
         public async Task SaveChangesAsync()
         {
             await _cartRepository.SaveChangesAsync();
-        }
-        private string SerializeProductList(Dictionary<Guid, int> productList)
-        {
-            return JsonSerializer.Serialize(productList);
-        }
-        private Dictionary<Guid, int> DeserializeProductList(string productListJson)
-        {
-            try
-            {
-                if (string.IsNullOrEmpty(productListJson))
-                {
-                    return new Dictionary<Guid, int>();
-                }
-                else
-                {
-                    return JsonSerializer.Deserialize<Dictionary<Guid, int>>(productListJson);
-                }             
-            }
-            catch
-            {
-                throw new Exception();
-            }
         }
     }
 }
