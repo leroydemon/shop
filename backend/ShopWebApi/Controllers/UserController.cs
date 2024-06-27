@@ -13,32 +13,35 @@ namespace ShopWebApi.Controllers
         {
             _userService = userService;
         }
-        [HttpGet]
-        public async Task<IActionResult> GetSortedUsers(string searchTerm, int pageNumber, int pageSize, string sortBy, bool ascending)
+        [HttpGet("sortedlist")]
+        public async Task<IActionResult> GetSortedAsync(string searchTerm, int pageNumber, int pageSize, string sortBy, bool ascending)
         {
-             var items = await _userService.GetSortedUsersAsync(searchTerm, pageNumber, pageSize, sortBy, ascending);
+             var items = await _userService.GetSortedAsync(searchTerm, pageNumber, pageSize, sortBy, ascending);
              return Ok(items);
         }
-        public async Task<IActionResult> SetUserOfflineAsync(string userId)
+        [HttpGet("setoffline")]
+        public async Task<IActionResult> SetOfflineAsync(Guid userId)
         {
-            await _userService.SetUserOfflineAsync(userId);
+            await _userService.SetOfflineAsync(userId);
             return Ok();
         }
-        public async Task<IActionResult> SetUserOnlineAsync(string userId)
+        [HttpGet("setonline")]
+        public async Task<IActionResult> SetOnlineAsync(Guid userId)
         {
-            await _userService.SetUserOnlineAsync(userId);
+            await _userService.SetOnlineAsync(userId);
             return Ok();
         }
-
-        public async Task<IActionResult> RemoveAsync(string userId)
+        [HttpDelete]
+        public async Task<IActionResult> DeleteAsync(Guid userId)
         {
             await _userService.RemoveAsync(userId);
             return Ok();
         }
-        public async Task<IActionResult> GetByIdAsync(string userId)
+        [HttpGet]
+        public async Task<IActionResult> GetByIdAsync(Guid userId)
         {
-            await _userService.GetByIdAsync(userId);
-            return Ok();
+            var user = await _userService.GetByIdAsync(userId);
+            return Ok(user);
         }
     }
 }

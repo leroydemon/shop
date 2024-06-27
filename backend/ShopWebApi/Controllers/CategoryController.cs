@@ -2,7 +2,6 @@
 using DbLevel.Models;
 using Microsoft.AspNetCore.Mvc;
 
-
 namespace ShopWebApi.Controllers
 {
     [Route("api/[controller]")]
@@ -25,28 +24,28 @@ namespace ShopWebApi.Controllers
             return Ok(item);
         }
         [HttpGet("{id:int}")]
-        public async Task<IActionResult> GetProductByIdAsync(int id)
+        public async Task<IActionResult> GetProductByIdAsync(Guid id)
         {
             var item = await _categoryService.GetCategoryByIdAsync(id);
             return Ok(item);
         }
         [HttpPost]
         //[Authorize(Roles = "Admin")]
-        public async Task<IActionResult> AddAsync([FromBody] Category category)
+        public async Task<IActionResult> AddAsync([FromBody] CategoryDto category)
         {
             await _categoryService.AddAsync(category);
             return Ok();
         }
         [HttpPut]
         //[Authorize(Roles = "Admin")]
-        public async Task<IActionResult> UpdateAsync(int id, [FromBody] Category category)
+        public async Task<IActionResult> UpdateAsync([FromBody] CategoryDto category)
         {
-            await _categoryService.UpdateAsync(id, category);
+            await _categoryService.UpdateAsync(category);
             return Ok();
         }
         [HttpDelete("{id:int}")]
         //[Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
-        public async Task<IActionResult> DeleteAsync(int id)
+        public async Task<IActionResult> DeleteAsync(Guid id)
         {
              await _categoryService.DeleteAsync(id);
              return Ok();

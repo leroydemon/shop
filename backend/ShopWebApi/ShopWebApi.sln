@@ -6,6 +6,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShopWebApi", "ShopWebApi.csproj", "{3E1B90FC-3935-47B3-A154-8269C79BC109}"
 	ProjectSection(ProjectDependencies) = postProject
 		{048F06F6-2490-4AC1-AA3F-A1E18EF5D48F} = {048F06F6-2490-4AC1-AA3F-A1E18EF5D48F}
+		{3C43FB48-C480-476A-BD4F-A1C05C0F2269} = {3C43FB48-C480-476A-BD4F-A1C05C0F2269}
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbLevel", "..\ApplicationDbContext\DbLevel.csproj", "{9F3D6C50-0CAD-4F30-8F1D-351642A5A765}"
@@ -16,7 +17,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "backend", "backend", "{3DBE
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastucture", "..\Infrastucture\Infrastucture.csproj", "{048F06F6-2490-4AC1-AA3F-A1E18EF5D48F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authorization", "..\Authorization\Authorization.csproj", "{3C43FB48-C480-476A-BD4F-A1C05C0F2269}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Authorization", "..\Authorization\Authorization.csproj", "{3C43FB48-C480-476A-BD4F-A1C05C0F2269}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,6 +54,7 @@ Global
 		{9F3D6C50-0CAD-4F30-8F1D-351642A5A765} = {3DBE9CEB-CADB-4328-BD7E-8C7A98689309}
 		{F4B7F0D6-A49A-44A9-B152-F1D0185174FF} = {3DBE9CEB-CADB-4328-BD7E-8C7A98689309}
 		{048F06F6-2490-4AC1-AA3F-A1E18EF5D48F} = {3DBE9CEB-CADB-4328-BD7E-8C7A98689309}
+		{3C43FB48-C480-476A-BD4F-A1C05C0F2269} = {3DBE9CEB-CADB-4328-BD7E-8C7A98689309}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {65809FB1-6330-4B81-A586-BBC0F1A18865}

@@ -4,10 +4,10 @@ namespace BussinessLogicLevel.Interfaces
 {
     public interface ICategoryService
     {
-        Task<IEnumerable<Category>> GetAllAsync();
-        Task<Category> GetCategoryByIdAsync(int id);
-        Task AddAsync(Category category);
-        Task UpdateAsync(int id, Category category);
-        Task DeleteAsync(int id);
+        Task<IEnumerable<CategoryDto>> GetAllAsync();
+        Task<CategoryDto> GetCategoryByIdAsync(Guid id);
+        Task<CategoryDto> AddAsync(CategoryDto category);
+        Task UpdateAsync(CategoryDto category);
+        Task DeleteAsync(Guid id);
     }
 }

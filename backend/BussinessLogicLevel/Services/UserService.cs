@@ -1,42 +1,64 @@
-﻿using BussinessLogicLevel.Interfaces;
-using DbLevel.Interface;
+﻿using AutoMapper;
+using BussinessLogicLevel.Interfaces;
+using DbLevel.Interfaces;
 using DbLevel.Models;
+using Infrastucture.DtoModels;
 
 namespace BussinessLogicLevel.Services
 {
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
-        public UserService(IUserRepository userRepository)
+        private readonly IMapper _mapper;
+        public UserService(IUserRepository userRepository, IMapper mapper)
         {
             _userRepository = userRepository;
+            _mapper = mapper;
         }
-        public async Task<List<User>> GetSortedUsersAsync(string searchTerm, int pageNumber, int pageSize, string sortBy, bool ascending)
+        public async Task<IEnumerable<UserDto>> GetSortedAsync(string searchTerm, int pageNumber, int pageSize, string sortBy, bool ascending)
         {
-           return await _userRepository.GetSortedUsersAsync(searchTerm, pageNumber, pageSize, sortBy, ascending);
-        }
-
-        public async Task SetUserOnlineAsync(string userId)
-        {
-            var user = await _userRepository.GetById(userId);
-            user.IsOnline = true;
-            await _userRepository.SaveChangesAsync();
-        }
-        public async Task SetUserOfflineAsync(string userId)
-        {
-            var user = await _userRepository.GetById(userId);
-            user.IsOnline = false;
-            await _userRepository.SaveChangesAsync();
+            var users = await _userRepository.GetSortedAsync(searchTerm, pageNumber, pageSize, sortBy, ascending);
+            return _mapper.Map<IEnumerable<UserDto>>(users);
         }
 
-        public async Task RemoveAsync(string userId)
+        public async Task SetOnlineAsync(Guid userId)
         {
-            var user = await _userRepository.GetById(userId);
-            await _userRepository.RemoveAsync(user);
+            var user = await _userRepository.GetByIdAsync(userId);
+            await _userRepository.SetOnlineAsync(user);
         }
-        public async Task<User> GetByIdAsync(string userId)
+        public async Task SetOfflineAsync(Guid userId)
         {
-            return await _userRepository.GetById(userId);
+            var user = await _userRepository.GetByIdAsync(userId);
+            await _userRepository.SetOfflineAsync(user);
+        }
+
+        public async Task RemoveAsync(Guid userId)
+        {
+            var user = await _userRepository.GetByIdAsync(userId);
+            await _userRepository.DeleteAsync(user);
+        }
+        public async Task<UserDto> GetByIdAsync(Guid userId)
+        {
+            var user = await _userRepository.GetByIdAsync(userId);
+            return _mapper.Map<UserDto>(user);
+        }
+        public async Task<IEnumerable<UserDto>> GetAllAsync()
+        {
+            var users = await _userRepository.GetAllAsync();
+            return _mapper.Map<IEnumerable<UserDto>>(users);
+        }
+
+        public async Task UpdateAsync(UserDto userDto)
+        {
+            var user = _mapper.Map<User>(userDto);
+            await _userRepository.UpdateAsync(user);
+        }
+
+        public async Task<UserDto> AddAsync(UserDto userDto)
+        {
+            var user = _mapper.Map<User>(userDto);
+            var addedUser = await _userRepository.AddAsync(user);
+            return _mapper.Map<UserDto>(addedUser);
         }
     }
 }

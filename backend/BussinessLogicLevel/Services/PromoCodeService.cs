@@ -1,46 +1,43 @@
-﻿using BussinessLogicLevel.Interfaces;
-using DbLevel.Interface;
+﻿using AutoMapper;
+using BussinessLogicLevel.Interfaces;
+using DbLevel;
 using DbLevel.Models;
 
 namespace BussinessLogicLevel.Services
 {
     public class PromoCodeService : IPromoCodeService
     {
-        private readonly IPromoCodeRepository _promoCodeRepository;
-        public PromoCodeService(IPromoCodeRepository promoCodeRepository)
+        private readonly Repository<PromoCode> _promoCodeRepository;
+        private readonly IMapper _mapper;
+        public PromoCodeService(Repository<PromoCode> promoCodeRepository)
         {
             _promoCodeRepository = promoCodeRepository;
         }
-        public async Task CreateAsync(PromoCode promoCode)
+        public async Task<PromoCodeDto> CreateAsync(PromoCodeDto promoCodeDto)
         {
-            await _promoCodeRepository.CreateAsync(promoCode);
+            var promoCode = _mapper.Map<PromoCode>(promoCodeDto);
+            var addedPromoCode = await _promoCodeRepository.AddAsync(promoCode);
+            return _mapper.Map<PromoCodeDto>(addedPromoCode);
         }
-
-        public async Task DeleteAsync(string id)
+        public async Task DeleteAsync(Guid id) 
         {
-            var promoCode = await _promoCodeRepository.FindByIdAsync(id);
+            var promoCode = await _promoCodeRepository.GetByIdAsync(id);
             await _promoCodeRepository.DeleteAsync(promoCode);
         }
-
-        public async Task<PromoCode> FindByIdAsync(string id)
+        public async Task<PromoCodeDto> FindByIdAsync(Guid id)
         {
-            return await _promoCodeRepository.FindByIdAsync(id);
+            var promoCode =  await _promoCodeRepository.GetByIdAsync(id);
+            return _mapper.Map<PromoCodeDto>(promoCode);
         }
-
-        public async Task<List<PromoCode>> GetAllAsync()
+        public async Task<IEnumerable<PromoCodeDto>> GetAllAsync()
         {
-            return await _promoCodeRepository.GetAllAsync();
+            var items =  await _promoCodeRepository.GetAllAsync();
+            return _mapper.Map<IEnumerable<PromoCodeDto>>(items);
         }
-
-        public async Task<PromoCode> GetAsync(string code)
+        public async Task UpdateAsync(PromoCodeDto promoCodeDto)
         {
-            return await _promoCodeRepository.GetAsync(code);
-        }
-
-        public async Task UpdateAsync(string id)
-        {
-             var promoCode = await _promoCodeRepository.FindByIdAsync(id);
-             await _promoCodeRepository.UpdateAsync(promoCode);
+            var promoCode = _mapper.Map<PromoCode>(promoCodeDto);
+            await _promoCodeRepository.UpdateAsync(promoCode);
         }
     }
 }
