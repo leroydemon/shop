@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using BussinessLogicLevel.Interfaces;
-using DbLevel;
+using DbLevel.Interfaces;
 using DbLevel.Models;
 using Infrastucture.DtoModels;
 
@@ -8,9 +8,9 @@ namespace BussinessLogicLevel.Services
 {
     public class ProductService : IProductService
     {
-        private readonly Repository<Product> _productRepository;
+        private readonly IRepository<Product> _productRepository;
         private readonly IMapper _mapper;
-        public ProductService(Repository<Product> productRepository, IMapper mapper)
+        public ProductService(IRepository<Product> productRepository, IMapper mapper)
         {
             _productRepository = productRepository;
             _mapper = mapper;
@@ -41,9 +41,9 @@ namespace BussinessLogicLevel.Services
             return _mapper.Map<ProductDto>(product);
         }
 
-        public async Task UpdateAsync(ProductDto productDto)
+        public async Task UpdateAsync(Product product)
         {
-            var product = _mapper.Map<Product>(productDto);
+            var productMapped = _mapper.Map<Product>(product);
             await _productRepository.UpdateAsync(product);
         }
     }

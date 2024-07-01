@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using BussinessLogicLevel.Interfaces;
-using DbLevel;
 using DbLevel.Interfaces;
 using DbLevel.Models;
 
@@ -10,7 +9,7 @@ namespace BussinessLogicLevel.Services
     {
         private readonly IRepository<Storage> _storageRepository;
         private readonly IMapper _mapper;
-        public StorageService(Repository<Storage> storage, IMapper mapper)
+        public StorageService(IRepository<Storage> storage, IMapper mapper)
         {
             _storageRepository = storage;
             _mapper = mapper;
@@ -30,10 +29,10 @@ namespace BussinessLogicLevel.Services
             var storage = await _storageRepository.GetByIdAsync(id);
             await _storageRepository.DeleteAsync(storage);
         }
-        public async Task UpdateAsync(StorageDto storageDto)
+        public async Task UpdateAsync(Storage storage)
         {
-            var storage = _mapper.Map<Storage>(storageDto);
-            await _storageRepository.UpdateAsync(storage);
+            var storageMapped = _mapper.Map<Storage>(storage);
+            await _storageRepository.UpdateAsync(storageMapped);
         }
         public async Task<StorageDto> AddAsync(StorageDto storageDto)
         {

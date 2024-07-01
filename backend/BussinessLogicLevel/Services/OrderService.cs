@@ -1,16 +1,16 @@
 ﻿using AutoMapper;
 using BussinessLogicLevel.Interfaces;
-using DbLevel;
+using DbLevel.Interfaces;
 using DbLevel.Models;
 
 namespace BussinessLogicLevel.Services
 {
     public class OrderService : IOrderService
     {
-        private readonly Repository<Order> _orderRepository;
+        private readonly IRepository<Order> _orderRepository;
         private readonly IMapper _mapper;
 
-        public OrderService(Repository<Order> orderRepository, IMapper mapper)
+        public OrderService(IRepository<Order> orderRepository, IMapper mapper)
         {
             _orderRepository = orderRepository;
             _mapper = mapper;
@@ -41,9 +41,9 @@ namespace BussinessLogicLevel.Services
             await _orderRepository.DeleteAsync(order);
         }
 
-        public async Task UpdateAsync(OrderDto orderDto)
+        public async Task UpdateAsync(Order order)
         {
-            var order = _mapper.Map<Order>(orderDto);
+            var orderMapped = _mapper.Map<Order>(order);
             await _orderRepository.UpdateAsync(order);
         }
     }

@@ -7,7 +7,7 @@ namespace BussinessLogicLevel.Interfaces
     {
         Task<IEnumerable<OrderDto>> GetAllAsync();
         Task<OrderDto> AddAsync(OrderDto orderDto);
-        Task UpdateAsync(OrderDto orderDto);
+        Task UpdateAsync(Order orderDto);
         Task RemoveAsync(Guid id);
         Task<OrderDto> GetByIdAsync(Guid id);
     }
