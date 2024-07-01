@@ -1,15 +1,15 @@
 ﻿using AutoMapper;
 using BussinessLogicLevel.Interfaces;
-using DbLevel;
+using DbLevel.Interfaces;
 using DbLevel.Models;
 
 namespace BussinessLogicLevel.Services
 {
     public class ProductStorageService : IProductStorageService
     {
-        private readonly Repository<ProductStorage> _prRepository;
+        private readonly IRepository<ProductStorage> _prRepository;
         private readonly IMapper _mapper;
-        public ProductStorageService(Repository<ProductStorage> prRepository, IMapper mapper)
+        public ProductStorageService(IRepository<ProductStorage> prRepository, IMapper mapper)
         {
             _prRepository = prRepository;
             _mapper = mapper;
@@ -29,10 +29,10 @@ namespace BussinessLogicLevel.Services
             var productStorage = await _prRepository.GetByIdAsync(id);
             await _prRepository.DeleteAsync(productStorage);
         }
-        public async Task UpdateAsync(ProductStorageDto productStorageDto)
+        public async Task UpdateAsync(ProductStorage productStorage)
         {
-            var productStorage = _mapper.Map<ProductStorage>(productStorageDto);
-            await _prRepository.UpdateAsync(productStorage);
+            var productStorageMapped = _mapper.Map<ProductStorage>(productStorage);
+            await _prRepository.UpdateAsync(productStorageMapped);
         }
         public async Task<ProductStorageDto> AddAsync(ProductStorageDto productStorageDto)
         {

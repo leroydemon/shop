@@ -15,31 +15,25 @@ namespace BussinessLogicLevel.Services
         public async Task<bool> ConfirmPurchaseAsync(Guid cartId, int quantity)
         {
             var cart = await _cartRepo.GetByIdAsync(cartId);
+            var productStorageList = await _productStorageRepo.GetAllAsync();
 
-            var productStorage = await _productStorageRepo.GetAllAsync();
-
-            bool isConfirmed = true;
-
-            foreach (var item in cart.ProductList)
+            foreach (var cartItem in cart.ProductList)
             {
-                foreach(var product in productStorage)
+                var productStorage = productStorageList.FirstOrDefault(ps => ps.ProductId == cartItem.Key);
+                if (productStorage == null || productStorage.Quantity < cartItem.Value)
                 {
-                    if (item.Key == product.ProductId && item.Value <= product.Quantity)
-                    {
-                        product.Quantity -= item.Value;
-                        break;
-                    }
-                    else if (item.Key == product.ProductId && item.Value > product.Quantity)
-                    {
-                        product.Quantity -= item.Value; // высылать сообщение сторажу что нужно н-ое кол-во товара
-                    }
-                    else
-                    {
-                        return isConfirmed = false;
-                    }
+                    return false;
                 }
             }
-            return isConfirmed;
+
+            foreach (var cartItem in cart.ProductList)
+            {
+                var productStorage = productStorageList.First(ps => ps.ProductId == cartItem.Key);
+                productStorage.Quantity -= cartItem.Value;
+            }
+
+            await _productStorageRepo.SaveChangesAsync();
+            return true;
         }
     }
 }

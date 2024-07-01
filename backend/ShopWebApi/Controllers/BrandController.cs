@@ -39,7 +39,7 @@ namespace ShopWebApi.Controllers
             return Ok();
         }
         [HttpPut]
-        public async Task<IActionResult> UpdateAsync(BrandDto brand)
+        public async Task<IActionResult> UpdateAsync(Brand brand)
         {
             await _brandService.UpdateAsync(brand);
             return Ok();

@@ -38,13 +38,18 @@ namespace BussinessLogicLevel.Services
             cart.ProductListJson = JsonSerializer.Serialize(productList);
 
             await _cartRepository.SaveChangesAsync();
-            return _mapper.Map<CartDto>(cart);
+            var cartDto = new CartDto { ProductAmount = cart.ProductAmount,
+                ProductList = cart.ProductList, 
+                ProductListJson = cart.ProductListJson, 
+                TotalPrice = cart.TotalPrice, 
+                UserId = cart.UserId};
+            return cartDto; //mapper doesn't work here
         }
 
         public async Task ClearAsync(Guid cartId)
         {
             var cart = await _cartRepository.GetByIdAsync(cartId);
-            cart.ProductListJson = "";
+            cart.ProductListJson = "{}";
             cart.ProductList = new Dictionary<Guid, int>();
             cart.TotalPrice = 0;
             cart.ProductAmount = 0;
@@ -77,13 +82,12 @@ namespace BussinessLogicLevel.Services
                     productList[productId] = finalQuantity;
                     cart.TotalPrice -= product.UnitPrice * quantity;
                 }
-                cart.TotalPrice -= product.UnitPrice * finalQuantity;
                 cart.ProductAmount = productList.Count;
             }
             cart.ProductListJson = JsonSerializer.Serialize(productList);
             await _cartRepository.SaveChangesAsync();
         }
-        public async Task<Cart> CreateCart(Guid userId)
+        public async Task<Cart> CreateCartAsync(Guid userId)
         {
             var cart =  new Cart()
             {

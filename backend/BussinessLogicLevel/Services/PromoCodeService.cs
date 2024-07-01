@@ -1,17 +1,18 @@
 ﻿using AutoMapper;
 using BussinessLogicLevel.Interfaces;
-using DbLevel;
+using DbLevel.Interfaces;
 using DbLevel.Models;
 
 namespace BussinessLogicLevel.Services
 {
     public class PromoCodeService : IPromoCodeService
     {
-        private readonly Repository<PromoCode> _promoCodeRepository;
+        private readonly IRepository<PromoCode> _promoCodeRepository;
         private readonly IMapper _mapper;
-        public PromoCodeService(Repository<PromoCode> promoCodeRepository)
+        public PromoCodeService(IRepository<PromoCode> promoCodeRepository, IMapper mapper)
         {
             _promoCodeRepository = promoCodeRepository;
+            _mapper = mapper;
         }
         public async Task<PromoCodeDto> CreateAsync(PromoCodeDto promoCodeDto)
         {
@@ -34,10 +35,10 @@ namespace BussinessLogicLevel.Services
             var items =  await _promoCodeRepository.GetAllAsync();
             return _mapper.Map<IEnumerable<PromoCodeDto>>(items);
         }
-        public async Task UpdateAsync(PromoCodeDto promoCodeDto)
+        public async Task UpdateAsync(PromoCode promoCode)
         {
-            var promoCode = _mapper.Map<PromoCode>(promoCodeDto);
-            await _promoCodeRepository.UpdateAsync(promoCode);
+            var promoCodeMapped = _mapper.Map<PromoCode>(promoCode);
+            await _promoCodeRepository.UpdateAsync(promoCodeMapped);
         }
     }
 }

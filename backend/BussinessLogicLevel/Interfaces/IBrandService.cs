@@ -6,7 +6,7 @@ namespace BussinessLogicLevel.Interfaces
     {
         Task<IEnumerable<BrandDto>> GetAllAsync();
         Task<BrandDto> AddAsync(BrandDto brand);
-        Task UpdateAsync(BrandDto brand);
+        Task UpdateAsync(Brand brand);
         Task RemoveAsync(Guid id);
         Task<BrandDto> GetByIdAsync(Guid id);
     }

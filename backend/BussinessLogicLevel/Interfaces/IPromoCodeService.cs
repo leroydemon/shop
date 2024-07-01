@@ -6,7 +6,7 @@ namespace BussinessLogicLevel.Interfaces
     {
         Task<IEnumerable<PromoCodeDto>> GetAllAsync();
         Task<PromoCodeDto> CreateAsync(PromoCodeDto promoCode);
-        Task UpdateAsync(PromoCodeDto promoCode);
+        Task UpdateAsync(PromoCode promoCode);
         Task DeleteAsync(Guid id);
         public Task<PromoCodeDto> FindByIdAsync(Guid id);
     }
