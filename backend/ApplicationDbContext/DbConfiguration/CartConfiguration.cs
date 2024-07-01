@@ -10,6 +10,7 @@ namespace DbLevel.DbConfiguration
         {
             builder.Property(u => u.TotalPrice)
                    .HasPrecision(18, 2);
+            builder.Ignore(u => u.ProductList);
         }
     }
 }
