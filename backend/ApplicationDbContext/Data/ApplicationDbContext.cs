@@ -17,8 +17,6 @@ namespace DbLevel.Data
         public DbSet<ProductStorage> ProductStorages { get; set; }
         public DbSet<Storage> Storages { get; set; }
         public DbSet<PromoCode> PromoCodes { get; set; }
-
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

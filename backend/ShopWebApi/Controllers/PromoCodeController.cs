@@ -1,4 +1,5 @@
 ﻿using BussinessLogicLevel.Interfaces;
+using DbLevel.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ShopWebApi.Controllers
@@ -10,30 +11,35 @@ namespace ShopWebApi.Controllers
         {
             _promoCode = promoCode;
         }
-        public async Task<ActionResult> GetPromoCodeAsync(string code)
+        [HttpPost]
+        public async Task<ActionResult> GetPromoCodeAsync(PromoCodeDto promoCode)
         {
-            _promoCode.GetAsync(code);
+            await _promoCode.CreateAsync(promoCode);
             return Ok();
         }
-        public async Task<ActionResult> DeleteAsync(string id)
+        [HttpDelete]
+        public async Task<ActionResult> DeleteAsync(Guid id)
         {
-            _promoCode.DeleteAsync(id);
+            await _promoCode.DeleteAsync(id);
             return Ok();
         }
-        public async Task<ActionResult> Update(string id)
+        [HttpPut]
+        public async Task<ActionResult> UpdateAsync(PromoCode promoCode)
         {
-            _promoCode.UpdateAsync(id);
+            await _promoCode.UpdateAsync(promoCode);
             return Ok();
         }
+        [HttpGet("all")]
         public async Task<ActionResult> GetAllPromoCodesAsync()
         {
-            _promoCode.GetAllAsync();
-            return Ok();
+            var items = await _promoCode.GetAllAsync();
+            return Ok(items);
         }
-        public async Task<ActionResult> GetByIdAsync(string id)
+        [HttpGet]
+        public async Task<ActionResult> GetByIdAsync(Guid id)
         {
-            _promoCode.FindByIdAsync(id);
-            return Ok();
+            var item = await _promoCode.FindByIdAsync(id);
+            return Ok(item);
         }
     }
 }

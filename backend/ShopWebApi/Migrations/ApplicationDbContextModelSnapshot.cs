@@ -53,6 +53,9 @@ namespace ShopWebApi.Migrations
                     b.Property<int>("ProductAmount")
                         .HasColumnType("int");
 
+                    b.Property<string>("ProductListJson")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<decimal>("TotalPrice")
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
@@ -89,10 +92,13 @@ namespace ShopWebApi.Migrations
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Orders");
                 });
@@ -106,9 +112,6 @@ namespace ShopWebApi.Migrations
                     b.Property<Guid>("BrandId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("CartId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid?>("CategoryId")
                         .HasColumnType("uniqueidentifier");
 
@@ -120,11 +123,7 @@ namespace ShopWebApi.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("ProductStorageId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Propose")
                         .IsRequired()
@@ -138,7 +137,7 @@ namespace ShopWebApi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal?>("UnitPrice")
+                    b.Property<decimal>("UnitPrice")
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
@@ -146,8 +145,6 @@ namespace ShopWebApi.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CartId");
 
                     b.HasIndex("UserId");
 
@@ -171,7 +168,35 @@ namespace ShopWebApi.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("StorageId");
+
                     b.ToTable("ProductStorages");
+                });
+
+            modelBuilder.Entity("DbLevel.Models.PromoCode", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("AmountDiscoint")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ExpireDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PromoCodes");
                 });
 
             modelBuilder.Entity("DbLevel.Models.Storage", b =>
@@ -191,9 +216,6 @@ namespace ShopWebApi.Migrations
                     b.Property<string>("Phone")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("ProductId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -225,11 +247,17 @@ namespace ShopWebApi.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsOnline")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
@@ -410,15 +438,37 @@ namespace ShopWebApi.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("DbLevel.Models.Order", b =>
+                {
+                    b.HasOne("DbLevel.Models.User", "User")
+                        .WithMany("HistoryOrders")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("DbLevel.Models.Product", b =>
                 {
-                    b.HasOne("DbLevel.Models.Cart", null)
-                        .WithMany("ProductList")
-                        .HasForeignKey("CartId");
-
                     b.HasOne("DbLevel.Models.User", null)
                         .WithMany("FavoriteList")
                         .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("DbLevel.Models.ProductStorage", b =>
+                {
+                    b.HasOne("DbLevel.Models.Product", null)
+                        .WithMany("ProductStorage")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DbLevel.Models.Storage", null)
+                        .WithMany("ProductStorage")
+                        .HasForeignKey("StorageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -472,14 +522,21 @@ namespace ShopWebApi.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("DbLevel.Models.Cart", b =>
+            modelBuilder.Entity("DbLevel.Models.Product", b =>
                 {
-                    b.Navigation("ProductList");
+                    b.Navigation("ProductStorage");
+                });
+
+            modelBuilder.Entity("DbLevel.Models.Storage", b =>
+                {
+                    b.Navigation("ProductStorage");
                 });
 
             modelBuilder.Entity("DbLevel.Models.User", b =>
                 {
                     b.Navigation("FavoriteList");
+
+                    b.Navigation("HistoryOrders");
                 });
 #pragma warning restore 612, 618
         }

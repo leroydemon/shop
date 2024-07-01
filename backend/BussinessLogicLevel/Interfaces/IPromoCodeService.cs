@@ -1,15 +1,13 @@
-﻿
+﻿using DbLevel.Models;
 
-using DbLevel.Models;
 namespace BussinessLogicLevel.Interfaces
 {
     public interface IPromoCodeService
     {
-        Task<PromoCode> GetAsync(string code);
-        Task<List<PromoCode>> GetAllAsync();
-        Task CreateAsync(PromoCode promoCode);
-        Task UpdateAsync(string id);
-        Task DeleteAsync(string id);
-        public Task<PromoCode> FindByIdAsync(string id);
+        Task<IEnumerable<PromoCodeDto>> GetAllAsync();
+        Task<PromoCodeDto> CreateAsync(PromoCodeDto promoCode);
+        Task UpdateAsync(PromoCode promoCode);
+        Task DeleteAsync(Guid id);
+        public Task<PromoCodeDto> FindByIdAsync(Guid id);
     }
 }

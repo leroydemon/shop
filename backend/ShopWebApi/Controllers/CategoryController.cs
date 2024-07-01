@@ -26,7 +26,7 @@ namespace ShopWebApi.Controllers
         }
 
         [HttpGet("{id:int}")]
-        public async Task<IActionResult> GetProductByIdAsync(int id)
+        public async Task<IActionResult> GetProductByIdAsync(Guid id)
         {
             var item = await _categoryService.GetCategoryByIdAsync(id);
 
@@ -35,7 +35,7 @@ namespace ShopWebApi.Controllers
 
         [HttpPost]
         //[Authorize(Roles = "Admin")]
-        public async Task<IActionResult> AddAsync([FromBody] Category category)
+        public async Task<IActionResult> AddAsync([FromBody] CategoryDto category)
         {
             await _categoryService.AddAsync(category);
 
@@ -44,16 +44,15 @@ namespace ShopWebApi.Controllers
 
         [HttpPut]
         //[Authorize(Roles = "Admin")]
-        public async Task<IActionResult> UpdateAsync(int id, [FromBody] Category category)
+        public async Task<IActionResult> UpdateAsync([FromBody] Category category)
         {
-            await _categoryService.UpdateAsync(id, category);
-
+            await _categoryService.UpdateAsync(category);
             return Ok();
         }
 
         [HttpDelete("{id:int}")]
         //[Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
-        public async Task<IActionResult> DeleteAsync(int id)
+        public async Task<IActionResult> DeleteAsync(Guid id)
         {
              await _categoryService.DeleteAsync(id);
 

@@ -1,8 +1,11 @@
-﻿using BussinessLogicLevel.Requests;
+﻿using BussinessLogicLevel.DtoModels;
+using DbLevel.Interfaces;
 using DbLevel.Models;
-using Infrastucture.Services;
+using Аuthorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using BussinessLogicLevel.Services;
+using BussinessLogicLevel.Interfaces;
 
 namespace ShopWebApi.Controllers
 {
@@ -10,65 +13,40 @@ namespace ShopWebApi.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
-        private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
-        private readonly ILogger<AccountController> _logger;
-        private readonly TokenGeneratorService _tokenGenerator;
-        private readonly IUserService _userService;
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, ILogger<AccountController> logger, TokenGeneratorService tokenGenerator, IUserService userService)
+        private readonly IAccountService _accountService;
+        public AccountController(IAccountService accountService)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
-            _logger = logger;
-            _tokenGenerator = tokenGenerator;
-            _userService = userService;
+            _accountService = accountService;
         }
-
         [HttpPost("register")]
-        public async Task<IActionResult> RegisterAsync([FromBody] RegisterRequest request)
+        public async Task<IActionResult> Register([FromBody] RegisterDto request)
         {
-            var user = new User { UserName = request.Email, Email = request.Email };
-            var result = await _userManager.CreateAsync(user, request.Password);
-
-            if (result.Succeeded)
+            var result = await _accountService.Register(request);
+            if (result)
             {
-                return Ok("You registered successfully");
+                return Ok(result);
             }
-
-            return BadRequest(result.Errors);
+            return BadRequest();
         }
-
-        [HttpPost("login")]
-        public async Task<IActionResult> LoginAsync([FromBody] LoginRequest input)
+        [HttpPost("Login")]
+        public async Task<IActionResult> Login([FromBody] LoginDto input)
         {
-            var result = await _signInManager.PasswordSignInAsync(input.Email, input.Password, false, false);
+            var token = await _accountService.Login(input);
+            return Ok(token);
 
-            if (result.Succeeded)
-            {
-                var user = await _userManager.FindByEmailAsync(input.Email);
-                var token = _tokenGenerator.GenerateJwtToken(user);
-                await _userService.SetUserOnlineAsync(user.Id);
-                return Ok(new { Token = token });
-            }
-           
-            return Unauthorized();
         }
-
         [HttpGet("logout")]
-        public async Task<IActionResult> LogOut(string userId)
+        public async Task<IActionResult> LogOut(Guid userId)
         {
-            var user = await _userService.GetByIdAsync(userId);
-            await _signInManager.SignOutAsync();
-
-            if (_signInManager.SignOutAsync().IsCompleted)
+            var result = await _accountService.LogOut(userId);
+            if (result)
             {
-                await _userService.SetUserOfflineAsync(user.Id);
-                _logger.LogInformation("User logged out");
-
                 return Ok();
             }
-
-            return BadRequest();
+            else
+            {
+                return BadRequest();
+            }
         }
     }
 }

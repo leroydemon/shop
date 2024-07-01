@@ -1,18 +1,16 @@
-﻿//using DbLevel.Models;
+﻿using DbLevel.Models;
 
-//namespace Infrastucture.DtoModels
-//{
-//    public class UserDto
-//    {
-//        public Guid? CartId { get; set; }
-//        public string? Name { get; set; }
-//        public string? Surname { get; set; }
-//        public string? Phone { get; set; }
-//        public string? Login { get; set; }
-//        public string? Password { get; set; }
-//        public DateTime DateOfBirth { get; set; }
-//        public IEnumerable<Product>? FavoriteList { get; set; }
-//    }
-//}
-
-// move to business level only
+namespace Infrastucture.DtoModels
+{
+    public class UserDto
+    {
+        public Guid? CartId { get; set; }
+        public string? Name { get; set; }
+        public string? Surname { get; set; }
+        public string? Phone { get; set; }
+        public DateTime DateOfBirth { get; set; }
+        public IEnumerable<Product>? FavoriteList { get; set; }
+        public IEnumerable<Order>? HistoryOrders { get; set; }
+        public bool IsOnline { get; set; }
+    }
+}
