@@ -38,7 +38,7 @@ namespace ShopWebApi.Controllers
         }
         [HttpPut]
         //[Authorize(Roles = "Admin")]
-        public async Task<IActionResult> UpdateAsync([FromBody] Category category)
+        public async Task<IActionResult> UpdateAsync([FromBody] CategoryDto category)
         {
             await _categoryService.UpdateAsync(category);
             return Ok();

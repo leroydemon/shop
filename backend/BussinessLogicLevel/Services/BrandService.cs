@@ -1,17 +1,16 @@
 ﻿using AutoMapper;
 using BussinessLogicLevel.Interfaces;
 using DbLevel;
-using DbLevel.Interfaces;
 using DbLevel.Models;
 
 namespace BussinessLogicLevel.Services
 {
     public class BrandService : IBrandService
     {
-        private readonly IRepository<Brand> _brandRepository;
+        private readonly Repository<Brand> _brandRepository;
         private readonly IMapper _mapper;
 
-        public BrandService(IRepository<Brand> brandRepository, IMapper mapper)
+        public BrandService(Repository<Brand> brandRepository, IMapper mapper)
         {
             _brandRepository = brandRepository;
             _mapper = mapper;
@@ -42,10 +41,10 @@ namespace BussinessLogicLevel.Services
             await _brandRepository.DeleteAsync(brand);
         }
 
-        public async Task UpdateAsync(Brand brand)
+        public async Task UpdateAsync(BrandDto brandDto)
         {
-            var brandMapped = _mapper.Map<Brand>(brand);
-            await _brandRepository.UpdateAsync(brandMapped);
+            var brand = _mapper.Map<Brand>(brandDto);
+            await _brandRepository.UpdateAsync(brand);
         }
     }
 }

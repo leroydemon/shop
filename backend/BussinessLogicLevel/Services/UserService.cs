@@ -48,10 +48,10 @@ namespace BussinessLogicLevel.Services
             return _mapper.Map<IEnumerable<UserDto>>(users);
         }
 
-        public async Task UpdateAsync(User user)
+        public async Task UpdateAsync(UserDto userDto)
         {
-            var userMapped = _mapper.Map<User>(user);
-            await _userRepository.UpdateAsync(userMapped);
+            var user = _mapper.Map<User>(userDto);
+            await _userRepository.UpdateAsync(user);
         }
 
         public async Task<UserDto> AddAsync(UserDto userDto)

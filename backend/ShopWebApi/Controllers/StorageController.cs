@@ -37,9 +37,9 @@ namespace ShopWebApi.Controllers
             return Ok(product);
         }
         [HttpPut]
-        public async Task<IActionResult> UpdateAsync([FromBody] Storage storage)
+        public async Task<IActionResult> UpdateAsync([FromBody] StorageDto storageDto)
         {
-            await _storageService.UpdateAsync(storage);
+            await _storageService.UpdateAsync(storageDto);
             _logger.LogInformation("method works correctly");
             return Ok();
         }

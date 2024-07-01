@@ -10,7 +10,7 @@ namespace BussinessLogicLevel.Services
     {
         private readonly IRepository<Category> _categoryRepository;
         private readonly IMapper _mapper;
-        public CategoryService(IRepository<Category> categoryRepository, IMapper mapper)
+        public CategoryService(Repository<Category> categoryRepository, IMapper mapper)
         {
 
             _categoryRepository = categoryRepository;
@@ -37,9 +37,9 @@ namespace BussinessLogicLevel.Services
             var category = await _categoryRepository.GetByIdAsync(id);
             return _mapper.Map<CategoryDto>(category);
         }
-        public async Task UpdateAsync(Category categoryInput)
+        public async Task UpdateAsync(CategoryDto categoryDto)
         {
-            var category = _mapper.Map<Category>(categoryInput);
+            var category = _mapper.Map<Category>(categoryDto); 
             await _categoryRepository.UpdateAsync(category);
         }
     }

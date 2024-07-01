@@ -24,7 +24,7 @@ namespace ShopWebApi.Controllers
             return Ok();
         }
         [HttpPut]
-        public async Task<ActionResult> UpdateAsync(PromoCode promoCode)
+        public async Task<ActionResult> UpdateAsync(PromoCodeDto promoCode)
         {
             await _promoCode.UpdateAsync(promoCode);
             return Ok();
@@ -32,14 +32,14 @@ namespace ShopWebApi.Controllers
         [HttpGet("all")]
         public async Task<ActionResult> GetAllPromoCodesAsync()
         {
-            var items = await _promoCode.GetAllAsync();
-            return Ok(items);
+            await _promoCode.GetAllAsync();
+            return Ok();
         }
         [HttpGet]
         public async Task<ActionResult> GetByIdAsync(Guid id)
         {
-            var item = await _promoCode.FindByIdAsync(id);
-            return Ok(item);
+            await _promoCode.FindByIdAsync(id);
+            return Ok();
         }
     }
 }

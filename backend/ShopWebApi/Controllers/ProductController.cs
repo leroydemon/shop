@@ -1,5 +1,4 @@
 ﻿using BussinessLogicLevel.Interfaces;
-using DbLevel.Models;
 using Infrastucture.DtoModels;
 using Microsoft.AspNetCore.Mvc;
 
@@ -42,9 +41,9 @@ namespace ShopWebApi.Controllers
         }
         [HttpPut]
         //[Authorize(Roles = "Admin")]
-        public async Task<IActionResult> UpdateAsync([FromBody] Product product)
+        public async Task<IActionResult> UpdateAsync([FromBody] ProductDto productDto)
         {
-            await _productService.UpdateAsync(product);
+            await _productService.UpdateAsync(productDto);
             _logger.LogInformation("method works correctly");
             return Ok();
         }

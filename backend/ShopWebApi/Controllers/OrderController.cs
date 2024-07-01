@@ -28,8 +28,8 @@ namespace ShopWebApi.Controllers
         [HttpPost]
         public async Task<IActionResult> AddAsync(OrderDto orderDto)
         {
-            var item = await _orderService.AddAsync(orderDto);
-            return Ok(item);
+            await _orderService.AddAsync(orderDto);
+            return Created();
         }
         [HttpDelete]
         public async Task<IActionResult> RemoveAsync(Guid id)
@@ -38,9 +38,9 @@ namespace ShopWebApi.Controllers
             return Ok();
         }
         [HttpPut]
-        public async Task<IActionResult> UpdateAsync(Order order)
+        public async Task<IActionResult> UpdateAsync(OrderDto orderDto)
         {
-            await _orderService.UpdateAsync(order);
+            await _orderService.UpdateAsync(orderDto);
             return Ok();
         }
     }
