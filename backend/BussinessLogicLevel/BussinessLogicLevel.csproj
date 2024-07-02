@@ -10,11 +10,8 @@
     <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="8.0.6" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\ApplicationDbContext\DbLevel.csproj" />
-    <ProjectReference Include="..\Authorization\Authorization.csproj" />
+	<ProjectReference Include="..\DbLevel\DbLevel.csproj" />
+	<ProjectReference Include="..\Authorization\Authorization.csproj" />
   </ItemGroup>
 
 </Project>

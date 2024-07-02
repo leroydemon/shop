@@ -4,7 +4,7 @@ using DbLevel;
 using DbLevel.Interfaces;
 using DbLevel.Models;
 using DbLevel.Repository;
-using Аuthorization;
+using Authorization;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastucture.Extentions

@@ -48,10 +48,17 @@ namespace BussinessLogicLevel.Services
             return _mapper.Map<IEnumerable<UserDto>>(users);
         }
 
-        public async Task UpdateAsync(User user)
+        public async Task<UserDto> UpdateAsync(UserDto user)
         {
-            var userMapped = _mapper.Map<User>(user);
-            await _userRepository.UpdateAsync(userMapped);
+            var updatedUser = await _userRepository.UpdateAsync(_mapper.Map<User>(user));
+            var userDto = new UserDto
+            {
+                Id = updatedUser.Id,
+                UserName = updatedUser.UserName,
+                Email = updatedUser.Email,
+                NormalizedUserName = updatedUser.NormalizedUserName,
+            };
+            return userDto;
         }
 
         public async Task<UserDto> AddAsync(UserDto userDto)

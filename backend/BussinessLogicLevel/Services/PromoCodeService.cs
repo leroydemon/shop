@@ -14,10 +14,9 @@ namespace BussinessLogicLevel.Services
             _promoCodeRepository = promoCodeRepository;
             _mapper = mapper;
         }
-        public async Task<PromoCodeDto> CreateAsync(PromoCodeDto promoCodeDto)
+        public async Task<PromoCodeDto> AddAsync(PromoCodeDto promoCodeDto)
         {
-            var promoCode = _mapper.Map<PromoCode>(promoCodeDto);
-            var addedPromoCode = await _promoCodeRepository.AddAsync(promoCode);
+            var addedPromoCode = await _promoCodeRepository.AddAsync(_mapper.Map<PromoCode>(promoCodeDto));
             return _mapper.Map<PromoCodeDto>(addedPromoCode);
         }
         public async Task DeleteAsync(Guid id) 
@@ -35,10 +34,10 @@ namespace BussinessLogicLevel.Services
             var items =  await _promoCodeRepository.GetAllAsync();
             return _mapper.Map<IEnumerable<PromoCodeDto>>(items);
         }
-        public async Task UpdateAsync(PromoCode promoCode)
+        public async Task<PromoCodeDto> UpdateAsync(PromoCodeDto promoCode)
         {
-            var promoCodeMapped = _mapper.Map<PromoCode>(promoCode);
-            await _promoCodeRepository.UpdateAsync(promoCodeMapped);
+            var updatedPromoCode = await _promoCodeRepository.UpdateAsync(_mapper.Map<PromoCode>(promoCode));
+            return _mapper.Map<PromoCodeDto>(updatedPromoCode);
         }
     }
 }

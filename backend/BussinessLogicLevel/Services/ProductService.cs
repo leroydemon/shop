@@ -18,8 +18,7 @@ namespace BussinessLogicLevel.Services
 
         public async Task<ProductDto> AddAsync(ProductDto productDto)
         {
-            var product = _mapper.Map<Product>(productDto);
-            var addedProduct = await _productRepository.AddAsync(product);
+            var addedProduct = await _productRepository.AddAsync(_mapper.Map<Product>(productDto));
             return _mapper.Map<ProductDto>(addedProduct);
         }
 
@@ -41,10 +40,10 @@ namespace BussinessLogicLevel.Services
             return _mapper.Map<ProductDto>(product);
         }
 
-        public async Task UpdateAsync(Product product)
+        public async Task<ProductDto> UpdateAsync(ProductDto product)
         {
-            var productMapped = _mapper.Map<Product>(product);
-            await _productRepository.UpdateAsync(product);
+            var updatedProduct = await _productRepository.UpdateAsync(_mapper.Map<Product>(product));
+            return _mapper.Map<ProductDto>(updatedProduct);
         }
     }
 }

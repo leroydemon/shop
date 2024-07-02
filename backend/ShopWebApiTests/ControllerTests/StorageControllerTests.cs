@@ -110,9 +110,9 @@ namespace ShopWebApiTests.ControllerTests
         public async Task UpdateAsync_ShouldReturnOk()
         {
             // Arrange
-            var storageDto = new Storage { City = "City1", Address = "Address1", Phone = "1234567890" };
+            var storageDto = new StorageDto { City = "City1", Address = "Address1", Phone = "1234567890" };
 
-            _mockStorageService.Setup(service => service.UpdateAsync(storageDto)).Returns(Task.CompletedTask);
+            _mockStorageService.Setup(service => service.UpdateAsync(storageDto)).ReturnsAsync(storageDto);
 
             // Act
             var result = await _storageController.UpdateAsync(storageDto);
@@ -127,7 +127,7 @@ namespace ShopWebApiTests.ControllerTests
                     It.Is<Func<It.IsAnyType, Exception, string>>((v, t) => true)),
                 Times.Once);
 
-            var okResult = result as OkResult;
+            var okResult = result as OkObjectResult;
             okResult.Should().NotBeNull();
             okResult.StatusCode.Should().Be(200);
             _mockStorageService.Verify(service => service.UpdateAsync(storageDto), Times.Once);

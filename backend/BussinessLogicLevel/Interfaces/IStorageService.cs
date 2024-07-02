@@ -7,7 +7,7 @@ namespace BussinessLogicLevel.Interfaces
     {
         Task<IEnumerable<StorageDto>> GetAllAsync();
         Task<StorageDto> AddAsync(StorageDto storageDto);
-        Task UpdateAsync(Storage storage);
+        Task<StorageDto> UpdateAsync(StorageDto storage);
         Task DeleteAsync(Guid id);
         public Task<StorageDto> GetByIdAsync(Guid id);
     }

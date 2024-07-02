@@ -19,8 +19,7 @@ namespace BussinessLogicLevel.Services
 
         public async Task<BrandDto> AddAsync(BrandDto brandDto)
         {
-            var brand = _mapper.Map<Brand>(brandDto);
-            var addedBrand = await _brandRepository.AddAsync(brand);
+            var addedBrand = await _brandRepository.AddAsync(_mapper.Map<Brand>(brandDto));
             return _mapper.Map<BrandDto>(addedBrand);
         }
 
@@ -42,10 +41,10 @@ namespace BussinessLogicLevel.Services
             await _brandRepository.DeleteAsync(brand);
         }
 
-        public async Task UpdateAsync(Brand brand)
+        public async Task<BrandDto> UpdateAsync(BrandDto brand)
         {
-            var brandMapped = _mapper.Map<Brand>(brand);
-            await _brandRepository.UpdateAsync(brandMapped);
+            var updatedBrand = await _brandRepository.UpdateAsync(_mapper.Map<Brand>(brand));
+            return _mapper.Map<BrandDto>(updatedBrand);
         }
     }
 }

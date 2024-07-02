@@ -94,13 +94,13 @@ namespace ShopWebApiTests.ControllerTests
         public async Task UpdateAsync_ShouldReturnOk()
         {
             // Arrange
-            var orderDto = new Order();
+            var orderDto = new OrderDto();
 
             // Act
             var result = await _orderController.UpdateAsync(orderDto);
 
             // Assert
-            var okResult = result as OkResult;
+            var okResult = result as OkObjectResult;
             okResult.Should().NotBeNull();
             okResult.StatusCode.Should().Be(200);
             _mockOrderService.Verify(service => service.UpdateAsync(orderDto), Times.Once);

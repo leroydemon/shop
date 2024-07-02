@@ -11,7 +11,7 @@ namespace BussinessLogicLevel.Interfaces
         Task RemoveAsync(Guid userId);
         Task<UserDto> GetByIdAsync(Guid userId);
         Task<IEnumerable<UserDto>> GetAllAsync();
-        Task UpdateAsync(User user);
+        Task<UserDto> UpdateAsync(UserDto user);
         Task<UserDto> AddAsync(UserDto user);
     }
 }

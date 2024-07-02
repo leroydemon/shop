@@ -18,8 +18,7 @@ namespace BussinessLogicLevel.Services
 
         public async Task<OrderDto> AddAsync(OrderDto orderDto)
         {
-            var order = _mapper.Map<Order>(orderDto);
-            var addedOrder = await _orderRepository.AddAsync(order);
+            var addedOrder = await _orderRepository.AddAsync(_mapper.Map<Order>(orderDto));
             return _mapper.Map<OrderDto>(addedOrder);
         }
 
@@ -41,10 +40,10 @@ namespace BussinessLogicLevel.Services
             await _orderRepository.DeleteAsync(order);
         }
 
-        public async Task UpdateAsync(Order order)
+        public async Task<OrderDto> UpdateAsync(OrderDto order)
         {
-            var orderMapped = _mapper.Map<Order>(order);
-            await _orderRepository.UpdateAsync(order);
+            var updatedOrder = await _orderRepository.UpdateAsync(_mapper.Map<Order>(order));
+            return _mapper.Map<OrderDto>(updatedOrder);
         }
     }
 }

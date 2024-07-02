@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ApplicationDbContext\DbLevel.csproj" />
+    <ProjectReference Include="..\DbLevel\DbLevel.csproj" />
   </ItemGroup>
 
 </Project>

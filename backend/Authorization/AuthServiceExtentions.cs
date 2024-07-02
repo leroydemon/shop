@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
-namespace Аuthorization
+namespace Authorization
 {
     public static class AuthServiceExtentions
     {

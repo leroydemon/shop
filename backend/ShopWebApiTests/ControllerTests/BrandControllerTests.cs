@@ -89,13 +89,13 @@ namespace ShopWebApiTests.ControllerTests
         public async Task UpdateAsync_ShouldReturnOk()
         {
             // Arrange
-            var brand = new Brand { Name = "UpdatedBrand" };
+            var brand = new BrandDto { Name = "UpdatedBrand" };
 
             // Act
             var result = await _brandController.UpdateAsync(brand);
 
             // Assert
-            var okResult = result as OkResult;
+            var okResult = result as OkObjectResult;
             okResult.Should().NotBeNull();
             okResult.StatusCode.Should().Be(200);
             _mockBrandService.Verify(service => service.UpdateAsync(brand), Times.Once);

@@ -24,7 +24,7 @@ namespace ShopWebApiTests.ControllerTests
             // Arrange
             var promoCodeDto = new PromoCodeDto { Code = "PROMO2023", AmountDiscoint = 10 };
 
-            _mockPromoCodeService.Setup(service => service.CreateAsync(promoCodeDto)).ReturnsAsync(promoCodeDto);
+            _mockPromoCodeService.Setup(service => service.AddAsync(promoCodeDto)).ReturnsAsync(promoCodeDto);
 
             // Act
             var result = await _promoCodeController.GetPromoCodeAsync(promoCodeDto);
@@ -33,7 +33,7 @@ namespace ShopWebApiTests.ControllerTests
             var okResult = result as OkResult;
             okResult.Should().NotBeNull();
             okResult.StatusCode.Should().Be(200);
-            _mockPromoCodeService.Verify(service => service.CreateAsync(promoCodeDto), Times.Once);
+            _mockPromoCodeService.Verify(service => service.AddAsync(promoCodeDto), Times.Once);
         }
         [Fact]
         public async Task DeleteAsync_ShouldReturnOk()
@@ -56,15 +56,15 @@ namespace ShopWebApiTests.ControllerTests
         public async Task UpdateAsync_ShouldReturnOk()
         {
             // Arrange
-            var promoCodeDto = new PromoCode { Code = "PROMO2024", AmountDiscoint = 15 };
+            var promoCodeDto = new PromoCodeDto { Code = "PROMO2024", AmountDiscoint = 15 };
 
-            _mockPromoCodeService.Setup(service => service.UpdateAsync(promoCodeDto)).Returns(Task.CompletedTask);
+            _mockPromoCodeService.Setup(service => service.UpdateAsync(promoCodeDto)).ReturnsAsync(promoCodeDto);
 
             // Act
             var result = await _promoCodeController.UpdateAsync(promoCodeDto);
 
             // Assert
-            var okResult = result as OkResult;
+            var okResult = result as OkObjectResult;
             okResult.Should().NotBeNull();
             okResult.StatusCode.Should().Be(200);
             _mockPromoCodeService.Verify(service => service.UpdateAsync(promoCodeDto), Times.Once);
