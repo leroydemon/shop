@@ -6,23 +6,19 @@ namespace ShopWebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class StorageController : ControllerBase
+    public class StorageController(IStorageService StorageService, ILogger<StorageController> logger) : ControllerBase
     {
-        private readonly IStorageService _storageService;
-        private readonly ILogger<StorageController> _logger;
-        public StorageController(IStorageService StorageService, ILogger<StorageController> logger)
-        {
-            _storageService = StorageService;
-            _logger = logger;
-        }
-        [HttpGet("all")]
+        private readonly IStorageService _storageService = StorageService;
+        private readonly ILogger<StorageController> _logger = logger;
+
+        [HttpGet]
         public async Task<IActionResult> GetAllAsync()
         {
             var item = await _storageService.GetAllAsync();
             _logger.LogInformation("method works correctly");
             return Ok(item);
         }
-        [HttpGet("{id:int}")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetProductByIdAsync(Guid id)
         {
             var item = await _storageService.GetByIdAsync(id);

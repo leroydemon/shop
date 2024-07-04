@@ -1,7 +1,9 @@
 ﻿using DbLevel.Data;
 using DbLevel.Interfaces;
 using DbLevel.Models;
+using DbLevel.SortByEnum;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace DbLevel.Repository
 {
@@ -27,36 +29,10 @@ namespace DbLevel.Repository
         }
         public async Task<User> GetByIdAsync(Guid userId)
         {
-            var stringId = userId.ToString();
-
             var user = await _context.Users
-                .FirstOrDefaultAsync(e => e.Id == stringId);
+                .FirstOrDefaultAsync(e => e.Id == userId);
 
             return user;
-        }
-
-        public async Task<List<User>> GetSortedAsync(string searchTerm, int pageNumber, int pageSize, string sortBy, bool ascending)
-        {
-            IQueryable<User> query = _context
-                .Users
-                .Where(u => u.UserName.Contains(searchTerm) || u.Email.Contains(searchTerm)) 
-                ?? throw new Exception();
-
-            switch (sortBy.ToLower())
-            {
-                case "username":
-                    query = ascending ? query.OrderBy(u => u.UserName) : query.OrderByDescending(u => u.UserName);
-                    break;
-                case "email":
-                    query = ascending ? query.OrderBy(u => u.Email) : query.OrderByDescending(u => u.Email);
-                    break;
-                default:
-                    query = query.OrderBy(u => u.Id);
-                    break;
-            }
-            query = query.Skip((pageNumber - 1) * pageSize).Take(pageSize);
-
-            return await query.ToListAsync();
         }
         public async Task SaveChangesAsync()
         {
@@ -86,6 +62,29 @@ namespace DbLevel.Repository
         {
             user.IsOnline = false;
             await _context.SaveChangesAsync();
+        }
+
+        public Task<List<User>> GetSortedAsync(string searchTerm, int pageNumber, int pageSize, UserSortBy sortBy, bool ascending)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<IEnumerable<User>> ListAsync(ISpecification<User> spec, int pageNumber, int pageSize)
+        {
+            IQueryable<User> query = _context.Set<User>();
+
+            if (spec.Criteria != null)
+            {
+                query = query.Where(spec.Criteria);
+            }
+            if (spec.OrderBy != null)
+            {
+                query = spec.OrderBy(query);
+            }
+
+            query = query.Skip((pageNumber - 1) * pageSize).Take(pageSize);
+
+            return await query.ToListAsync();
         }
     }
 }

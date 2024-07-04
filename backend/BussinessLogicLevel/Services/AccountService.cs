@@ -34,7 +34,7 @@ namespace BussinessLogicLevel.Services
         {
             var user = new User { UserName = request.Email, Email = request.Email};
             var result = await _userManager.CreateAsync(user, request.Password);
-            var cart = new Cart { UserId = Guid.Parse(user.Id) };
+            var cart = new Cart { UserId = user.Id };
             try
             {               
                  await _cartRepository.AddAsync(cart);

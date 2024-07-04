@@ -1,4 +1,5 @@
 ﻿using Authorization;
+using DbLevel.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -16,7 +17,7 @@ namespace Authorization
             _authSettings = authSettings.Value;
         }
 
-        public string GenerateJwtToken(IdentityUser user)
+        public string GenerateJwtToken(User user)
         {
 
             List<Claim> claims = new List<Claim>

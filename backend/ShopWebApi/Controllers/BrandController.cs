@@ -6,13 +6,10 @@ namespace ShopWebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BrandController : ControllerBase
+    public class BrandController(IBrandService brandService) : ControllerBase
     {
-        private readonly IBrandService _brandService;
-        public BrandController(IBrandService brandService)
-        {
-            _brandService = brandService;
-        }
+        private readonly IBrandService _brandService = brandService;
+
         [HttpGet]
         public async Task<IActionResult> GetAllAsync()
         {
@@ -20,7 +17,7 @@ namespace ShopWebApi.Controllers
             return Ok(brands);
 
         }
-        [HttpGet("getbyid")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetByIdAsync(Guid id)
         {
             var brand = await _brandService.GetByIdAsync(id);

@@ -6,20 +6,17 @@ namespace ShopWebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class OrderController : ControllerBase
+    public class OrderController(IOrderService orderService) : ControllerBase
     {
-        private readonly IOrderService _orderService;
-        public OrderController(IOrderService orderService)
-        {
-            _orderService = orderService;
-        }
+        private readonly IOrderService _orderService = orderService;
+
         [HttpGet]
         public async Task<IActionResult> GetAllAsync()
         {
             var brands = await _orderService.GetAllAsync();
             return Ok(brands);
         }
-        [HttpGet("getbyid")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetByIdAsync(Guid id)
         {
             var brand = await _orderService.GetByIdAsync(id);

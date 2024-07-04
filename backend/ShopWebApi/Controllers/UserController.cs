@@ -1,31 +1,28 @@
 ﻿using BussinessLogicLevel.Interfaces;
+using DbLevel.SortByEnum;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ShopWebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class UserController(IUserService userService) : ControllerBase
     {
-        private readonly IUserService _userService;
+        private readonly IUserService _userService = userService;
 
-        public UserController(IUserService userService)
-        {
-            _userService = userService;
-        }
-        [HttpGet("sortedlist")]
-        public async Task<IActionResult> GetSortedAsync(string searchTerm, int pageNumber, int pageSize, string sortBy, bool ascending)
+        [HttpGet("search")]
+        public async Task<IActionResult> GetSortedAsync(string searchTerm, int pageNumber, int pageSize, UserSortBy sortBy, bool ascending)
         {
              var items = await _userService.GetSortedAsync(searchTerm, pageNumber, pageSize, sortBy, ascending);
              return Ok(items);
         }
-        [HttpGet("setoffline")]
+        [HttpPatch("{userId}/offline")]
         public async Task<IActionResult> SetOfflineAsync(Guid userId)
         {
             await _userService.SetOfflineAsync(userId);
             return Ok();
         }
-        [HttpGet("setonline")]
+        [HttpPatch("{userId}/online")]
         public async Task<IActionResult> SetOnlineAsync(Guid userId)
         {
             await _userService.SetOnlineAsync(userId);
@@ -37,10 +34,10 @@ namespace ShopWebApi.Controllers
             await _userService.RemoveAsync(userId);
             return Ok();
         }
-        [HttpGet]
-        public async Task<IActionResult> GetByIdAsync(Guid userId)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetByIdAsync(Guid id)
         {
-            var user = await _userService.GetByIdAsync(userId);
+            var user = await _userService.GetByIdAsync(id);
             return Ok(user);
         }
     }

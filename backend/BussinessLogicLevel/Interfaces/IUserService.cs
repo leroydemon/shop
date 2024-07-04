@@ -1,11 +1,12 @@
-﻿using DbLevel.Models;
+﻿using DbLevel.Interfaces;
+using DbLevel.SortByEnum;
 using Infrastucture.DtoModels;
 
 namespace BussinessLogicLevel.Interfaces
 {
     public interface IUserService
     {
-        Task<IEnumerable<UserDto>> GetSortedAsync(string searchTerm, int pageNumber, int pageSize, string sortBy, bool ascending);
+        Task<List<UserDto>> GetSortedAsync(string searchTerm, int pageNumber, int pageSize, UserSortBy sortBy, bool ascending);
         Task SetOfflineAsync(Guid userId);
         Task SetOnlineAsync(Guid userId);
         Task RemoveAsync(Guid userId);

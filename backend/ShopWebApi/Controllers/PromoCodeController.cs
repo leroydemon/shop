@@ -4,13 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ShopWebApi.Controllers
 {
-    public class PromoCodeController : ControllerBase
+    public class PromoCodeController(IPromoCodeService promoCode) : ControllerBase
     {
-        private readonly IPromoCodeService _promoCode;
-        public PromoCodeController(IPromoCodeService promoCode)
-        {
-            _promoCode = promoCode;
-        }
+        private readonly IPromoCodeService _promoCode = promoCode;
+
         [HttpPost]
         public async Task<ActionResult> GetPromoCodeAsync(PromoCodeDto promoCode)
         {
@@ -29,13 +26,13 @@ namespace ShopWebApi.Controllers
             var updatedPromoCode = await _promoCode.UpdateAsync(promoCode);
             return Ok(updatedPromoCode);
         }
-        [HttpGet("all")]
+        [HttpGet]
         public async Task<ActionResult> GetAllPromoCodesAsync()
         {
             var items = await _promoCode.GetAllAsync();
             return Ok(items);
         }
-        [HttpGet]
+        [HttpGet("{id}")]
         public async Task<ActionResult> GetByIdAsync(Guid id)
         {
             var item = await _promoCode.FindByIdAsync(id);

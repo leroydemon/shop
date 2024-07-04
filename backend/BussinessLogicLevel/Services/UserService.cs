@@ -2,6 +2,8 @@
 using BussinessLogicLevel.Interfaces;
 using DbLevel.Interfaces;
 using DbLevel.Models;
+using DbLevel.SortByEnum;
+using DbLevel.Specifications;
 using Infrastucture.DtoModels;
 
 namespace BussinessLogicLevel.Services
@@ -15,10 +17,15 @@ namespace BussinessLogicLevel.Services
             _userRepository = userRepository;
             _mapper = mapper;
         }
-        public async Task<IEnumerable<UserDto>> GetSortedAsync(string searchTerm, int pageNumber, int pageSize, string sortBy, bool ascending)
+        public async Task<List<UserDto>> GetSortedAsync(string searchTerm, int pageNumber, int pageSize, UserSortBy sortBy, bool ascending)
         {
-            var users = await _userRepository.GetSortedAsync(searchTerm, pageNumber, pageSize, sortBy, ascending);
-            return _mapper.Map<IEnumerable<UserDto>>(users);
+            var searchSpec = new UserSearchSpecification(searchTerm);
+            var sortSpec = new UserSortSpecification(sortBy, ascending);
+
+            var combinedSpec = new CombinedSpecification<User>(searchSpec, sortSpec);
+
+            var users = await _userRepository.ListAsync(combinedSpec, pageNumber, pageSize);
+            return _mapper.Map<List<UserDto>>(users);
         }
 
         public async Task SetOnlineAsync(Guid userId)
@@ -60,7 +67,6 @@ namespace BussinessLogicLevel.Services
             };
             return userDto;
         }
-
         public async Task<UserDto> AddAsync(UserDto userDto)
         {
             var user = _mapper.Map<User>(userDto);

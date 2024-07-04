@@ -1,4 +1,5 @@
-﻿using DbLevel.Models;
+﻿using Authorization.DbLevel.Models;
+using DbLevel.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using System.Security.Claims;
@@ -12,7 +13,7 @@ namespace Authorization
             using (var scope = serviceProvider.CreateScope())
             {
                 var roleManager = scope.ServiceProvider
-                    .GetRequiredService<RoleManager<IdentityRole>>();
+                    .GetRequiredService<RoleManager<Role>>();
                 var userManager = scope.ServiceProvider
                     .GetRequiredService<UserManager<User>>();
 

@@ -1,4 +1,5 @@
 ﻿using Authorization;
+using Authorization.DbLevel.Models;
 using DbLevel.Data;
 using DbLevel.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -55,7 +56,7 @@ namespace Authorization
         }
         public static IServiceCollection AddCustomIdentity(this IServiceCollection services)
         {
-            services.AddIdentity<User, IdentityRole>(options =>
+            services.AddIdentity<User, Role>(options =>
             {
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireDigit = false;

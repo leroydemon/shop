@@ -1,6 +1,7 @@
 ﻿using DbLevel.Data;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Infrastucture.MappingProfilies;
 using Infrastucture.Validators;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -19,7 +20,7 @@ namespace Infrastucture.Extentions
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("ShopWebApi")));
 
-            services.AddAutoMapper(typeof(MappingProfile));
+            services.AddAutoMapper(typeof(ProductProfile));
             services.AddFluentValidationAutoValidation();
             services.AddFluentValidationClientsideAdapters();
             services.AddValidatorsFromAssembly(typeof(ProductDtoValidator).Assembly);

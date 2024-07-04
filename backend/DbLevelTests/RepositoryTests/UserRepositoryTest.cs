@@ -1,6 +1,7 @@
 ﻿using DbLevel.Data;
 using DbLevel.Models;
 using DbLevel.Repository;
+using DbLevel.SortByEnum;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
@@ -24,7 +25,7 @@ namespace DbLevelTests.RepositoryTests
             using (var context = new ApplicationDbContext(_dbContextOptions))
             {
                 var repository = new UserRepository(context);
-                var user = new User { Id = Guid.NewGuid().ToString(), UserName = "TestUser", Email = "test@example.com" };
+                var user = new User { Id = Guid.NewGuid(), UserName = "TestUser", Email = "test@example.com" };
 
                 var result = await repository.AddAsync(user);
 
@@ -42,7 +43,7 @@ namespace DbLevelTests.RepositoryTests
             using (var context = new ApplicationDbContext(_dbContextOptions))
             {
                 var repository = new UserRepository(context);
-                var user = new User { Id = Guid.NewGuid().ToString(), UserName = "TestUser", Email = "test@example.com" };
+                var user = new User { Id = Guid.NewGuid(), UserName = "TestUser", Email = "test@example.com" };
 
                 await context.Users.AddAsync(user);
                 await context.SaveChangesAsync();
@@ -59,12 +60,12 @@ namespace DbLevelTests.RepositoryTests
             using (var context = new ApplicationDbContext(_dbContextOptions))
             {
                 var repository = new UserRepository(context);
-                var user = new User { Id = Guid.NewGuid().ToString(), UserName = "TestUser", Email = "test@example.com" };
+                var user = new User { Id = Guid.NewGuid(), UserName = "TestUser", Email = "test@example.com" };
 
                 await context.Users.AddAsync(user);
                 await context.SaveChangesAsync();
 
-                var result = await repository.GetByIdAsync(Guid.Parse(user.Id));
+                var result = await repository.GetByIdAsync(user.Id);
 
                 result.Should().NotBeNull();
                 result.Should().BeEquivalentTo(user);
@@ -78,14 +79,14 @@ namespace DbLevelTests.RepositoryTests
                 var repository = new UserRepository(context);
                 var users = new List<User>
                 {
-                    new User { Id = Guid.NewGuid().ToString(), UserName = "Alice", Email = "alice@example.com" },
-                    new User { Id = Guid.NewGuid().ToString(), UserName = "Bob", Email = "bob@example.com" }
+                    new User { Id = Guid.NewGuid(), UserName = "Alice", Email = "alice@example.com" },
+                    new User { Id = Guid.NewGuid(), UserName = "Bob", Email = "bob@example.com" }
                 };
 
                 await context.Users.AddRangeAsync(users);
                 await context.SaveChangesAsync();
 
-                var result = await repository.GetSortedAsync("", 1, 2, "username", true);
+                var result = await repository.GetSortedAsync("", 1, 2, UserSortBy.UserName, true);
 
                 result.Should().HaveCount(2);
                 result.First().UserName.Should().Be("Alice");
@@ -98,7 +99,7 @@ namespace DbLevelTests.RepositoryTests
             using (var context = new ApplicationDbContext(_dbContextOptions))
             {
                 var repository = new UserRepository(context);
-                var user = new User { Id = Guid.NewGuid().ToString(), UserName = "TestUser", Email = "test@example.com" };
+                var user = new User { Id = Guid.NewGuid(), UserName = "TestUser", Email = "test@example.com" };
 
                 await context.Users.AddAsync(user);
                 await context.SaveChangesAsync();
@@ -117,8 +118,8 @@ namespace DbLevelTests.RepositoryTests
                 var repository = new UserRepository(context);
                 var users = new List<User>
                 {
-                    new User { Id = Guid.NewGuid().ToString(), UserName = "User1", Email = "user1@example.com" },
-                    new User { Id = Guid.NewGuid().ToString(), UserName = "User2", Email = "user2@example.com" }
+                    new User { Id = Guid.NewGuid(), UserName = "User1", Email = "user1@example.com" },
+                    new User { Id = Guid.NewGuid(), UserName = "User2", Email = "user2@example.com" }
                 };
 
                 await context.Users.AddRangeAsync(users);
@@ -136,7 +137,7 @@ namespace DbLevelTests.RepositoryTests
             using (var context = new ApplicationDbContext(_dbContextOptions))
             {
                 var repository = new UserRepository(context);
-                var user = new User { Id = Guid.NewGuid().ToString(), UserName = "OriginalUser", Email = "original@example.com" };
+                var user = new User { Id = Guid.NewGuid(), UserName = "OriginalUser", Email = "original@example.com" };
 
                 await context.Users.AddAsync(user);
                 await context.SaveChangesAsync();
@@ -155,7 +156,7 @@ namespace DbLevelTests.RepositoryTests
             using (var context = new ApplicationDbContext(_dbContextOptions))
             {
                 var repository = new UserRepository(context);
-                var user = new User { Id = Guid.NewGuid().ToString(), UserName = "TestUser", Email = "test@example.com", IsOnline = false };
+                var user = new User { Id = Guid.NewGuid(), UserName = "TestUser", Email = "test@example.com", IsOnline = false };
 
                 await context.Users.AddAsync(user);
                 await context.SaveChangesAsync();
@@ -173,7 +174,7 @@ namespace DbLevelTests.RepositoryTests
             using (var context = new ApplicationDbContext(_dbContextOptions))
             {
                 var repository = new UserRepository(context);
-                var user = new User { Id = Guid.NewGuid().ToString(), UserName = "TestUser", Email = "test@example.com", IsOnline = true };
+                var user = new User { Id = Guid.NewGuid(), UserName = "TestUser", Email = "test@example.com", IsOnline = true };
 
                 await context.Users.AddAsync(user);
                 await context.SaveChangesAsync();

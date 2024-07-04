@@ -3,9 +3,8 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Infrastucture.DtoModels
 {
-    public class UserDto : IdentityUser
+    public class UserDto : IdentityUser<Guid>
     {
-        public string Id { get; set; }
         public Guid? CartId { get; set; }
         public string? Surname { get; set; }
         public string? Phone { get; set; }

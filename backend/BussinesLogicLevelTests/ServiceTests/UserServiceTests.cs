@@ -2,6 +2,7 @@
 using BussinessLogicLevel.Services;
 using DbLevel.Interfaces;
 using DbLevel.Models;
+using DbLevel.SortByEnum;
 using FluentAssertions;
 using Infrastucture.DtoModels;
 using Moq;
@@ -29,8 +30,8 @@ namespace BussinesLogicLevelTests.ServiceTests
 
             var users = new List<User>
             {
-                new User { Id = Guid.NewGuid().ToString(), UserName = "Alice" },
-                new User { Id = Guid.NewGuid().ToString(), UserName = "Bob" }
+                new User { Id = Guid.NewGuid(), UserName = "Alice" },
+                new User { Id = Guid.NewGuid(), UserName = "Bob" }
             };
             var userDtos = new List<UserDto>
             {
@@ -38,15 +39,15 @@ namespace BussinesLogicLevelTests.ServiceTests
                 new UserDto { UserName = "Bob" }
             };
 
-            _mockUserRepository.Setup(r => r.GetSortedAsync("A", 1, 10, "UserName", true)).ReturnsAsync(users);
+            _mockUserRepository.Setup(r => r.GetSortedAsync("A", 1, 10, UserSortBy.UserName, true)).ReturnsAsync(users);
             _mockMapper.Setup(m => m.Map<IEnumerable<UserDto>>(users)).Returns(userDtos);
 
             // Act
-            var result = await _userService.GetSortedAsync("A", 1, 10, "UserName", true);
+            var result = await _userService.GetSortedAsync("A", 1, 10, UserSortBy.UserName, true);
 
             // Assert
             result.Should().BeEquivalentTo(userDtos);
-            _mockUserRepository.Verify(r => r.GetSortedAsync("A", 1, 10, "UserName", true), Times.Once);
+            _mockUserRepository.Verify(r => r.GetSortedAsync("A", 1, 10, UserSortBy.UserName, true), Times.Once);
         }
 
         [Fact]
@@ -54,7 +55,7 @@ namespace BussinesLogicLevelTests.ServiceTests
         {
             // Arrange
             var userId = Guid.NewGuid();
-            var user = new User { Id = userId.ToString(), IsOnline = false };
+            var user = new User { Id = userId, IsOnline = false };
 
             _mockUserRepository.Setup(r => r.GetByIdAsync(userId)).ReturnsAsync(user);
             _mockUserRepository.Setup(r => r.SetOnlineAsync(user)).Returns(Task.CompletedTask);
@@ -72,7 +73,7 @@ namespace BussinesLogicLevelTests.ServiceTests
         {
             // Arrange
             var userId = Guid.NewGuid();
-            var user = new User { Id = userId.ToString(), IsOnline = true };
+            var user = new User { Id = userId, IsOnline = true };
 
             _mockUserRepository.Setup(r => r.GetByIdAsync(userId)).ReturnsAsync(user);
             _mockUserRepository.Setup(r => r.SetOfflineAsync(user)).Returns(Task.CompletedTask);
@@ -90,7 +91,7 @@ namespace BussinesLogicLevelTests.ServiceTests
         {
             // Arrange
             var userId = Guid.NewGuid();
-            var user = new User { Id = userId.ToString() };
+            var user = new User { Id = userId };
 
             _mockUserRepository.Setup(r => r.GetByIdAsync(userId)).ReturnsAsync(user);
             _mockUserRepository.Setup(r => r.DeleteAsync(user)).Returns(Task.CompletedTask);
@@ -108,7 +109,7 @@ namespace BussinesLogicLevelTests.ServiceTests
         {
             // Arrange
             var userId = Guid.NewGuid();
-            var user = new User { Id = userId.ToString(), UserName = "Alice" };
+            var user = new User { Id = userId, UserName = "Alice" };
             var userDto = new UserDto { UserName = "Alice" };
 
             _mockUserRepository.Setup(r => r.GetByIdAsync(userId)).ReturnsAsync(user);
@@ -129,8 +130,8 @@ namespace BussinesLogicLevelTests.ServiceTests
             var id = Guid.NewGuid();
             var users = new List<User>
             {
-                new User { Id = id.ToString(), UserName = "Alice" },
-                new User { Id = id.ToString(), UserName = "Bob" }
+                new User { Id = id, UserName = "Alice" },
+                new User { Id = id, UserName = "Bob" }
             };
             var userDtos = new List<UserDto>
             {
@@ -153,9 +154,9 @@ namespace BussinesLogicLevelTests.ServiceTests
         public async Task UpdateAsync_ShouldCallRepositoryUpdate()
         {
             // Arrange
-            var userId = "123";
+            var userId = Guid.NewGuid();
             var userDto = new UserDto { Id = userId, UserName = "Updated User" };
-            var user = new User { Id = userId.ToString(), UserName = "Updated User" };
+            var user = new User { Id = userId, UserName = "Updated User" };
 
             _mockMapper.Setup(m => m.Map<User>(userDto)).Returns(user);
             _mockUserRepository.Setup(r => r.UpdateAsync(user)).ReturnsAsync(user);
@@ -176,7 +177,7 @@ namespace BussinesLogicLevelTests.ServiceTests
             var userId = Guid.NewGuid();
             var userDto = new UserDto { UserName = "New User" };
             var user = new User { UserName = "New User" };
-            var addedUser = new User { Id = userId.ToString(), UserName = "New User" };
+            var addedUser = new User { Id = userId, UserName = "New User" };
 
             _mockMapper.Setup(m => m.Map<User>(userDto)).Returns(user);
             _mockUserRepository.Setup(r => r.AddAsync(user)).ReturnsAsync(addedUser);
