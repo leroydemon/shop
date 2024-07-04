@@ -15,10 +15,11 @@ namespace BussinessLogicLevel.Services
         public async Task<bool> ConfirmPurchaseAsync(Guid cartId, int quantity)
         {
             var cart = await _cartRepo.GetByIdAsync(cartId);
-            var productStorageList = await _productStorageRepo.GetAllAsync();
+            var productStorageList = await _productStorageRepo.GetAllAsync(); // tohashset
 
             foreach (var cartItem in cart.ProductList)
             {
+                // использование хеш-типа (dictionary, hashset) повысить производительность
                 var productStorage = productStorageList.FirstOrDefault(ps => ps.ProductId == cartItem.Key);
                 if (productStorage == null || productStorage.Quantity < cartItem.Value)
                 {
@@ -28,6 +29,7 @@ namespace BussinessLogicLevel.Services
 
             foreach (var cartItem in cart.ProductList)
             {
+                //то же самое
                 var productStorage = productStorageList.First(ps => ps.ProductId == cartItem.Key);
                 productStorage.Quantity -= cartItem.Value;
             }

@@ -8,6 +8,8 @@ using Microsoft.Extensions.Logging;
 
 namespace BussinessLogicLevel.Services
 {
+    // навести красоту с отступами и тд
+
     public class AccountService : IAccountService
     {
         private readonly UserManager<User> _userManager;
@@ -49,7 +51,7 @@ namespace BussinessLogicLevel.Services
             if(result.Succeeded)
             {
                 return true;
-            }
+            } 
             else
             {
                 return false;

@@ -10,6 +10,8 @@ namespace ShopWebApi.Controllers
     {
         private readonly IBrandService _brandService = brandService;
 
+        // создать фильтр по которому будет фильтрация айтемов
+        // нельзя доставать все сразу
         [HttpGet]
         public async Task<IActionResult> GetAllAsync()
         {

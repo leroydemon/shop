@@ -53,6 +53,9 @@ namespace DbLevel.Repository
             await _context.SaveChangesAsync();
             return user;
         }
+
+        // эти два метода можно вынести в сервис и делать обычный апдейт
+
         public async Task SetOnlineAsync(User user)
         {
             user.IsOnline = true;
@@ -68,6 +71,8 @@ namespace DbLevel.Repository
         {
             throw new NotImplementedException();
         }
+
+        //в обычном репозщитории есть такой метод, его отсюда удалить, вынести два предыдущих метода и этот юзе репозиторий можно будет удалить
 
         public async Task<IEnumerable<User>> ListAsync(ISpecification<User> spec, int pageNumber, int pageSize)
         {

@@ -14,7 +14,7 @@ namespace ShopWebApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllAsync()
         {
-            _logger.LogInformation("Я работаю!");
+            _logger.LogInformation("Я работаю!"); // не ври
             var item = await _categoryService.GetAllAsync();
 
             return Ok(item);

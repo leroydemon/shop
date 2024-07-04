@@ -2,6 +2,7 @@
 
 namespace DbLevel
 {
+    //я скину файлы с спецификациями готовыми, это можно будет удалить
     public static class ExpressionExtensions
     {
         public static Expression<Func<T, bool>> AndAlso<T>(this Expression<Func<T, bool>> left, Expression<Func<T, bool>> right)

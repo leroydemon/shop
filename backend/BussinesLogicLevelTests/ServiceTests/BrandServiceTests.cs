@@ -50,10 +50,10 @@ namespace BussinesLogicLevelTests.ServiceTests
         {
             // Arrange
             var brands = new List<Brand>
-    {
-        new Brand { Id = Guid.NewGuid(), Name = "Brand 1" },
-        new Brand { Id = Guid.NewGuid(), Name = "Brand 2" }
-    };
+            {
+                new Brand { Id = Guid.NewGuid(), Name = "Brand 1" },
+                new Brand { Id = Guid.NewGuid(), Name = "Brand 2" }
+            };
 
             var brandDtos = brands.Select(b => new BrandDto { Name = b.Name }).ToList();
 

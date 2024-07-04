@@ -11,6 +11,7 @@ namespace ShopWebApi.Controllers
         private readonly IUserService _userService = userService;
 
         [HttpGet("search")]
+        // такое кол-во параметров необходимо в фильтр выносить
         public async Task<IActionResult> GetSortedAsync(string searchTerm, int pageNumber, int pageSize, UserSortBy sortBy, bool ascending)
         {
              var items = await _userService.GetSortedAsync(searchTerm, pageNumber, pageSize, sortBy, ascending);
