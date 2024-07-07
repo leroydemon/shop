@@ -55,31 +55,7 @@ namespace BussinesLogicLevelTests.ServiceTests
             _mockCategoryRepository.Verify(r => r.GetByIdAsync(categoryId), Times.Once);
             _mockCategoryRepository.Verify(r => r.DeleteAsync(category), Times.Once);
         }
-        [Fact]
-        public async Task GetAllAsync_ShouldReturnCategoryDtos()
-        {
-            // Arrange
-            var categories = new List<Category>
-            {
-                new Category { Id = Guid.NewGuid(), Name = "Category 1" },
-                new Category { Id = Guid.NewGuid(), Name = "Category 2" }
-            };
-            var categoryDtos = new List<CategoryDto>
-            {
-                new CategoryDto { Name = "Category 1" },
-                new CategoryDto { Name = "Category 2" }
-            };
-
-            _mockCategoryRepository.Setup(r => r.GetAllAsync()).ReturnsAsync(categories);
-            _mockMapper.Setup(m => m.Map<IEnumerable<CategoryDto>>(categories)).Returns(categoryDtos);
-
-            // Act
-            var result = await _categoryService.GetAllAsync();
-
-            // Assert
-            result.Should().BeEquivalentTo(categoryDtos);
-            _mockCategoryRepository.Verify(r => r.GetAllAsync(), Times.Once);
-        }
+       
         [Fact]
         public async Task GetCategoryByIdAsync_ShouldReturnCategoryDto()
         {

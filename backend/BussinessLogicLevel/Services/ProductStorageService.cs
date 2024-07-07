@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using BussinessLogicLevel.Interfaces;
+using DbLevel.Filters;
 using DbLevel.Interfaces;
 using DbLevel.Models;
+using DbLevel.Specifications;
 
 namespace BussinessLogicLevel.Services
 {
@@ -14,14 +16,17 @@ namespace BussinessLogicLevel.Services
             _prRepository = prRepository;
             _mapper = mapper;
         }
-        public async Task<IEnumerable<ProductStorageDto>> GetAllAsync()
+        public async Task<IEnumerable<ProductStorageDto>> SearchAsync(ProductStorageFilter filter)
         {
-            var items =  await _prRepository.GetAllAsync();
+            var spec = new ProductStorageSpecification(filter);
+            var items =  await _prRepository.ListAsync(spec);
+
             return _mapper.Map<IEnumerable<ProductStorageDto>>(items);
         }
         public async Task<ProductStorageDto> GetByIdAsync(Guid productStorageId)
         {
             var productStorage = await _prRepository.GetByIdAsync(productStorageId);
+
             return _mapper.Map<ProductStorageDto>(productStorage);
         }
         public async Task DeleteAsync(Guid id)
@@ -32,11 +37,13 @@ namespace BussinessLogicLevel.Services
         public async Task<ProductStorageDto> UpdateAsync(ProductStorageDto productStorage)
         {
             var updatedProductStorage = await _prRepository.UpdateAsync(_mapper.Map<ProductStorage>(productStorage));
+
             return _mapper.Map<ProductStorageDto>(updatedProductStorage);
         }
         public async Task<ProductStorageDto> AddAsync(ProductStorageDto productStorageDto)
         {
             var addedProductStorage =  await _prRepository.AddAsync(_mapper.Map<ProductStorage>(productStorageDto));
+
             return _mapper.Map<ProductStorageDto>(addedProductStorage);
         }
     }

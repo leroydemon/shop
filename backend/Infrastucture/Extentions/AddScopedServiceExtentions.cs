@@ -2,8 +2,6 @@
 using BussinessLogicLevel.Services;
 using DbLevel;
 using DbLevel.Interfaces;
-using DbLevel.Models;
-using DbLevel.Repository;
 using Authorization;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -15,15 +13,15 @@ namespace Infrastucture.Extentions
         {
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
-            var repositoryAssembly = typeof(IBase).Assembly;
+            var repositoryAssembly = typeof(IEntity).Assembly;
             var repositoryTypes = repositoryAssembly.GetTypes()
-                .Where(t => typeof(IBase).IsAssignableFrom(t) && t.IsClass && !t.IsAbstract)
+                .Where(t => typeof(IEntity).IsAssignableFrom(t) && t.IsClass && !t.IsAbstract)
                 .ToList();
 
             foreach (var repoType in repositoryTypes)
             {
                 var interfaceTypes = repoType.GetInterfaces()
-                    .Where(i => i != typeof(IBase) && typeof(IBase).IsAssignableFrom(i))
+                    .Where(i => i != typeof(IEntity) && typeof(IEntity).IsAssignableFrom(i))
                     .ToList();
 
                 if (interfaceTypes.Any())
@@ -35,7 +33,6 @@ namespace Infrastucture.Extentions
                 }
             }
 
-            services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<TokenGeneratorService>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IProductStorageService, ProductStorageService>();
@@ -48,6 +45,7 @@ namespace Infrastucture.Extentions
             services.AddScoped<IBrandService, BrandService>();
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IPromoCodeService, PromoCodeService>();
+
             return services;
         }
     }

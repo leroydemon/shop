@@ -1,7 +1,5 @@
 ﻿using BussinessLogicLevel.Interfaces;
-using BussinessLogicLevel.Services;
-using DbLevel.Models;
-using DbLevel.SortByEnum;
+using DbLevel.Filters;
 using Infrastucture.DtoModels;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,17 +13,11 @@ namespace ShopWebApi.Controllers
         private readonly ILogger<ProductController> _logger = logger;
 
         [HttpGet("search")]
-        public async Task<IActionResult> GetSortedAsync(string searchTerm, int pageNumber, int pageSize, SortBy sortBy, bool ascending)
+        public async Task<IActionResult> SearchAsync([FromQuery] ProductFilter filter)
         {
-            //var items = await _productService.GetSortedAsync(searchTerm, pageNumber, pageSize, sortBy, ascending);
-            return Ok();
-        }
-        [HttpGet]
-        public async Task<IActionResult> GetAllAsync() 
-        { 
-            var item = await _productService.GetAllAsync();
-            _logger.LogInformation("method works correctly");
-            return Ok(item);
+            var items = await _productService.SearchAsync(filter);
+
+            return Ok(items);
         }
 
         [HttpGet("{id}")]
@@ -33,6 +25,7 @@ namespace ShopWebApi.Controllers
         {
             var item = await _productService.GetByIdAsync(id);
             _logger.LogInformation("method works correctly");
+
             return Ok(item);
         }
         [HttpPost]
@@ -40,6 +33,7 @@ namespace ShopWebApi.Controllers
         {  
             var product = await _productService.AddAsync(productDto);
             _logger.LogInformation("method works correctly");
+
             return Ok(product);
         }
 
@@ -48,6 +42,7 @@ namespace ShopWebApi.Controllers
         {
             var updatedProduct = await _productService.UpdateAsync(product);
             _logger.LogInformation("method works correctly");
+
             return Ok(updatedProduct);
         }
         [HttpDelete]
@@ -60,6 +55,7 @@ namespace ShopWebApi.Controllers
 
             await _productService.DeleteAsync(id);
             _logger.LogInformation("method works correctly");
+
             return Ok();
         }
     }

@@ -8,6 +8,5 @@ namespace BussinessLogicLevel.Interfaces
         Task<CartDto> AddToAsync(Guid cartId, Guid productId, int quantity);
         Task RemoveFromAsync(Guid cartId, Guid productId, int quantity);
         Task ClearAsync(Guid cartId);
-        Task SaveChangesAsync();
     }
 }

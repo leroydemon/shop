@@ -38,31 +38,7 @@ namespace BussinesLogicLevelTests.ServiceTests
             result.Should().BeEquivalentTo(orderDto);
             _mockOrderRepository.Verify(r => r.AddAsync(order), Times.Once);
         }
-        [Fact]
-        public async Task GetAllAsync_ShouldReturnOrderDtos()
-        {
-            // Arrange
-            var orders = new List<Order>
-            {
-                new Order { Id = Guid.NewGuid(), CartId = Guid.NewGuid(), OrderDate = DateTime.UtcNow },
-                new Order { Id = Guid.NewGuid(), CartId = Guid.NewGuid(), OrderDate = DateTime.UtcNow }
-            };
-            var orderDtos = new List<OrderDto>
-            {
-                new OrderDto { UserId = Guid.NewGuid(), OrderDate = DateTime.UtcNow },
-                new OrderDto { UserId = Guid.NewGuid(), OrderDate = DateTime.UtcNow }
-            };
-
-            _mockOrderRepository.Setup(r => r.GetAllAsync()).ReturnsAsync(orders);
-            _mockMapper.Setup(m => m.Map<IEnumerable<OrderDto>>(orders)).Returns(orderDtos);
-
-            // Act
-            var result = await _orderService.GetAllAsync();
-
-            // Assert
-            result.Should().BeEquivalentTo(orderDtos);
-            _mockOrderRepository.Verify(r => r.GetAllAsync(), Times.Once);
-        }
+        
         [Fact]
         public async Task GetByIdAsync_ShouldReturnOrderDto()
         {

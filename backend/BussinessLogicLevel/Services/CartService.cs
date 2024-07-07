@@ -6,6 +6,7 @@ using System.Text.Json;
 
 namespace BussinessLogicLevel.Services
 {
+    // навести красоту
     public class CartService : ICartService
     {
         private readonly IRepository<Cart> _cartRepository;
@@ -17,7 +18,6 @@ namespace BussinessLogicLevel.Services
             _productRepo = productService;
             _mapper = mapper;
         }
-        // Task<Cart>
         public async Task<CartDto> AddToAsync(Guid cartId, Guid productId, int quantity)
         {
             var cart = await _cartRepository.GetByIdAsync(cartId);
@@ -36,14 +36,9 @@ namespace BussinessLogicLevel.Services
             cart.TotalPrice += product.UnitPrice * quantity;
             cart.ProductAmount = productList.Count;
             cart.ProductListJson = JsonSerializer.Serialize(productList);
+            await _cartRepository.UpdateAsync(cart);
 
-            await _cartRepository.SaveChangesAsync();
-            var cartDto = new CartDto { ProductAmount = cart.ProductAmount,
-                ProductList = cart.ProductList, 
-                ProductListJson = cart.ProductListJson, 
-                TotalPrice = cart.TotalPrice, 
-                UserId = cart.UserId};
-            return cartDto; //mapper doesn't work here
+            return _mapper.Map<CartDto>(cart);
         }
 
         public async Task ClearAsync(Guid cartId)
@@ -53,12 +48,14 @@ namespace BussinessLogicLevel.Services
             cart.ProductList = new Dictionary<Guid, int>();
             cart.TotalPrice = 0;
             cart.ProductAmount = 0;
-            await _cartRepository.SaveChangesAsync();
+
+            await _cartRepository.UpdateAsync(cart);
         }
 
         public async Task<CartDto> GetAsync(Guid cartId)
         {
             var cart = await _cartRepository.GetByIdAsync(cartId);
+
             return _mapper.Map<CartDto>(cart);
         }
 
@@ -85,7 +82,7 @@ namespace BussinessLogicLevel.Services
                 cart.ProductAmount = productList.Count;
             }
             cart.ProductListJson = JsonSerializer.Serialize(productList);
-            await _cartRepository.SaveChangesAsync();
+            await _cartRepository.UpdateAsync(cart);
         }
         public async Task<Cart> CreateCartAsync(Guid userId)
         {
@@ -93,11 +90,8 @@ namespace BussinessLogicLevel.Services
             {
                 UserId = userId
             };
+
             return await _cartRepository.AddAsync(cart);
-        }
-        public async Task SaveChangesAsync()
-        {
-            await _cartRepository.SaveChangesAsync();
         }
     }
 }

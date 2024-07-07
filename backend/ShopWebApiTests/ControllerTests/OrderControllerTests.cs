@@ -20,27 +20,6 @@ namespace ShopWebApiTests.ControllerTests
         }
 
         [Fact]
-        public async Task GetAllAsync_ShouldReturnOkWithOrders()
-        {
-            // Arrange
-            var orders = new List<OrderDto>
-            {
-                new OrderDto(),
-                new OrderDto()
-            };
-            _mockOrderService.Setup(service => service.GetAllAsync()).ReturnsAsync(orders);
-
-            // Act
-            var result = await _orderController.GetAllAsync();
-
-            // Assert
-            var okResult = result as OkObjectResult;
-            okResult.Should().NotBeNull();
-            okResult.StatusCode.Should().Be(200);
-            okResult.Value.Should().BeEquivalentTo(orders);
-        }
-
-        [Fact]
         public async Task GetByIdAsync_ShouldReturnOkWithOrder()
         {
             // Arrange

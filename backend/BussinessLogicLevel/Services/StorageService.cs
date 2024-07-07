@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using BussinessLogicLevel.Interfaces;
+using DbLevel.Filters;
 using DbLevel.Interfaces;
 using DbLevel.Models;
+using DbLevel.Specifications;
 
 namespace BussinessLogicLevel.Services
 {
@@ -17,11 +19,14 @@ namespace BussinessLogicLevel.Services
         public async Task<StorageDto> GetByIdAsync(Guid id)
         {
             var storage = await _storageRepository.GetByIdAsync(id);
+
             return _mapper.Map<StorageDto>(storage);
         }
-        public async Task<IEnumerable<StorageDto>> GetAllAsync()
+        public async Task<IEnumerable<StorageDto>> SearchAsync(StorageFilter filter)
         {
-            var items = await _storageRepository.GetAllAsync();
+            var spec = new StorageSpecification(filter);
+            var items = await _storageRepository.ListAsync(spec);
+
             return _mapper.Map<IEnumerable<StorageDto>>(items);
         }
         public async Task DeleteAsync(Guid id)
@@ -32,11 +37,13 @@ namespace BussinessLogicLevel.Services
         public async Task<StorageDto> UpdateAsync(StorageDto storage)
         {
             var updatedStorage = await _storageRepository.UpdateAsync(_mapper.Map<Storage>(storage));
+
             return _mapper.Map<StorageDto>(updatedStorage);
         }
         public async Task<StorageDto> AddAsync(StorageDto storageDto)
         {
             var addedStorage = await _storageRepository.AddAsync(_mapper.Map<Storage>(storageDto));
+
             return _mapper.Map<StorageDto>(addedStorage);
         }
     }

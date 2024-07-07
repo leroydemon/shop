@@ -2,14 +2,14 @@
 
 namespace DbLevel.Models
 {
-    public class PromoCode : IBase
+    public class PromoCode : IEntity
     {
         public Guid Id { get; set; }
         public string Code { get; set; }
         public int AmountDiscoint { get; set; }
         public DateTime ExpireDate { get; set; }
         public bool IsActive { get; set; }
-        public DateTime CreatedDateTime { get; set; }
-        public DateTime? UpdatedDateTime { get; set; }
+        public DateTime CreatedDateTime { get; set; } = DateTime.Now;
+        public DateTime? UpdatedDateTime { get; set; } = DateTime.Now;
     }
 }

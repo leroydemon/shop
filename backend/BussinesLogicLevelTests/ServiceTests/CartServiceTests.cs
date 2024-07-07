@@ -15,6 +15,7 @@ namespace BussinesLogicLevelTests.ServiceTests
         private readonly Mock<IRepository<Product>> _mockProductRepository;
         private readonly CartService _cartService;
         private readonly Mock<IMapper> _mockMapper;
+
         public CartServiceTests()
         {
             _mockMapper = new Mock<IMapper>();
@@ -24,6 +25,7 @@ namespace BussinesLogicLevelTests.ServiceTests
                 _mockProductRepository.Object,
                 _mockMapper.Object);
         }
+
         [Fact]
         public async Task AddToAsync_ShouldAddNewProductToCart_ReturnCartDto()
         {
@@ -65,6 +67,7 @@ namespace BussinesLogicLevelTests.ServiceTests
             deserializedProductList.Should().ContainKey(productId);
             deserializedProductList[productId].Should().Be(quantity);
         }
+
         [Fact]
         public async Task AddToAsync_ShouldUpdateExistingProductQuantityInCart_ReturnCartDto()
         {
@@ -113,6 +116,7 @@ namespace BussinesLogicLevelTests.ServiceTests
             _mockProductRepository.Verify(r => r.GetByIdAsync(productId), Times.Once);
             _mockCartRepository.Verify(r => r.SaveChangesAsync(), Times.Once);
         }
+
         [Fact]
         public async Task ClearAsync_ClearCart()
         {
@@ -144,6 +148,7 @@ namespace BussinesLogicLevelTests.ServiceTests
             cart.ProductAmount.Should().Be(0);
             cart.ProductList.Should().BeEmpty();
         }
+
         [Fact]
         public async Task GetAsync_GetCartById_ReturnCartDto()
         {
@@ -164,6 +169,7 @@ namespace BussinesLogicLevelTests.ServiceTests
             results.UserId.Should().Be(cart.UserId);
             _mockCartRepository.Verify(x => x.GetByIdAsync(cartId), Times.Once);
         }
+
         [Fact]
         public async Task RemoveAllFromAsync_RemoveAllItemsFromCart()
         {
@@ -205,6 +211,7 @@ namespace BussinesLogicLevelTests.ServiceTests
             var deserializedList = JsonSerializer.Deserialize<Dictionary<Guid, int>>(cart.ProductListJson);
             deserializedList.Should().BeNullOrEmpty();
         }
+
         [Fact]
         public async Task RemoveFromAsync_ShouldUpdateExistingProductQuantityInCart()
         {
@@ -245,6 +252,7 @@ namespace BussinesLogicLevelTests.ServiceTests
             var deserializedList = JsonSerializer.Deserialize<Dictionary<Guid, int>>(cart.ProductListJson);
             deserializedList.Should().NotBeNullOrEmpty();
         }
+
         [Fact]
         public async Task CreateCart_ShouldCreateCart_ReturnCart()
         {
@@ -260,18 +268,6 @@ namespace BussinesLogicLevelTests.ServiceTests
             //Assert
             result.Should().NotBeNull();
             _mockCartRepository.Verify(x => x.AddAsync(It.Is<Cart>(c => c.UserId == userId)), Times.Once);
-        }
-        [Fact]
-        public async Task SaveChangesAsync_SaveChangesInDb()
-        {
-            //Arrange
-            _mockCartRepository.Setup(x => x.SaveChangesAsync()).Returns(Task.CompletedTask);
-
-            //Act
-            await _cartService.SaveChangesAsync();
-
-            //Assert
-            _mockCartRepository.Verify(x => x.SaveChangesAsync(), Times.Once);
         }
     }
 }

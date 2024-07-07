@@ -1,5 +1,7 @@
-﻿using DbLevel.Interfaces;
+﻿using DbLevel;
+using DbLevel.Interfaces;
 using DbLevel.Models;
+using DbLevel.Specifications;
 
 namespace BussinessLogicLevel.Services
 {
@@ -7,7 +9,7 @@ namespace BussinessLogicLevel.Services
     {
         private readonly IRepository<ProductStorage> _productStorageRepo;
         private readonly IRepository<Cart> _cartRepo;
-        public PaymentService(IRepository<ProductStorage> productStorageRepo, IRepository<Cart> cartRepo)
+        public PaymentService(Repository<ProductStorage> productStorageRepo, IRepository<Cart> cartRepo)
         {
             _productStorageRepo = productStorageRepo;
             _cartRepo = cartRepo;
@@ -15,12 +17,18 @@ namespace BussinessLogicLevel.Services
         public async Task<bool> ConfirmPurchaseAsync(Guid cartId, int quantity)
         {
             var cart = await _cartRepo.GetByIdAsync(cartId);
-            var productStorageList = await _productStorageRepo.GetAllAsync();
+            var productIds = cart.ProductList.Keys;
+
+            var specification = new ProductStorageByProductIdsSpecification(productIds);
+            var productStorageList = await _productStorageRepo.ListAsync(specification);
+
+            var productStorageDict = productStorageList
+                .GroupBy(ps => ps.ProductId)
+                .ToDictionary(g => g.Key, g => g.ToList());
 
             foreach (var cartItem in cart.ProductList)
             {
-                var productStorage = productStorageList.FirstOrDefault(ps => ps.ProductId == cartItem.Key);
-                if (productStorage == null || productStorage.Quantity < cartItem.Value)
+                if (!productStorageDict.TryGetValue(cartItem.Key, out var storages) || storages.Sum(s => s.Quantity) < cartItem.Value)
                 {
                     return false;
                 }
@@ -28,11 +36,28 @@ namespace BussinessLogicLevel.Services
 
             foreach (var cartItem in cart.ProductList)
             {
-                var productStorage = productStorageList.First(ps => ps.ProductId == cartItem.Key);
-                productStorage.Quantity -= cartItem.Value;
+                var storages = productStorageDict[cartItem.Key];
+                int quantityToDeduct = cartItem.Value;
+
+                foreach (var storage in storages)
+                {
+                    if (storage.Quantity >= quantityToDeduct)
+                    {
+                        storage.Quantity -= quantityToDeduct;
+                        storage.UpdatedDateTime = DateTime.Now;
+                        break;
+                    }
+                    else
+                    {
+                        quantityToDeduct -= storage.Quantity;
+                        storage.Quantity = 0;
+                        storage.UpdatedDateTime = DateTime.Now;
+                    }
+                }
             }
 
             await _productStorageRepo.SaveChangesAsync();
+
             return true;
         }
     }

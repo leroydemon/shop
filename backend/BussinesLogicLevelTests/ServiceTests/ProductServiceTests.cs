@@ -56,31 +56,7 @@ namespace BussinesLogicLevelTests.ServiceTests
             _mockProductRepository.Verify(r => r.GetByIdAsync(productId), Times.Once);
             _mockProductRepository.Verify(r => r.DeleteAsync(product), Times.Once);
         }
-        [Fact]
-        public async Task GetAllAsync_ShouldReturnProductDtos()
-        {
-            // Arrange
-            var products = new List<Product>
-            {
-                new Product { Id = Guid.NewGuid(), Name = "Product 1", UnitPrice = 50m },
-                new Product { Id = Guid.NewGuid(), Name = "Product 2", UnitPrice = 150m }
-            };
-            var productDtos = new List<ProductDto>
-            {
-                new ProductDto { Name = "Product 1", UnitPrice = 50m },
-                new ProductDto { Name = "Product 2", UnitPrice = 150m }
-            };
-
-            _mockProductRepository.Setup(r => r.GetAllAsync()).ReturnsAsync(products);
-            _mockMapper.Setup(m => m.Map<IEnumerable<ProductDto>>(products)).Returns(productDtos);
-
-            // Act
-            var result = await _productService.GetAllAsync();
-
-            // Assert
-            result.Should().BeEquivalentTo(productDtos);
-            _mockProductRepository.Verify(r => r.GetAllAsync(), Times.Once);
-        }
+ 
         [Fact]
         public async Task GetByIdAsync_ShouldReturnProductDto()
         {

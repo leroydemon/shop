@@ -73,31 +73,7 @@ namespace BussinesLogicLevelTests.ServiceTests
             result.Should().BeEquivalentTo(promoCodeDto);
             _mockPromoCodeRepository.Verify(r => r.GetByIdAsync(promoCodeId), Times.Once);
         }
-        [Fact]
-        public async Task GetAllAsync_ShouldReturnPromoCodeDtos()
-        {
-            // Arrange
-            var promoCodes = new List<PromoCode>
-            {
-                new PromoCode { Id = Guid.NewGuid(), Code = "TESTCODE1", AmountDiscoint = 10, ExpireDate = DateTime.UtcNow.AddDays(30), IsActive = true },
-                new PromoCode { Id = Guid.NewGuid(), Code = "TESTCODE2", AmountDiscoint = 15, ExpireDate = DateTime.UtcNow.AddDays(60), IsActive = true }
-            };
-            var promoCodeDtos = new List<PromoCodeDto>
-            {
-                new PromoCodeDto { Code = "TESTCODE1", AmountDiscoint = 10, ExpireDate = DateTime.UtcNow.AddDays(30), IsActive = true },
-                new PromoCodeDto { Code = "TESTCODE2", AmountDiscoint = 15, ExpireDate = DateTime.UtcNow.AddDays(60), IsActive = true }
-            };
-
-            _mockPromoCodeRepository.Setup(r => r.GetAllAsync()).ReturnsAsync(promoCodes);
-            _mockMapper.Setup(m => m.Map<IEnumerable<PromoCodeDto>>(promoCodes)).Returns(promoCodeDtos);
-
-            // Act
-            var result = await _promoCodeService.GetAllAsync();
-
-            // Assert
-            result.Should().BeEquivalentTo(promoCodeDtos);
-            _mockPromoCodeRepository.Verify(r => r.GetAllAsync(), Times.Once);
-        }
+       
         [Fact]
         public async Task UpdateAsync_ShouldCallRepositoryUpdate()
         {

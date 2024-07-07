@@ -24,6 +24,7 @@ namespace Infrastucture.Extentions
             services.AddFluentValidationAutoValidation();
             services.AddFluentValidationClientsideAdapters();
             services.AddValidatorsFromAssembly(typeof(ProductDtoValidator).Assembly);
+
             return services;
         }
     }

@@ -2,7 +2,6 @@
 using DbLevel.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
 using Authorization.DbLevel.Models;
 
 namespace DbLevel.Data

@@ -9,10 +9,11 @@ namespace DbLevel.DbConfiguration
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
-            builder.HasMany(u => u.HistoryOrders)
-                      .WithOne(o => o.User)
-                      .HasForeignKey(o => o.CartId)
-                      .OnDelete(DeleteBehavior.Cascade);
+            builder
+                .HasMany(u => u.HistoryOrders)
+                .WithOne(o => o.User)
+                .HasForeignKey(o => o.CartId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

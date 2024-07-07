@@ -14,14 +14,16 @@ namespace BussinessLogicLevel.Services
         private readonly SignInManager<User> _signInManager;
         private readonly ILogger<AccountService> _logger;
         private readonly TokenGeneratorService _tokenGenerator;
-        private readonly IUserRepository _userRepo;
+        private readonly IRepository<User> _userRepo;
+        private readonly IUserService _userService;
         private readonly IRepository<Cart> _cartRepository;
         public AccountService(UserManager<User> userManager,
             SignInManager<User> signInManager,
             ILogger<AccountService> logger,
             TokenGeneratorService tokenGenerator,
-            IUserRepository userRepository,
-            IRepository<Cart> cartRepository)
+            IRepository<User> userRepository,
+            IRepository<Cart> cartRepository,
+            IUserService userService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -29,12 +31,14 @@ namespace BussinessLogicLevel.Services
             _tokenGenerator = tokenGenerator;
             _userRepo = userRepository;
             _cartRepository = cartRepository;
+            _userService = userService;
         }
         public async Task<bool> Register(RegisterDto request)
         {
             var user = new User { UserName = request.Email, Email = request.Email};
             var result = await _userManager.CreateAsync(user, request.Password);
             var cart = new Cart { UserId = user.Id };
+
             try
             {               
                  await _cartRepository.AddAsync(cart);
@@ -46,10 +50,11 @@ namespace BussinessLogicLevel.Services
 
             user.CartId = cart.Id;
             await _userRepo.UpdateAsync(user);
+
             if(result.Succeeded)
             {
                 return true;
-            }
+            } 
             else
             {
                 return false;
@@ -58,25 +63,28 @@ namespace BussinessLogicLevel.Services
         public async Task<string> Login(LoginDto input)
         {
             var result = await _signInManager.PasswordSignInAsync(input.Email, input.Password, false, false);
-
             var user = await _userManager.FindByEmailAsync(input.Email);
             var token = _tokenGenerator.GenerateJwtToken(user);
-            await _userRepo.SetOnlineAsync(user);
+            await _userService.SetOnlineAsync(user.Id);
+
             return token;
         }
         public async Task<bool> LogOut(Guid userId)
         {
             var user = await _userRepo.GetByIdAsync(userId);
             await _signInManager.SignOutAsync();
+
             if (_signInManager.SignOutAsync().IsCompleted)
             {
-                await _userRepo.SetOfflineAsync(user);
+                await _userService.SetOfflineAsync(userId);
                 _logger.LogInformation("User logged out");
+
                 return true;
             }
             else
             {
                 _logger.LogInformation("Logging out failed");
+
                 return false;
             }
         }

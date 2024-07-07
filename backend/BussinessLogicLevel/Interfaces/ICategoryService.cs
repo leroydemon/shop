@@ -1,10 +1,11 @@
-﻿using DbLevel.Models;
+﻿using DbLevel.Filters;
+using DbLevel.Models;
 
 namespace BussinessLogicLevel.Interfaces
 {
     public interface ICategoryService
     {
-        Task<IEnumerable<CategoryDto>> GetAllAsync();
+        Task<IEnumerable<CategoryDto>> SearchAsync(CategoryFilter filter);
         Task<CategoryDto> GetCategoryByIdAsync(Guid id);
         Task<CategoryDto> AddAsync(CategoryDto category);
         Task<CategoryDto> UpdateAsync(CategoryDto category);

@@ -1,4 +1,5 @@
 ﻿using BussinessLogicLevel.Interfaces;
+using DbLevel.Filters;
 using DbLevel.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,10 +13,11 @@ namespace ShopWebApi.Controllers
         private readonly ILogger<ProductStorageController> _logger = logger;
 
         [HttpGet]
-        public async Task<IActionResult> GetAllAsync()
+        public async Task<IActionResult> SearchAsync(ProductStorageFilter filter)
         {
-            var item = await _productStorageService.GetAllAsync();
+            var item = await _productStorageService.SearchAsync(filter);
             _logger.LogInformation("method works correctly");
+
             return Ok(item);
         }
         [HttpGet("{id}")]
@@ -23,6 +25,7 @@ namespace ShopWebApi.Controllers
         {
             var item = await _productStorageService.GetByIdAsync(id);
             _logger.LogInformation("method works correctly");
+
             return Ok(item);
         }
         [HttpPost]
@@ -30,6 +33,7 @@ namespace ShopWebApi.Controllers
         {
             var product = await _productStorageService.AddAsync(productDto);
             _logger.LogInformation("method works correctly");
+
             return Ok(product);
         }
         [HttpPut]
@@ -37,6 +41,7 @@ namespace ShopWebApi.Controllers
         {
             var updatedPS = await _productStorageService.UpdateAsync(product);
             _logger.LogInformation("method works correctly");
+
             return Ok(updatedPS);
         }
         [HttpDelete]
@@ -44,6 +49,7 @@ namespace ShopWebApi.Controllers
         {
             await _productStorageService.DeleteAsync(id);
             _logger.LogInformation("method works correctly");
+
             return Ok();
         }
     }

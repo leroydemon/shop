@@ -20,37 +20,7 @@ namespace ShopWebApiTests.ControllerTests
             _mockStorageService = new Mock<IStorageService>();
             _mockLogger = new Mock<ILogger<StorageController>>();
             _storageController = new StorageController(_mockStorageService.Object, _mockLogger.Object);
-        }
-
-        [Fact]
-        public async Task GetAllAsync_ShouldReturnOkWithStorages()
-        {
-            // Arrange
-            var storages = new List<StorageDto>
-            {
-                new StorageDto { City = "City1", Address = "Address1", Phone = "1234567890" },
-                new StorageDto { City = "City2", Address = "Address2", Phone = "0987654321" }
-            };
-            _mockStorageService.Setup(service => service.GetAllAsync()).ReturnsAsync(storages);
-
-            // Act
-            var result = await _storageController.GetAllAsync();
-
-            // Assert
-            _mockLogger.Verify(
-                x => x.Log(
-                    LogLevel.Information,
-                    It.IsAny<EventId>(),
-                    It.Is<It.IsAnyType>((v, t) => v.ToString().Contains("method works correctly")),
-                    It.IsAny<Exception>(),
-                    It.Is<Func<It.IsAnyType, Exception, string>>((v, t) => true)),
-                Times.Once);
-
-            var okResult = result as OkObjectResult;
-            okResult.Should().NotBeNull();
-            okResult.StatusCode.Should().Be(200);
-            okResult.Value.Should().BeEquivalentTo(storages);
-        }
+        }       
 
         [Fact]
         public async Task GetProductByIdAsync_ShouldReturnOkWithStorage()

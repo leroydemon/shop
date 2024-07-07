@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
 using BussinessLogicLevel.Interfaces;
-using DbLevel;
+using DbLevel.Filters;
 using DbLevel.Interfaces;
 using DbLevel.Models;
+using DbLevel.Specifications;
 
 namespace BussinessLogicLevel.Services
 {
@@ -19,6 +20,7 @@ namespace BussinessLogicLevel.Services
         public async Task<CategoryDto> AddAsync(CategoryDto categoryDto)
         {
             var addedCategory = await _categoryRepository.AddAsync(_mapper.Map<Category>(categoryDto));
+
             return _mapper.Map<CategoryDto>(addedCategory);
         }
         public async Task DeleteAsync(Guid id)
@@ -26,19 +28,23 @@ namespace BussinessLogicLevel.Services
             var item = await _categoryRepository.GetByIdAsync(id);
             await _categoryRepository.DeleteAsync(item);
         }
-        public async Task<IEnumerable<CategoryDto>> GetAllAsync()
+        public async Task<IEnumerable<CategoryDto>> SearchAsync(CategoryFilter filter)
         {
-            var categories = await _categoryRepository.GetAllAsync();
+            var spec = new CategorySpecification(filter);
+            var categories = await _categoryRepository.ListAsync(spec);
+
             return _mapper.Map<IEnumerable<CategoryDto>>(categories);
         }
         public async Task<CategoryDto> GetCategoryByIdAsync(Guid id)
         {
             var category = await _categoryRepository.GetByIdAsync(id);
+
             return _mapper.Map<CategoryDto>(category);
         }
         public async Task<CategoryDto> UpdateAsync(CategoryDto category)
         {
             var updatedCategory = await _categoryRepository.UpdateAsync(_mapper.Map<Category>(category));
+
             return _mapper.Map<CategoryDto>(updatedCategory);
         }
     }

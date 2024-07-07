@@ -38,31 +38,7 @@ namespace BussinesLogicLevelTests.ServiceTests
             result.Should().BeEquivalentTo(storageDto);
             _mockStorageRepository.Verify(r => r.GetByIdAsync(storageId), Times.Once);
         }
-        [Fact]
-        public async Task GetAllAsync_ShouldReturnStorageDtos()
-        {
-            // Arrange
-            var storages = new List<Storage>
-            {
-                new Storage { Id = Guid.NewGuid(), City = "City1", Address = "Address1", Phone = "123456789" },
-                new Storage { Id = Guid.NewGuid(), City = "City2", Address = "Address2", Phone = "987654321" }
-            };
-            var storageDtos = new List<StorageDto>
-            {
-                new StorageDto { City = "City1", Address = "Address1", Phone = "123456789" },
-                new StorageDto { City = "City2", Address = "Address2", Phone = "987654321" }
-            };
-
-            _mockStorageRepository.Setup(r => r.GetAllAsync()).ReturnsAsync(storages);
-            _mockMapper.Setup(m => m.Map<IEnumerable<StorageDto>>(storages)).Returns(storageDtos);
-
-            // Act
-            var result = await _storageService.GetAllAsync();
-
-            // Assert
-            result.Should().BeEquivalentTo(storageDtos);
-            _mockStorageRepository.Verify(r => r.GetAllAsync(), Times.Once);
-        }
+        
         [Fact]
         public async Task AddAsync_ShouldReturnAddedStorageDto()
         {

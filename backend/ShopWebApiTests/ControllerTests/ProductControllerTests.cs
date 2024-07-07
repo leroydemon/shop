@@ -22,35 +22,6 @@ namespace ShopWebApiTests.ControllerTests
             _productController = new ProductController(_mockProductService.Object, _mockLogger.Object);
         }
         [Fact]
-        public async Task GetAllAsync_ShouldReturnOkWithProducts()
-        {
-            // Arrange
-            var products = new List<ProductDto>
-            {
-                new ProductDto { Name = "Product1" },
-                new ProductDto { Name = "Product2" }
-            };
-            _mockProductService.Setup(service => service.GetAllAsync()).ReturnsAsync(products);
-
-            // Act
-            var result = await _productController.GetAllAsync();
-
-            // Assert
-            _mockLogger.Verify(
-                x => x.Log(
-                    LogLevel.Information,
-                    It.IsAny<EventId>(),
-                    It.Is<It.IsAnyType>((v, t) => v.ToString().Contains("method works correctly")),
-                    It.IsAny<Exception>(),
-                    It.Is<Func<It.IsAnyType, Exception, string>>((v, t) => true)),
-                Times.Once);
-
-            var okResult = result as OkObjectResult;
-            okResult.Should().NotBeNull();
-            okResult.StatusCode.Should().Be(200);
-            okResult.Value.Should().BeEquivalentTo(products);
-        }
-        [Fact]
         public async Task GetProductByIdAsync_ShouldReturnOkWithProduct()
         {
             // Arrange
