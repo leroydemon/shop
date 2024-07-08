@@ -1,6 +1,7 @@
 ﻿using DbLevel.Filters;
 using DbLevel.Models;
 using DbLevel.SortableFields;
+using System.Linq.Expressions;
 
 namespace DbLevel.Specifications
 {
@@ -19,38 +20,21 @@ namespace DbLevel.Specifications
 
         private void ApplySorting(CategorySortableFields sortBy, bool ascending)
         {
-            switch (sortBy)
+            Expression<Func<Category, object>> orderByExpression = sortBy switch
             {
-                case CategorySortableFields.Name:
-                    if (ascending)
-                        ApplyOrderBy(c => c.Name);
-                    else
-                        ApplyOrderByDescending(c => c.Name);
-                    break;
-                case CategorySortableFields.Id:
-                    if (ascending)
-                        ApplyOrderBy(c => c.Id);
-                    else
-                        ApplyOrderByDescending(c => c.Id);
-                    break;
-                case CategorySortableFields.CreateDateTime:
-                    if (ascending)
-                        ApplyOrderBy(c => c.CreatedDateTime);
-                    else
-                        ApplyOrderByDescending(c => c.CreatedDateTime);
-                    break;
-                case CategorySortableFields.UpdateDateTime:
-                    if (ascending)
-                        ApplyOrderBy(c => c.UpdatedDateTime);
-                    else
-                        ApplyOrderByDescending(c => c.UpdatedDateTime);
-                    break;
-                default:
-                    if (ascending)
-                        ApplyOrderBy(c => c.Id);
-                    else
-                        ApplyOrderByDescending(c => c.Id);
-                    break;
+                CategorySortableFields.Name => c => c.Name,
+                CategorySortableFields.CreateDateTime => c => c.CreatedDateTime,
+                CategorySortableFields.UpdateDateTime => c => c.UpdatedDateTime,
+                _ => c => c.Id
+            };
+
+            if (ascending)
+            {
+                ApplyOrderBy(orderByExpression);
+            }
+            else
+            {
+                ApplyOrderByDescending(orderByExpression);
             }
         }
     }

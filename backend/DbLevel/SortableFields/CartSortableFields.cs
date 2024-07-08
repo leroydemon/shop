@@ -2,7 +2,6 @@
 {
     public enum CartSortableFields
     {
-        Id,
         CreateDateTime,
         UpdateDateTime
     }

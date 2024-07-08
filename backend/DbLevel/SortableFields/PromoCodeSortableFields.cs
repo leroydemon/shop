@@ -2,7 +2,6 @@
 {
     public enum PromoCodeSortableFields
     {
-        Id,
         CreateDateTime,
         UpdateDateTime,
         Code,

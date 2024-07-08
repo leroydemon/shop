@@ -1,6 +1,5 @@
 ﻿using DbLevel.Models;
 using FluentValidation;
-using System.Text.Json;
 
 namespace Infrastucture.Validators
 {
@@ -19,22 +18,6 @@ namespace Infrastucture.Validators
 
             RuleFor(cart => cart.ProductAmount)
                 .GreaterThanOrEqualTo(0).WithMessage("Product Amount must be greater than or equal to 0.");
-
-            RuleFor(cart => cart.ProductListJson)
-                .Must(ValidJson).WithMessage("Product List JSON must be a valid JSON string.");
-        }
-
-        private bool ValidJson(string productListJson)
-        {
-            try
-            {
-                var productList = JsonSerializer.Deserialize<Dictionary<Guid, int>>(productListJson);
-                return productList != null;
-            }
-            catch
-            {
-                return false;
-            }
         }
     }
 }

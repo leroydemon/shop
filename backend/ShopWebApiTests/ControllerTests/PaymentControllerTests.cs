@@ -24,18 +24,18 @@ namespace ShopWebApiTests.ControllerTests
             var quantity = 1;
             var confirmationResult = true;
 
-            _mockPaymentService.Setup(service => service.ConfirmPurchaseAsync(cartId, quantity))
+            _mockPaymentService.Setup(service => service.ConfirmPurchaseAsync(cartId))
                .ReturnsAsync(confirmationResult);
 
             // Act
-            var result = await _paymentController.ConfirmPurchaseAsync(cartId, quantity);
+            var result = await _paymentController.ConfirmPurchaseAsync(cartId);
 
             // Assert
             var okResult = result as OkObjectResult;
             okResult.Should().NotBeNull();
             okResult.StatusCode.Should().Be(200);
             okResult.Value.Should().Be(confirmationResult);
-            _mockPaymentService.Verify(service => service.ConfirmPurchaseAsync(cartId, quantity), Times.Once);
+            _mockPaymentService.Verify(service => service.ConfirmPurchaseAsync(cartId), Times.Once);
         }
     }
 }

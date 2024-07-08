@@ -1,6 +1,7 @@
 ﻿using DbLevel.Filters;
 using DbLevel.Models;
 using DbLevel.SortableFields;
+using System.Linq.Expressions;
 
 namespace DbLevel.Specifications
 {
@@ -58,38 +59,22 @@ namespace DbLevel.Specifications
         }
         private void ApplySorting(ProductSortableFields sortBy, bool ascending)
         {
-            switch (sortBy)
+            Expression<Func<Product, object>> orderByExpression = sortBy switch
             {
-                case ProductSortableFields.Name:
-                    if (ascending)
-                        ApplyOrderBy(p => p.Name);
-                    else
-                        ApplyOrderByDescending(p => p.Name);
-                    break;
-                case ProductSortableFields.UnitPrice:
-                    if (ascending)
-                        ApplyOrderBy(p => p.UnitPrice);
-                    else
-                        ApplyOrderByDescending(p => p.UnitPrice);
-                    break;
-                case ProductSortableFields.CreateDateTime:
-                    if (ascending)
-                        ApplyOrderBy(p => p.CreatedDateTime);
-                    else
-                        ApplyOrderByDescending(p => p.CreatedDateTime);
-                    break;
-                case ProductSortableFields.UpdateDateTime:
-                    if (ascending)
-                        ApplyOrderBy(p => p.UpdatedDateTime);
-                    else
-                        ApplyOrderByDescending(p => p.UpdatedDateTime);
-                    break;
-                default:
-                    if (ascending)
-                        ApplyOrderBy(p => p.Id);
-                    else
-                        ApplyOrderByDescending(p => p.Id);
-                    break;
+                ProductSortableFields.Name => p => p.Name,
+                ProductSortableFields.UnitPrice => p => p.UnitPrice,
+                ProductSortableFields.CreateDateTime => p => p.CreatedDateTime,
+                ProductSortableFields.UpdateDateTime => p => p.UpdatedDateTime,
+                _ => p => p.Id
+            };
+
+            if (ascending)
+            {
+                ApplyOrderBy(orderByExpression);
+            }
+            else
+            {
+                ApplyOrderByDescending(orderByExpression);
             }
         }
     }

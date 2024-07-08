@@ -1,6 +1,7 @@
 ﻿using DbLevel.Filters;
 using DbLevel.Models;
 using DbLevel.SortableFields;
+using System.Linq.Expressions;
 
 namespace DbLevel.Specifications
 {
@@ -18,32 +19,21 @@ namespace DbLevel.Specifications
 
         private void ApplySorting(ProductStorageSortableFields sortBy, bool ascending)
         {
-            switch (sortBy)
+            Expression<Func<ProductStorage, object>> orderByExpression = sortBy switch
             {
-                case ProductStorageSortableFields.StorageId:
-                    if (ascending)
-                        ApplyOrderBy(p => p.StorageId);
-                    else
-                        ApplyOrderByDescending(p => p.StorageId);
-                    break;
-                case ProductStorageSortableFields.ProductId:
-                    if (ascending)
-                        ApplyOrderBy(p => p.ProductId);
-                    else
-                        ApplyOrderByDescending(p => p.ProductId);
-                    break;
-                case ProductStorageSortableFields.Quantity:
-                    if (ascending)
-                        ApplyOrderBy(p => p.Quantity);
-                    else
-                        ApplyOrderByDescending(p => p.Quantity);
-                    break;
-                default:
-                    if (ascending)
-                        ApplyOrderBy(p => p.Id);
-                    else
-                        ApplyOrderByDescending(p => p.Id);
-                    break;
+                ProductStorageSortableFields.StorageId => p => p.StorageId,
+                ProductStorageSortableFields.ProductId => p => p.ProductId,
+                ProductStorageSortableFields.Quantity => p => p.Quantity,
+                _ => p => p.Id
+            };
+
+            if (ascending)
+            {
+                ApplyOrderBy(orderByExpression);
+            }
+            else
+            {
+                ApplyOrderByDescending(orderByExpression);
             }
         }
     }

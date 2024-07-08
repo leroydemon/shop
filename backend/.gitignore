@@ -9,6 +9,7 @@
 *.user
 *.userosscache
 *.sln.docstates
+.vs/Shop/v17/.wsuo  # Добавлено для игнорирования .wsuo
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

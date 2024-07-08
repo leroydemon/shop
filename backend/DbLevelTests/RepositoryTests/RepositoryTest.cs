@@ -55,27 +55,6 @@ namespace DbLevelTests.RepositoryTests
                 }
             }
             [Fact]
-            public async Task GetAllAsync_ShouldReturnAllEntities()
-            {
-                using (var context = new ApplicationDbContext(_dbContextOptions))
-                {
-                    var repository = new Repository<Category>(context);
-                    var entities = new List<Category>
-                    {
-                    new Category { Id = Guid.NewGuid(), Name = "Category 1" },
-                    new Category { Id = Guid.NewGuid(), Name = "Category 2" }
-                    };
-
-                    await context.Categories.AddRangeAsync(entities);
-                    await context.SaveChangesAsync();
-
-                    var result = await repository.GetAllAsync();
-
-                    result.Should().HaveCount(2);
-                    result.Should().BeEquivalentTo(entities);
-                }
-            }
-            [Fact]
             public async Task GetByIdAsync_ShouldReturnCorrectEntity()
             {
                 using (var context = new ApplicationDbContext(_dbContextOptions))

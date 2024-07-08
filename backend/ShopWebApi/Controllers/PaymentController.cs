@@ -11,9 +11,9 @@ namespace ShopWebApi.Controllers
         private readonly IPaymentService _paymentService = paymentService;
 
         [HttpGet]
-        public async Task<IActionResult> ConfirmPurchaseAsync(Guid cartId, int quantity)
+        public async Task<IActionResult> ConfirmPurchaseAsync(Guid cartId)
         {
-            var confirmationResult = await _paymentService.ConfirmPurchaseAsync(cartId, quantity);
+            var confirmationResult = await _paymentService.ConfirmPurchaseAsync(cartId);
             return Ok(confirmationResult);
         }
     }

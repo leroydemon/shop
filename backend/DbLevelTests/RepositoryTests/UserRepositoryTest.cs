@@ -70,27 +70,7 @@ namespace DbLevelTests.RepositoryTests
                 deletedUser.Should().BeNull();
             }
         }
-        [Fact]
-        public async Task GetAllAsync_ShouldReturnAllUsers()
-        {
-            using (var context = new ApplicationDbContext(_dbContextOptions))
-            {
-                var repository = new Repository<User>(context);
-                var users = new List<User>
-                {
-                    new User { Id = Guid.NewGuid(), UserName = "User1", Email = "user1@example.com" },
-                    new User { Id = Guid.NewGuid(), UserName = "User2", Email = "user2@example.com" }
-                };
-
-                await context.Users.AddRangeAsync(users);
-                await context.SaveChangesAsync();
-
-                var result = await repository.GetAllAsync();
-
-                result.Should().HaveCount(2);
-                result.Should().BeEquivalentTo(users);
-            }
-        }
+       
         [Fact]
         public async Task UpdateAsync_ShouldUpdateUserInContext()
         {

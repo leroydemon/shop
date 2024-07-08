@@ -1,6 +1,6 @@
 ﻿namespace DbLevel.Interfaces
 {
-    public interface IRepository<T> where T : IEntity
+    public interface IRepository<T> where T : class, IEntity
     {
         Task<T> GetByIdAsync(Guid id);
         Task<T> AddAsync(T entity);

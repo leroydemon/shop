@@ -1,6 +1,7 @@
 ﻿using DbLevel.Filters;
 using DbLevel.Models;
 using DbLevel.SortableFields;
+using System.Linq.Expressions;
 
 namespace DbLevel.Specifications
 {
@@ -28,50 +29,23 @@ namespace DbLevel.Specifications
 
         private void ApplySorting(PromoCodeSortableFields sortBy, bool ascending)
         {
-            switch (sortBy)
+            Expression<Func<PromoCode, object>> orderByExpression = sortBy switch
             {
-                case PromoCodeSortableFields.Code:
-                    if (ascending)
-                        ApplyOrderBy(p => p.Code);
-                    else
-                        ApplyOrderByDescending(p => p.Code);
-                    break;
-                case PromoCodeSortableFields.Id:
-                    if (ascending)
-                        ApplyOrderBy(p => p.Id);
-                    else
-                        ApplyOrderByDescending(p => p.Id);
-                    break;
-                case PromoCodeSortableFields.AmountDiscoint:
-                    if (ascending)
-                        ApplyOrderBy(p => p.AmountDiscoint);
-                    else
-                        ApplyOrderByDescending(p => p.AmountDiscoint);
-                    break;
-                case PromoCodeSortableFields.ExpireDate:
-                    if (ascending)
-                        ApplyOrderBy(p => p.ExpireDate);
-                    else
-                        ApplyOrderByDescending(p => p.ExpireDate);
-                    break;
-                case PromoCodeSortableFields.CreateDateTime:
-                    if (ascending)
-                        ApplyOrderBy(p => p.CreatedDateTime);
-                    else
-                        ApplyOrderByDescending(p => p.CreatedDateTime);
-                    break;
-                case PromoCodeSortableFields.UpdateDateTime:
-                    if (ascending)
-                        ApplyOrderBy(p => p.UpdatedDateTime);
-                    else
-                        ApplyOrderByDescending(p => p.UpdatedDateTime);
-                    break;
-                default:
-                    if (ascending)
-                        ApplyOrderBy(p => p.Id);
-                    else
-                        ApplyOrderByDescending(p => p.Id);
-                    break;
+                PromoCodeSortableFields.Code => p => p.Code,
+                PromoCodeSortableFields.AmountDiscoint => p => p.AmountDiscoint,
+                PromoCodeSortableFields.ExpireDate => p => p.ExpireDate,
+                PromoCodeSortableFields.CreateDateTime => p => p.CreatedDateTime,
+                PromoCodeSortableFields.UpdateDateTime => p => p.UpdatedDateTime,
+                _ => p => p.Id
+            };
+
+            if (ascending)
+            {
+                ApplyOrderBy(orderByExpression);
+            }
+            else
+            {
+                ApplyOrderByDescending(orderByExpression);
             }
         }
     }

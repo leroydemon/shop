@@ -1,6 +1,7 @@
 ﻿using DbLevel.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Text.Json;
 
 namespace DbLevel.DbConfiguration
 {
@@ -11,8 +12,6 @@ namespace DbLevel.DbConfiguration
             builder
                 .Property(u => u.TotalPrice)
                 .HasPrecision(18, 2);
-            builder
-                .Ignore(u => u.ProductList);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using DbLevel.Filters;
 using DbLevel.Models;
 using DbLevel.SortableFields;
+using System.Linq.Expressions;
 
 namespace DbLevel.Specifications
 {
@@ -30,32 +31,21 @@ namespace DbLevel.Specifications
 
         private void ApplySorting(BrandSortableFields sortBy, bool ascending)
         {
-            switch (sortBy)
+            Expression<Func<Brand, object>> orderByExpression = sortBy switch
             {
-                case BrandSortableFields.Name:
-                    if (ascending)
-                        ApplyOrderBy(b => b.Name);
-                    else
-                        ApplyOrderByDescending(b => b.Name);
-                    break;
-                case BrandSortableFields.Collection:
-                    if (ascending)
-                        ApplyOrderBy(b => b.Collection);
-                    else
-                        ApplyOrderByDescending(b => b.Collection);
-                    break;
-                case BrandSortableFields.Model:
-                    if (ascending)
-                        ApplyOrderBy(b => b.Model);
-                    else
-                        ApplyOrderByDescending(b => b.Model);
-                    break;
-                default:
-                    if (ascending)
-                        ApplyOrderBy(b => b.Id);
-                    else
-                        ApplyOrderByDescending(b => b.Id);
-                    break;
+                BrandSortableFields.Name => b => b.Name,
+                BrandSortableFields.Collection => b => b.Collection,
+                BrandSortableFields.Model => b => b.Model,
+                _ => b => b.Id
+            };
+
+            if (ascending)
+            {
+                ApplyOrderBy(orderByExpression);
+            }
+            else
+            {
+                ApplyOrderByDescending(orderByExpression);
             }
         }
     }

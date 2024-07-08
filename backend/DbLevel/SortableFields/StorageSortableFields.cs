@@ -2,7 +2,6 @@
 {
     public enum StorageSortableFields
     {
-        Id,
         CreateDateTime,
         UpdateDateTime,
         Name,

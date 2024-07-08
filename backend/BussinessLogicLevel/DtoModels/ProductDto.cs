@@ -1,5 +1,4 @@
 ﻿using BussinessLogicLevel.DtoModels;
-using DbLevel.Enum;
 
 namespace Infrastucture.DtoModels
 {
@@ -11,7 +10,7 @@ namespace Infrastucture.DtoModels
         public SizeDto Size { get; set; }
         public GenderDto Gender { get; set; }
         public SeasonDto Season { get; set; }
-        public PurposeDto Propose { get; set; }
+        public PurposeDto Purpose { get; set; }
         public string? Name { get; set; }
         public decimal UnitPrice { get; set; }
         public string? Description { get; set; }

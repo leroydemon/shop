@@ -36,7 +36,6 @@ namespace BussinesLogicLevelTests.ServiceTests
             var cart = new Cart
             {
                 Id = cartId,
-                ProductListJson = "{}",
                 TotalPrice = 0,
                 ProductAmount = 0
             };
@@ -62,10 +61,6 @@ namespace BussinesLogicLevelTests.ServiceTests
             _mockCartRepository.Verify(r => r.GetByIdAsync(cartId), Times.Once);
             _mockProductRepository.Verify(r => r.GetByIdAsync(productId), Times.Once);
             _mockCartRepository.Verify(r => r.SaveChangesAsync(), Times.Once);
-
-            var deserializedProductList = JsonSerializer.Deserialize<Dictionary<Guid, int>>(cart.ProductListJson);
-            deserializedProductList.Should().ContainKey(productId);
-            deserializedProductList[productId].Should().Be(quantity);
         }
 
         [Fact]
@@ -81,7 +76,6 @@ namespace BussinesLogicLevelTests.ServiceTests
             var cart = new Cart
             {
                 Id = cartId,
-                ProductListJson = JsonSerializer.Serialize(existingProductList),
                 TotalPrice = 20,
                 ProductAmount = 1
             };
@@ -133,7 +127,6 @@ namespace BussinesLogicLevelTests.ServiceTests
                 ProductAmount = 2,
                 ProductList = productList,
                 TotalPrice = 100,
-                ProductListJson = JsonSerializer.Serialize(productList),
                 Id = cartId
             };
             _mockCartRepository.Setup(x => x.GetByIdAsync(cartId)).ReturnsAsync(cart);
@@ -144,7 +137,6 @@ namespace BussinesLogicLevelTests.ServiceTests
             _mockCartRepository.Verify(x => x.GetByIdAsync(cartId), Times.Once);
             _mockCartRepository.Verify(x => x.SaveChangesAsync(), Times.Once);
 
-            cart.ProductListJson.Should().Be("{}");
             cart.ProductAmount.Should().Be(0);
             cart.ProductList.Should().BeEmpty();
         }
@@ -187,7 +179,6 @@ namespace BussinesLogicLevelTests.ServiceTests
                 ProductAmount = 1,
                 ProductList = productList,
                 TotalPrice = 10,
-                ProductListJson = JsonSerializer.Serialize(productList)
             };
             var product = new Product
             {
@@ -208,8 +199,6 @@ namespace BussinesLogicLevelTests.ServiceTests
             _mockCartRepository.Verify(x => x.SaveChangesAsync(), Times.Once);
             cart.TotalPrice.Should().Be(0);
             cart.ProductAmount.Should().Be(0);
-            var deserializedList = JsonSerializer.Deserialize<Dictionary<Guid, int>>(cart.ProductListJson);
-            deserializedList.Should().BeNullOrEmpty();
         }
 
         [Fact]
@@ -228,7 +217,6 @@ namespace BussinesLogicLevelTests.ServiceTests
                 ProductAmount = 2,
                 ProductList = productList,
                 TotalPrice = 20,
-                ProductListJson = JsonSerializer.Serialize(productList)
             };
             var product = new Product
             {
@@ -249,8 +237,6 @@ namespace BussinesLogicLevelTests.ServiceTests
             _mockCartRepository.Verify(x => x.SaveChangesAsync(), Times.Once);
             cart.TotalPrice.Should().Be(10);
             cart.ProductAmount.Should().Be(1);
-            var deserializedList = JsonSerializer.Deserialize<Dictionary<Guid, int>>(cart.ProductListJson);
-            deserializedList.Should().NotBeNullOrEmpty();
         }
 
         [Fact]

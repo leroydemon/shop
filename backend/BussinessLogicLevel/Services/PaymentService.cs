@@ -1,22 +1,24 @@
-﻿using DbLevel;
+﻿using BussinessLogicLevel.Interfaces;
 using DbLevel.Interfaces;
 using DbLevel.Models;
 using DbLevel.Specifications;
+using System.Text.Json;
 
 namespace BussinessLogicLevel.Services
 {
-    public class PaymentService
+    public class PaymentService : IPaymentService
     {
         private readonly IRepository<ProductStorage> _productStorageRepo;
         private readonly IRepository<Cart> _cartRepo;
-        public PaymentService(Repository<ProductStorage> productStorageRepo, IRepository<Cart> cartRepo)
+        public PaymentService(IRepository<ProductStorage> productStorageRepo, IRepository<Cart> cartRepo)
         {
             _productStorageRepo = productStorageRepo;
             _cartRepo = cartRepo;
         }
-        public async Task<bool> ConfirmPurchaseAsync(Guid cartId, int quantity)
+        public async Task<bool> ConfirmPurchaseAsync(Guid cartId)
         {
             var cart = await _cartRepo.GetByIdAsync(cartId);
+            cart.ProductList = JsonSerializer.Deserialize<Dictionary<Guid, int>>(cart.ProductListJson);
             var productIds = cart.ProductList.Keys;
 
             var specification = new ProductStorageByProductIdsSpecification(productIds);
@@ -56,6 +58,12 @@ namespace BussinessLogicLevel.Services
                 }
             }
 
+            cart.ProductList = new Dictionary<Guid, int>();
+            cart.ProductListJson = "{}";
+            cart.TotalPrice = 0;
+            cart.ProductAmount = 0;
+
+            await _cartRepo.UpdateAsync(cart);
             await _productStorageRepo.SaveChangesAsync();
 
             return true;

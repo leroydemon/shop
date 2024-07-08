@@ -2,7 +2,6 @@
 {
     public enum ProductStorageSortableFields
     {
-        Id,
         CreateDateTime,
         UpdateDateTime,
         StorageId,

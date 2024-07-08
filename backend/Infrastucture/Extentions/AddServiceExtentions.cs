@@ -4,10 +4,11 @@ using DbLevel;
 using DbLevel.Interfaces;
 using Authorization;
 using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 
 namespace Infrastucture.Extentions
 {
-    public static class AddScopedServiceExtentions
+    public static class AddServiceExtentions
     {
         public static IServiceCollection AddScopedService(this IServiceCollection services)
         {
@@ -17,6 +18,7 @@ namespace Infrastucture.Extentions
             var repositoryTypes = repositoryAssembly.GetTypes()
                 .Where(t => typeof(IEntity).IsAssignableFrom(t) && t.IsClass && !t.IsAbstract)
                 .ToList();
+
 
             foreach (var repoType in repositoryTypes)
             {
@@ -45,8 +47,10 @@ namespace Infrastucture.Extentions
             services.AddScoped<IBrandService, BrandService>();
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IPromoCodeService, PromoCodeService>();
+            services.AddScoped<IPaymentService, PaymentService>();
 
             return services;
         }
     }
 }
+

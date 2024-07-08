@@ -1,5 +1,6 @@
 ﻿using DbLevel.Filters;
 using DbLevel.Models;
+using System.Linq.Expressions;
 
 namespace DbLevel.Specifications
 {
@@ -24,50 +25,23 @@ namespace DbLevel.Specifications
 
         private void ApplySorting(UserSortableFields sortBy, bool ascending)
         {
-            switch (sortBy)
+            Expression<Func<User, object>> orderByExpression = sortBy switch
             {
-                case UserSortableFields.UserName:
-                    if (ascending)
-                        ApplyOrderBy(u => u.UserName);
-                    else
-                        ApplyOrderByDescending(u => u.UserName);
-                    break;
-                case UserSortableFields.Id:
-                    if (ascending)
-                        ApplyOrderBy(u => u.Id);
-                    else
-                        ApplyOrderByDescending(u => u.Id);
-                    break;
-                case UserSortableFields.Email:
-                    if (ascending)
-                        ApplyOrderBy(u => u.Email);
-                    else
-                        ApplyOrderByDescending(u => u.Email);
-                    break;
-                case UserSortableFields.IsOnline:
-                    if (ascending)
-                        ApplyOrderBy(u => u.IsOnline);
-                    else
-                        ApplyOrderByDescending(u => u.IsOnline);
-                    break;
-                case UserSortableFields.CreateDateTime:
-                    if (ascending)
-                        ApplyOrderBy(u => u.CreatedDateTime);
-                    else
-                        ApplyOrderByDescending(u => u.CreatedDateTime);
-                    break;
-                case UserSortableFields.UpdateDateTime:
-                    if (ascending)
-                        ApplyOrderBy(u => u.UpdatedDateTime);
-                    else
-                        ApplyOrderByDescending(u => u.UpdatedDateTime);
-                    break;
-                default:
-                    if (ascending)
-                        ApplyOrderBy(u => u.Id);
-                    else
-                        ApplyOrderByDescending(u => u.Id);
-                    break;
+                UserSortableFields.UserName => u => u.UserName,
+                UserSortableFields.Email => u => u.Email,
+                UserSortableFields.IsOnline => u => u.IsOnline,
+                UserSortableFields.CreateDateTime => u => u.CreatedDateTime,
+                UserSortableFields.UpdateDateTime => u => u.UpdatedDateTime,
+                _ => u => u.Id
+            };
+
+            if (ascending)
+            {
+                ApplyOrderBy(orderByExpression);
+            }
+            else
+            {
+                ApplyOrderByDescending(orderByExpression);
             }
         }
     }

@@ -1,6 +1,7 @@
 ﻿using DbLevel.Filters;
 using DbLevel.Models;
 using DbLevel.SortableFields;
+using System.Linq.Expressions;
 
 namespace DbLevel.Specifications
 {
@@ -34,56 +35,24 @@ namespace DbLevel.Specifications
 
         private void ApplySorting(StorageSortableFields sortBy, bool ascending)
         {
-            switch (sortBy)
+            Expression<Func<Storage, object>> orderByExpression = sortBy switch
             {
-                case StorageSortableFields.Name:
-                    if (ascending)
-                        ApplyOrderBy(u => u.Name);
-                    else
-                        ApplyOrderByDescending(u => u.Name);
-                    break;
-                case StorageSortableFields.Id:
-                    if (ascending)
-                        ApplyOrderBy(u => u.Id);
-                    else
-                        ApplyOrderByDescending(u => u.Id);
-                    break;
-                case StorageSortableFields.City:
-                    if (ascending)
-                        ApplyOrderBy(u => u.City);
-                    else
-                        ApplyOrderByDescending(u => u.City);
-                    break;
-                case StorageSortableFields.Phone:
-                    if (ascending)
-                        ApplyOrderBy(u => u.Phone);
-                    else
-                        ApplyOrderByDescending(u => u.Phone);
-                    break;
-                case StorageSortableFields.Address:
-                    if (ascending)
-                        ApplyOrderBy(u => u.Address);
-                    else
-                        ApplyOrderByDescending(u => u.Address);
-                    break;
-                case StorageSortableFields.CreateDateTime:
-                    if (ascending)
-                        ApplyOrderBy(u => u.CreatedDateTime);
-                    else
-                        ApplyOrderByDescending(u => u.CreatedDateTime);
-                    break;
-                case StorageSortableFields.UpdateDateTime:
-                    if (ascending)
-                        ApplyOrderBy(u => u.UpdatedDateTime);
-                    else
-                        ApplyOrderByDescending(u => u.UpdatedDateTime);
-                    break;
-                default:
-                    if (ascending)
-                        ApplyOrderBy(u => u.Id);
-                    else
-                        ApplyOrderByDescending(u => u.Id);
-                    break;
+                StorageSortableFields.Name => u => u.Name,
+                StorageSortableFields.City => u => u.City,
+                StorageSortableFields.Phone => u => u.Phone,
+                StorageSortableFields.Address => u => u.Address,
+                StorageSortableFields.CreateDateTime => u => u.CreatedDateTime,
+                StorageSortableFields.UpdateDateTime => u => u.UpdatedDateTime,
+                _ => u => u.Id
+            };
+
+            if (ascending)
+            {
+                ApplyOrderBy(orderByExpression);
+            }
+            else
+            {
+                ApplyOrderByDescending(orderByExpression);
             }
         }
     }

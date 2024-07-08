@@ -2,7 +2,6 @@
 {
     public enum BrandSortableFields
     {
-        Id,
         CreateDateTime,
         UpdateDateTime,
         Name,

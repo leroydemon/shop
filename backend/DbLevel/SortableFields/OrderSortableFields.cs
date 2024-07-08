@@ -2,7 +2,6 @@
 {
     public enum OrderSortableFields
     {
-        Id,
         CreateDateTime,
         UpdateDateTime,
         OrderTime,

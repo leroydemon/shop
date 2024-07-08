@@ -6,7 +6,6 @@ using System.Text.Json;
 
 namespace BussinessLogicLevel.Services
 {
-    // навести красоту
     public class CartService : ICartService
     {
         private readonly IRepository<Cart> _cartRepository;
@@ -23,19 +22,18 @@ namespace BussinessLogicLevel.Services
             var cart = await _cartRepository.GetByIdAsync(cartId);
             var product = await _productRepo.GetByIdAsync(productId);
 
-            var productList = JsonSerializer.Deserialize<Dictionary<Guid, int>>(cart.ProductListJson);
-
-            if (!productList.ContainsKey(product.Id))
+            if (!cart.ProductList.ContainsKey(product.Id))
             {
-                productList.Add(product.Id, quantity);
+                cart.ProductList.Add(product.Id, quantity);
             }
             else
             {
-                productList[product.Id] += quantity;
+                cart.ProductList[product.Id] += quantity;
             }
+            cart.ProductListJson = JsonSerializer.Serialize(cart.ProductList);
             cart.TotalPrice += product.UnitPrice * quantity;
-            cart.ProductAmount = productList.Count;
-            cart.ProductListJson = JsonSerializer.Serialize(productList);
+            cart.ProductAmount = cart.ProductList.Count;
+
             await _cartRepository.UpdateAsync(cart);
 
             return _mapper.Map<CartDto>(cart);
@@ -44,8 +42,8 @@ namespace BussinessLogicLevel.Services
         public async Task ClearAsync(Guid cartId)
         {
             var cart = await _cartRepository.GetByIdAsync(cartId);
-            cart.ProductListJson = "{}";
             cart.ProductList = new Dictionary<Guid, int>();
+            cart.ProductListJson = "{}";
             cart.TotalPrice = 0;
             cart.ProductAmount = 0;
 
@@ -63,35 +61,43 @@ namespace BussinessLogicLevel.Services
         {
             var cart = await _cartRepository.GetByIdAsync(cartId);
             var product = await _productRepo.GetByIdAsync(productId);
-            var productList = JsonSerializer.Deserialize<Dictionary<Guid, int>>(cart.ProductListJson);
 
-            if (productList.ContainsKey(productId))
+            if (cart.ProductList.ContainsKey(productId))
             {
-                var itemQuantity = productList[productId];
+                var itemQuantity = cart.ProductList[productId];
                 var finalQuantity = itemQuantity - quantity;
                 if (finalQuantity <= 0)
                 {
-                    productList.Remove(productId);
+                    cart.ProductList.Remove(productId);
                     cart.TotalPrice -= product.UnitPrice * itemQuantity;
                 }
                 else
                 {
-                    productList[productId] = finalQuantity;
+                    cart.ProductList[productId] = finalQuantity;
                     cart.TotalPrice -= product.UnitPrice * quantity;
                 }
-                cart.ProductAmount = productList.Count;
+                cart.ProductAmount = cart.ProductList.Count;
+                cart.ProductListJson = JsonSerializer.Serialize(cart.ProductList);
             }
-            cart.ProductListJson = JsonSerializer.Serialize(productList);
             await _cartRepository.UpdateAsync(cart);
         }
         public async Task<Cart> CreateCartAsync(Guid userId)
         {
-            var cart =  new Cart()
+            var cart = new Cart()
             {
                 UserId = userId
             };
 
             return await _cartRepository.AddAsync(cart);
         }
-    }
+        public async Task<Dictionary<Guid, int>> ItemInCart(Guid userId)
+        {
+            var cart = await _cartRepository.GetByIdAsync(userId);
+            if (!string.IsNullOrEmpty(cart.ProductListJson))
+            {
+                cart.ProductList = JsonSerializer.Deserialize<Dictionary<Guid, int>>(cart.ProductListJson);
+            }
+            return cart.ProductList;
+        }
+    }   
 }

@@ -3,7 +3,6 @@ namespace DbLevel.SortableFields
 {
     public enum ProductSortableFields
     {
-        Id,
         CreateDateTime,
         UpdateDateTime,
         CategoryId,

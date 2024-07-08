@@ -45,16 +45,6 @@ namespace DbLevel.Specifications
             }
         }
 
-        protected ISpecification<T> ApplyFilterList(IEnumerable<FilterModel> filters)
-        {
-            foreach (var filter in filters)
-            {
-                ApplyFilter(PredicateBuilder.Build<T>(filter.FieldName, filter.Comparison, filter.FieldValue));
-            }
-
-            return this;
-        }
-
         protected ISpecification<T> ApplyFilter(Expression<Func<T, bool>> expr)
         {
             Criterias.Add(expr);
@@ -78,63 +68,7 @@ namespace DbLevel.Specifications
         protected void ApplyGroupBy(Expression<Func<T, object>> groupByExpression) =>
             GroupBy = groupByExpression;
 
-        protected void ApplySearchAll(string searchText, params Expression<Func<T, string>>[] searchFields)
-        {
-            var searchWords = searchText.ToLower().Split(' ', StringSplitOptions.RemoveEmptyEntries);
-            Expression<Func<T, bool>> combinedExpression = t => true;
-
-            foreach (var word in searchWords)
-            {
-                var wordExpression = searchFields.Select(fieldExpression =>
-                {
-                    var param = Expression.Parameter(typeof(T), "t");
-                    var lowerExpression = Expression.Call(
-                        Expression.Invoke(fieldExpression, param),
-                        ToLowerMethod
-                    );
-
-                    return PredicateBuilder.Build(
-                        Expression.Lambda<Func<T, string>>(lowerExpression, param),
-                        ContainsMethod,
-                        word
-                    );
-                }).Aggregate(PredicateBuilder.Or);
-
-                combinedExpression = PredicateBuilder.And(combinedExpression, wordExpression);
-            }
-
-            ApplyFilter(combinedExpression);
-        }
-
-        protected void ApplySearchAny(string searchText, params Expression<Func<T, string>>[] searchFields)
-        {
-            var searchWords = searchText.ToLower().Split(' ', StringSplitOptions.RemoveEmptyEntries);
-            Expression<Func<T, bool>> combinedExpression = t => false;
-
-            foreach (var word in searchWords)
-            {
-                var wordExpression = searchFields.Select(fieldExpression =>
-                {
-                    var param = Expression.Parameter(typeof(T), "t");
-                    var lowerExpression = Expression.Call(
-                        Expression.Invoke(fieldExpression, param),
-                        ToLowerMethod
-                    );
-
-                    return PredicateBuilder.Build(
-                        Expression.Lambda<Func<T, string>>(lowerExpression, param),
-                        ContainsMethod,
-                        word
-                    );
-                }).Aggregate(PredicateBuilder.Or);
-
-                combinedExpression = PredicateBuilder.Or(combinedExpression, wordExpression);
-            }
-
-            ApplyFilter(combinedExpression);
-        }
     }
-
     public abstract class SpecificationBase
     {
         protected static readonly MethodInfo ToLowerMethod = typeof(string).GetMethod(nameof(string.ToLower), []);
