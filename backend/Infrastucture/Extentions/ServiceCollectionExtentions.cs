@@ -1,4 +1,5 @@
-﻿using DbLevel.Data;
+﻿using DbLevel;
+using DbLevel.Data;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Infrastucture.MappingProfilies;
@@ -6,6 +7,7 @@ using Infrastucture.Validators;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace Infrastucture.Extentions
 {
@@ -24,6 +26,8 @@ namespace Infrastucture.Extentions
             services.AddFluentValidationAutoValidation();
             services.AddFluentValidationClientsideAdapters();
             services.AddValidatorsFromAssembly(typeof(ProductDtoValidator).Assembly);
+            services.Configure<CacheSettings>(configuration.GetSection("CacheSettings"));
+            services.AddSingleton(resolver => resolver.GetRequiredService<IOptions<CacheSettings>>().Value);
 
             return services;
         }

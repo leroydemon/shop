@@ -8,6 +8,9 @@ namespace DbLevel.DbConfiguration
     {
         public void Configure(EntityTypeBuilder<Order> builder)
         {
+            builder
+                .Property(u => u.TotalPrice)
+                .HasPrecision(18, 2);
         }
     }
 }

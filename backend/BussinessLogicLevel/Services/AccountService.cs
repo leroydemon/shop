@@ -35,7 +35,7 @@ namespace BussinessLogicLevel.Services
         }
         public async Task<bool> Register(RegisterDto request)
         {
-            var user = new User { UserName = request.Email, Email = request.Email};
+            var user = new User { UserName = request.Email, Email = request.Email, Latitude = 50.4501, Longitude = 30.5234 };
             var result = await _userManager.CreateAsync(user, request.Password);
             var cart = new Cart { UserId = user.Id };
 

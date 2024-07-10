@@ -12,6 +12,13 @@ namespace ShopWebApi.Controllers
         private readonly IOrderService _orderService = orderService;
 
         [HttpGet]
+        public async Task<IActionResult> GetOrdersByMonthYearAsync([FromQuery] int year, int month)
+        {
+            var bytes = await _orderService.ExportOrdersToCsv(year, month);
+
+            return File(bytes, "text/csv", $"orders_{year}_{month:00}.csv"); ;
+        }
+        [HttpGet("search")]
         public async Task<IActionResult> SearchAsync([FromQuery] OrderFilter filter)
         {
             var items = await _orderService.SearchAsync(filter);

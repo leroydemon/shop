@@ -9,7 +9,6 @@ namespace DbLevel.Specifications
     {
         public OrderSpecification(OrderFilter filter)
         {
-            ApplyFilter(o => o.CartId == filter.CartId);
             ApplyFilter(o => o.OrderDate == filter.OrderDate);
 
             ApplySorting(filter.SortBy, filter.Ascending);
@@ -20,7 +19,6 @@ namespace DbLevel.Specifications
         {
             Expression<Func<Order, object>> orderByExpression = sortBy switch
             {
-                OrderSortableFields.CartId => o => o.CartId,
                 OrderSortableFields.OrderTime => o => o.OrderDate,
                 _ => o => o.Id
             };

@@ -21,7 +21,6 @@ namespace ShopWebApiTests.ControllerTests
         {
             // Arrange
             var cartId = Guid.NewGuid();
-            var quantity = 1;
             var confirmationResult = true;
 
             _mockPaymentService.Setup(service => service.ConfirmPurchaseAsync(cartId))

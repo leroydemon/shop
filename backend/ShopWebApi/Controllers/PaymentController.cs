@@ -1,5 +1,5 @@
 ﻿using BussinessLogicLevel.Interfaces;
-using Microsoft.AspNetCore.Http;
+using DbLevel.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ShopWebApi.Controllers
@@ -15,6 +15,11 @@ namespace ShopWebApi.Controllers
         {
             var confirmationResult = await _paymentService.ConfirmPurchaseAsync(cartId);
             return Ok(confirmationResult);
+        }
+        [HttpGet("\"Payment/{userId}/nearby-post-offices\"")]
+        public async Task<IActionResult> GetNearbyPostOffice(Guid userId, int maxResults)
+        {
+            return Ok(await _paymentService.GetNearbyPostOffice(userId, maxResults));
         }
     }
 }

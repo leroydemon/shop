@@ -4,6 +4,7 @@ using DbLevel.Filters;
 using DbLevel.Interfaces;
 using DbLevel.Models;
 using DbLevel.Specifications;
+using System.Text;
 
 namespace BussinessLogicLevel.Services
 {
@@ -51,6 +52,25 @@ namespace BussinessLogicLevel.Services
             var updatedOrder = await _orderRepository.UpdateAsync(_mapper.Map<Order>(order));
 
             return _mapper.Map<OrderDto>(updatedOrder);
+        }
+        public async Task<byte[]> ExportOrdersToCsv(int year, int month)
+        {
+            var orders = await GetOrdersByMonthYearAsync(year, month);
+
+            var csv = new StringBuilder();
+            csv.AppendLine("Id,CustomerName,OrderDate,Amount");
+
+            foreach (var order in orders)
+            {
+                csv.AppendLine($"{order.Id},{order.CustomerName},{order.OrderDate:yyyy-MM-dd},{order.TotalPrice}");
+            }
+
+            return Encoding.UTF8.GetBytes(csv.ToString());
+        }
+        public async Task<IEnumerable<Order>> GetOrdersByMonthYearAsync(int year, int month)
+        {
+            var spec = new OrdersByMonthYearSpecification(year, month);
+            return await _orderRepository.ListAsync(spec);
         }
     }
 }

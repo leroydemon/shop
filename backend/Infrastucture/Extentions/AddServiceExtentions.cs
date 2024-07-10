@@ -48,6 +48,8 @@ namespace Infrastucture.Extentions
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IPromoCodeService, PromoCodeService>();
             services.AddScoped<IPaymentService, PaymentService>();
+            services.AddScoped<IPostOfficeService, PostOfficeService>();
+
 
             return services;
         }
