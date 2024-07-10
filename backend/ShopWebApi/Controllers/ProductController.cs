@@ -45,11 +45,11 @@ namespace ShopWebApi.Controllers
 
         [HttpPut]
         //[Authorize(Roles = "Admin")]
-        public async Task<IActionResult> UpdateAsync([FromBody] Product product)
+        public async Task<IActionResult> UpdateAsync([FromBody] ProductDto product)
         {
-            await _productService.UpdateAsync(product);
+            var updatedProduct = await _productService.UpdateAsync(product);
             _logger.LogInformation("method works correctly");
-            return Ok();
+            return Ok(updatedProduct);
         }
         [HttpDelete]
         //[Authorize(Roles = "Admin")]

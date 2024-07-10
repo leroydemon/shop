@@ -103,11 +103,11 @@ namespace BussinesLogicLevelTests.ServiceTests
         public async Task UpdateAsync_ShouldCallRepositoryUpdate()
         {
             // Arrange
-            var storageDto = new Storage { City = "Updated City", Address = "Updated Address", Phone = "987654321" };
+            var storageDto = new StorageDto { City = "Updated City", Address = "Updated Address", Phone = "987654321" };
             var storage = new Storage { Id = Guid.NewGuid(), City = "Updated City", Address = "Updated Address", Phone = "987654321" };
 
             _mockMapper.Setup(m => m.Map<Storage>(storageDto)).Returns(storage);
-            _mockStorageRepository.Setup(r => r.UpdateAsync(storage)).Returns(Task.CompletedTask);
+            _mockStorageRepository.Setup(r => r.UpdateAsync(storage)).ReturnsAsync(storage);
 
             // Act
             await _storageService.UpdateAsync(storageDto);

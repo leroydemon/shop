@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using System.Security.Claims;
 
-namespace ShopWebApi
+namespace Authorization
 {
     public class SeedRoles
     {

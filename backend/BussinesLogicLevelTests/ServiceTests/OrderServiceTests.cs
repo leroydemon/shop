@@ -24,8 +24,8 @@ namespace BussinesLogicLevelTests.ServiceTests
         {
             // Arrange
             var orderDto = new OrderDto { UserId = Guid.NewGuid(), OrderDate = DateTime.UtcNow };
-            var order = new Order { UserId = orderDto.UserId, OrderDate = orderDto.OrderDate };
-            var addedOrder = new Order { Id = Guid.NewGuid(), UserId = orderDto.UserId, OrderDate = orderDto.OrderDate };
+            var order = new Order { CartId = orderDto.UserId, OrderDate = orderDto.OrderDate };
+            var addedOrder = new Order { Id = Guid.NewGuid(), CartId = orderDto.UserId, OrderDate = orderDto.OrderDate };
 
             _mockMapper.Setup(m => m.Map<Order>(orderDto)).Returns(order);
             _mockOrderRepository.Setup(r => r.AddAsync(order)).ReturnsAsync(addedOrder);
@@ -44,8 +44,8 @@ namespace BussinesLogicLevelTests.ServiceTests
             // Arrange
             var orders = new List<Order>
             {
-                new Order { Id = Guid.NewGuid(), UserId = Guid.NewGuid(), OrderDate = DateTime.UtcNow },
-                new Order { Id = Guid.NewGuid(), UserId = Guid.NewGuid(), OrderDate = DateTime.UtcNow }
+                new Order { Id = Guid.NewGuid(), CartId = Guid.NewGuid(), OrderDate = DateTime.UtcNow },
+                new Order { Id = Guid.NewGuid(), CartId = Guid.NewGuid(), OrderDate = DateTime.UtcNow }
             };
             var orderDtos = new List<OrderDto>
             {
@@ -68,8 +68,8 @@ namespace BussinesLogicLevelTests.ServiceTests
         {
             // Arrange
             var orderId = Guid.NewGuid();
-            var order = new Order { Id = orderId, UserId = Guid.NewGuid(), OrderDate = DateTime.UtcNow };
-            var orderDto = new OrderDto { UserId = order.UserId, OrderDate = order.OrderDate };
+            var order = new Order { Id = orderId, CartId = Guid.NewGuid(), OrderDate = DateTime.UtcNow };
+            var orderDto = new OrderDto { UserId = order.CartId, OrderDate = order.OrderDate };
 
             _mockOrderRepository.Setup(r => r.GetByIdAsync(orderId)).ReturnsAsync(order);
             _mockMapper.Setup(m => m.Map<OrderDto>(order)).Returns(orderDto);
@@ -86,7 +86,7 @@ namespace BussinesLogicLevelTests.ServiceTests
         {
             // Arrange
             var orderId = Guid.NewGuid();
-            var order = new Order { Id = orderId, UserId = Guid.NewGuid(), OrderDate = DateTime.UtcNow };
+            var order = new Order { Id = orderId, CartId = Guid.NewGuid(), OrderDate = DateTime.UtcNow };
 
             _mockOrderRepository.Setup(r => r.GetByIdAsync(orderId)).ReturnsAsync(order);
             _mockOrderRepository.Setup(r => r.DeleteAsync(order)).Returns(Task.CompletedTask);
@@ -102,17 +102,17 @@ namespace BussinesLogicLevelTests.ServiceTests
         public async Task UpdateAsync_ShouldCallRepositoryUpdate()
         {
             // Arrange
-            var orderDto = new Order { UserId = Guid.NewGuid(), OrderDate = DateTime.UtcNow };
-            var order = new Order { Id = Guid.NewGuid(), UserId = orderDto.UserId, OrderDate = orderDto.OrderDate };
+            var orderDto = new OrderDto { CartId = Guid.NewGuid(), OrderDate = DateTime.UtcNow };
+            var order = new Order { Id = Guid.NewGuid(), CartId = orderDto.CartId, OrderDate = orderDto.OrderDate };
 
             _mockMapper.Setup(m => m.Map<Order>(orderDto)).Returns(order);
-            _mockOrderRepository.Setup(r => r.UpdateAsync(order)).Returns(Task.CompletedTask);
+            _mockOrderRepository.Setup(r => r.UpdateAsync(order)).ReturnsAsync(order);
 
             // Act
             await _orderService.UpdateAsync(orderDto);
 
             // Assert
-            _mockOrderRepository.Verify(r => r.UpdateAsync(orderDto), Times.Once);
+            _mockOrderRepository.Verify(r => r.UpdateAsync(order), Times.Once);
         }
     }
 }

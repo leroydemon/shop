@@ -19,7 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ApplicationDbContext\DbLevel.csproj" />
     <ProjectReference Include="..\BussinessLogicLevel\BussinessLogicLevel.csproj" />
   </ItemGroup>
 

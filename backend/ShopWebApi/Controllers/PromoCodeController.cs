@@ -14,7 +14,7 @@ namespace ShopWebApi.Controllers
         [HttpPost]
         public async Task<ActionResult> GetPromoCodeAsync(PromoCodeDto promoCode)
         {
-            await _promoCode.CreateAsync(promoCode);
+            await _promoCode.AddAsync(promoCode);
             return Ok();
         }
         [HttpDelete]
@@ -24,10 +24,10 @@ namespace ShopWebApi.Controllers
             return Ok();
         }
         [HttpPut]
-        public async Task<ActionResult> UpdateAsync(PromoCode promoCode)
+        public async Task<ActionResult> UpdateAsync(PromoCodeDto promoCode)
         {
-            await _promoCode.UpdateAsync(promoCode);
-            return Ok();
+            var updatedPromoCode = await _promoCode.UpdateAsync(promoCode);
+            return Ok(updatedPromoCode);
         }
         [HttpGet("all")]
         public async Task<ActionResult> GetAllPromoCodesAsync()

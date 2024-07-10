@@ -18,8 +18,7 @@ namespace BussinessLogicLevel.Services
         }
         public async Task<CategoryDto> AddAsync(CategoryDto categoryDto)
         {
-            var category = _mapper.Map<Category>(categoryDto);
-            var addedCategory = await _categoryRepository.AddAsync(category);
+            var addedCategory = await _categoryRepository.AddAsync(_mapper.Map<Category>(categoryDto));
             return _mapper.Map<CategoryDto>(addedCategory);
         }
         public async Task DeleteAsync(Guid id)
@@ -37,10 +36,10 @@ namespace BussinessLogicLevel.Services
             var category = await _categoryRepository.GetByIdAsync(id);
             return _mapper.Map<CategoryDto>(category);
         }
-        public async Task UpdateAsync(Category categoryInput)
+        public async Task<CategoryDto> UpdateAsync(CategoryDto category)
         {
-            var category = _mapper.Map<Category>(categoryInput);
-            await _categoryRepository.UpdateAsync(category);
+            var updatedCategory = await _categoryRepository.UpdateAsync(_mapper.Map<Category>(category));
+            return _mapper.Map<CategoryDto>(updatedCategory);
         }
     }
 }

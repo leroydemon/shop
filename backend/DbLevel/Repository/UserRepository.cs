@@ -2,7 +2,6 @@
 using DbLevel.Interfaces;
 using DbLevel.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
 
 namespace DbLevel.Repository
 {
@@ -72,10 +71,11 @@ namespace DbLevel.Repository
         {
             return await _context.Users.ToListAsync();
         }
-        public async Task UpdateAsync(User user)
+        public async Task<User> UpdateAsync(User user)
         {
             _context.Users.Update(user);
             await _context.SaveChangesAsync();
+            return user;
         }
         public async Task SetOnlineAsync(User user)
         {

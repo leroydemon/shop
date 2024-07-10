@@ -102,15 +102,15 @@ namespace BussinesLogicLevelTests.ServiceTests
         public async Task UpdateAsync_ShouldCallRepositoryUpdate()
         {
             // Arrange
-            var categoryInput = new Category { Id = Guid.NewGuid(), Name = "Updated Category" };
-            var category = new Category { Id = categoryInput.Id, Name = "Original Category" };
+            var categoryDto = new CategoryDto { Id = Guid.NewGuid(), Name = "Updated Category" };
+            var category = new Category { Id = categoryDto.Id, Name = "Original Category" };
 
-            _mockCategoryRepository.Setup(r => r.GetByIdAsync(categoryInput.Id)).ReturnsAsync(category);
-            _mockMapper.Setup(m => m.Map<Category>(categoryInput)).Returns(category);
-            _mockCategoryRepository.Setup(r => r.UpdateAsync(It.IsAny<Category>())).Returns(Task.CompletedTask);
+            _mockCategoryRepository.Setup(r => r.GetByIdAsync(categoryDto.Id)).ReturnsAsync(category);
+            _mockMapper.Setup(m => m.Map<Category>(categoryDto)).Returns(category);
+            _mockCategoryRepository.Setup(r => r.UpdateAsync(It.IsAny<Category>())).ReturnsAsync(category);
 
             // Act
-            await _categoryService.UpdateAsync(categoryInput);
+            await _categoryService.UpdateAsync(categoryDto);
 
             // Assert
             _mockCategoryRepository.Verify(r => r.UpdateAsync(category), Times.Once);

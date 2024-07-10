@@ -108,12 +108,12 @@ namespace BussinesLogicLevelTests.ServiceTests
         public async Task UpdateAsync_ShouldUpdateBrand()
         {
             // Arrange
-            var brandDto = new Brand { Name = "Updated Brand Name" };
+            var brandDto = new BrandDto { Name = "Updated Brand Name" };
             var brand = new Brand { Id = Guid.NewGuid(), Name = "Original Brand Name" };
             var mappedBrand = new Brand { Id = brand.Id, Name = brandDto.Name };
 
             _mockMapper.Setup(m => m.Map<Brand>(brandDto)).Returns(mappedBrand);
-            _mockBrandRepository.Setup(r => r.UpdateAsync(It.IsAny<Brand>())).Returns(Task.CompletedTask);
+            _mockBrandRepository.Setup(r => r.UpdateAsync(It.IsAny<Brand>())).ReturnsAsync(brand);
 
             // Act
             await _brandService.UpdateAsync(brandDto);

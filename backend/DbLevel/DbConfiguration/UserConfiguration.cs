@@ -11,7 +11,7 @@ namespace DbLevel.DbConfiguration
         {
             builder.HasMany(u => u.HistoryOrders)
                       .WithOne(o => o.User)
-                      .HasForeignKey(o => o.UserId)
+                      .HasForeignKey(o => o.CartId)
                       .OnDelete(DeleteBehavior.Cascade);
         }
     }

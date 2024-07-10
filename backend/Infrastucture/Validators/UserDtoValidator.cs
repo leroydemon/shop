@@ -7,7 +7,7 @@ namespace Infrastucture.Validators
     {
         public UserDtoValidator()
         {
-            RuleFor(x => x.Name)
+            RuleFor(x => x.UserName)
                 .Length(5);
         }
     }

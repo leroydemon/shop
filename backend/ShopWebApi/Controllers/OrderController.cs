@@ -38,10 +38,10 @@ namespace ShopWebApi.Controllers
             return Ok();
         }
         [HttpPut]
-        public async Task<IActionResult> UpdateAsync(Order order)
+        public async Task<IActionResult> UpdateAsync(OrderDto order)
         {
-            await _orderService.UpdateAsync(order);
-            return Ok();
+            var updatedOrder = await _orderService.UpdateAsync(order);
+            return Ok(updatedOrder);
         }
     }
 }

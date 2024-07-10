@@ -34,10 +34,11 @@ namespace DbLevel
             return await _context.Set<T>().FindAsync(id);
         }
 
-        public async Task UpdateAsync(T entity)
+        public async Task<T> UpdateAsync(T entity)
         {
             _context.Set<T>().Update(entity);
             await _context.SaveChangesAsync();
+            return entity;
         }
         public async Task SaveChangesAsync()
         {

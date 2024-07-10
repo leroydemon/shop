@@ -90,16 +90,16 @@ namespace ShopWebApiTests.ControllerTests
         public async Task UpdateAsync_ShouldReturnOk()
         {
             // Arrange
-            var category = new Category { Id = Guid.NewGuid(), Name = "UpdatedCategory" };
+            var categoryDto = new CategoryDto { Id = Guid.NewGuid(), Name = "UpdatedCategory" };
 
             // Act
-            var result = await _categoryController.UpdateAsync(category);
+            var result = await _categoryController.UpdateAsync(categoryDto);
 
             // Assert
-            var okResult = result as OkResult;
+            var okResult = result as OkObjectResult;
             okResult.Should().NotBeNull();
             okResult.StatusCode.Should().Be(200);
-            _mockCategoryService.Verify(service => service.UpdateAsync(category), Times.Once);
+            _mockCategoryService.Verify(service => service.UpdateAsync(categoryDto), Times.Once);
         }
 
         [Fact]

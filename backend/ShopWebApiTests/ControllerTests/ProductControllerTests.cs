@@ -106,9 +106,9 @@ namespace ShopWebApiTests.ControllerTests
         public async Task UpdateAsync_ShouldReturnOk()
         {
             // Arrange
-            var productDto = new Product { Name = "UpdatedProduct" };
+            var productDto = new ProductDto { Name = "UpdatedProduct" };
 
-            _mockProductService.Setup(service => service.UpdateAsync(productDto)).Returns(Task.CompletedTask);
+            _mockProductService.Setup(service => service.UpdateAsync(productDto)).ReturnsAsync(productDto);
 
             // Act
             var result = await _productController.UpdateAsync(productDto);
@@ -123,7 +123,7 @@ namespace ShopWebApiTests.ControllerTests
                     It.Is<Func<It.IsAnyType, Exception, string>>((v, t) => true)),
                 Times.Once);
 
-            var okResult = result as OkResult;
+            var okResult = result as OkObjectResult;
             okResult.Should().NotBeNull();
             okResult.StatusCode.Should().Be(200);
             _mockProductService.Verify(service => service.UpdateAsync(productDto), Times.Once);

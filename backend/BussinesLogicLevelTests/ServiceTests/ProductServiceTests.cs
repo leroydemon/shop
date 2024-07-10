@@ -104,13 +104,13 @@ namespace BussinesLogicLevelTests.ServiceTests
         {
             // Arrange
             var product = new Product { Id = Guid.NewGuid(), Name = "Updated Product", UnitPrice = 150m };
-            var productMapped = new Product { Id = product.Id, Name = "Updated Product", UnitPrice = 150m };
+            var productDto = new ProductDto { Id = product.Id, Name = "Updated Product", UnitPrice = 150m };
 
-            _mockMapper.Setup(m => m.Map<Product>(product)).Returns(productMapped);
-            _mockProductRepository.Setup(r => r.UpdateAsync(productMapped)).Returns(Task.CompletedTask);
+            _mockMapper.Setup(m => m.Map<Product>(productDto)).Returns(product);
+            _mockProductRepository.Setup(r => r.UpdateAsync(product)).ReturnsAsync(product);
 
             // Act
-            await _productService.UpdateAsync(product);
+            await _productService.UpdateAsync(productDto);
 
             // Assert
             _mockProductRepository.Verify(r => r.UpdateAsync(product), Times.Once);

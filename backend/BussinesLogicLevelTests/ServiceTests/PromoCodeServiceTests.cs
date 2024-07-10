@@ -32,7 +32,7 @@ namespace BussinesLogicLevelTests.ServiceTests
             _mockMapper.Setup(m => m.Map<PromoCodeDto>(addedPromoCode)).Returns(promoCodeDto);
 
             // Act
-            var result = await _promoCodeService.CreateAsync(promoCodeDto);
+            var result = await _promoCodeService.AddAsync(promoCodeDto);
 
             // Assert
             result.Should().BeEquivalentTo(promoCodeDto);
@@ -102,11 +102,11 @@ namespace BussinesLogicLevelTests.ServiceTests
         public async Task UpdateAsync_ShouldCallRepositoryUpdate()
         {
             // Arrange
-            var promoCodeDto = new PromoCode { Code = "UPDATEDCODE", AmountDiscoint = 20, ExpireDate = DateTime.UtcNow.AddDays(90), IsActive = false };
+            var promoCodeDto = new PromoCodeDto { Code = "UPDATEDCODE", AmountDiscoint = 20, ExpireDate = DateTime.UtcNow.AddDays(90), IsActive = false };
             var promoCode = new PromoCode { Id = Guid.NewGuid(), Code = "UPDATEDCODE", AmountDiscoint = 20, ExpireDate = DateTime.UtcNow.AddDays(90), IsActive = false };
 
             _mockMapper.Setup(m => m.Map<PromoCode>(promoCodeDto)).Returns(promoCode);
-            _mockPromoCodeRepository.Setup(r => r.UpdateAsync(promoCode)).Returns(Task.CompletedTask);
+            _mockPromoCodeRepository.Setup(r => r.UpdateAsync(promoCode)).ReturnsAsync(promoCode);
 
             // Act
             await _promoCodeService.UpdateAsync(promoCodeDto);

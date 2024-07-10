@@ -4,6 +4,7 @@ namespace Infrastucture.DtoModels
 {
     public class ProductDto
     {
+        public Guid Id { get; set; }
         public Guid? CategoryId { get; set; }
         public Guid BrandId { get; set; }
         public Size Size { get; set; }

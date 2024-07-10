@@ -37,11 +37,11 @@ namespace ShopWebApi.Controllers
             return Ok(product);
         }
         [HttpPut]
-        public async Task<IActionResult> UpdateAsync([FromBody] ProductStorage product)
+        public async Task<IActionResult> UpdateAsync([FromBody] ProductStorageDto product)
         {
-            await _productStorageService.UpdateAsync(product);
+            var updatedPS = await _productStorageService.UpdateAsync(product);
             _logger.LogInformation("method works correctly");
-            return Ok();
+            return Ok(updatedPS);
         }
         [HttpDelete]
         public async Task<IActionResult> DeleteAsync(Guid id)

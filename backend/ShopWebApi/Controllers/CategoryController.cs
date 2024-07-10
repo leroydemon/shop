@@ -34,7 +34,6 @@ namespace ShopWebApi.Controllers
         }
 
         [HttpPost]
-        //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> AddAsync([FromBody] CategoryDto category)
         {
             await _categoryService.AddAsync(category);
@@ -43,15 +42,13 @@ namespace ShopWebApi.Controllers
         }
 
         [HttpPut]
-        //[Authorize(Roles = "Admin")]
-        public async Task<IActionResult> UpdateAsync([FromBody] Category category)
+        public async Task<IActionResult> UpdateAsync([FromBody] CategoryDto category)
         {
-            await _categoryService.UpdateAsync(category);
-            return Ok();
+            var updatedCategory = await _categoryService.UpdateAsync(category);
+            return Ok(updatedCategory);
         }
 
         [HttpDelete("{id:int}")]
-        //[Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
         public async Task<IActionResult> DeleteAsync(Guid id)
         {
              await _categoryService.DeleteAsync(id);

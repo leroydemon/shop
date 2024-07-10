@@ -1,7 +1,6 @@
 using Infrastucture.Services;
 using Infrastucture.Extentions;
-using ShopWebApi;
-using Àuthorization;
+using Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 

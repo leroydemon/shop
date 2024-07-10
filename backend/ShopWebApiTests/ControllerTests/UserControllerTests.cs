@@ -23,8 +23,8 @@ namespace ShopWebApiTests.ControllerTests
             // Arrange
             var users = new List<UserDto>
             {
-                new UserDto { Name = "User1", Surname = "Surname1" },
-                new UserDto { Name = "User2", Surname = "Surname2" }
+                new UserDto { UserName = "User1", Surname = "Surname1" },
+                new UserDto { UserName = "User2", Surname = "Surname2" }
             };
 
             _mockUserService.Setup(service => service.GetSortedAsync(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<bool>()))
@@ -95,7 +95,7 @@ namespace ShopWebApiTests.ControllerTests
         {
             // Arrange
             var userId = Guid.NewGuid();
-            var user = new UserDto { Name = "User1", Surname = "Surname1" };
+            var user = new UserDto { UserName = "User1", Surname = "Surname1" };
 
             _mockUserService.Setup(service => service.GetByIdAsync(userId)).ReturnsAsync(user);
 

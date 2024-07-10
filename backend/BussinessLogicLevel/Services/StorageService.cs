@@ -29,15 +29,14 @@ namespace BussinessLogicLevel.Services
             var storage = await _storageRepository.GetByIdAsync(id);
             await _storageRepository.DeleteAsync(storage);
         }
-        public async Task UpdateAsync(Storage storage)
+        public async Task<StorageDto> UpdateAsync(StorageDto storage)
         {
-            var storageMapped = _mapper.Map<Storage>(storage);
-            await _storageRepository.UpdateAsync(storageMapped);
+            var updatedStorage = await _storageRepository.UpdateAsync(_mapper.Map<Storage>(storage));
+            return _mapper.Map<StorageDto>(updatedStorage);
         }
         public async Task<StorageDto> AddAsync(StorageDto storageDto)
         {
-            var storage = _mapper.Map<Storage>(storageDto);
-            var addedStorage = await _storageRepository.AddAsync(storage);
+            var addedStorage = await _storageRepository.AddAsync(_mapper.Map<Storage>(storageDto));
             return _mapper.Map<StorageDto>(addedStorage);
         }
     }
