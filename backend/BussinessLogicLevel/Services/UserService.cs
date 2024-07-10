@@ -58,6 +58,8 @@ namespace BussinessLogicLevel.Services
         public async Task<UserDto> UpdateAsync(UserDto user)
         {
             var updatedUser = await _userRepository.UpdateAsync(_mapper.Map<User>(user));
+
+            // маппер использовать
             var userDto = new UserDto
             {
                 Id = updatedUser.Id,

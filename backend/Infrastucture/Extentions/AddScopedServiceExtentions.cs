@@ -19,7 +19,7 @@ namespace Infrastucture.Extentions
             var repositoryTypes = repositoryAssembly.GetTypes()
                 .Where(t => typeof(IBase).IsAssignableFrom(t) && t.IsClass && !t.IsAbstract)
                 .ToList();
-
+            // IBase - я сущностей
             foreach (var repoType in repositoryTypes)
             {
                 var interfaceTypes = repoType.GetInterfaces()
@@ -34,7 +34,8 @@ namespace Infrastucture.Extentions
                     }
                 }
             }
-
+            
+            
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<TokenGeneratorService>();
             services.AddScoped<IAccountService, AccountService>();

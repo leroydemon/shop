@@ -1,5 +1,6 @@
 ﻿namespace DbLevel.SortByEnum
 {
+    //name - SortableFields
     public enum SortBy
     {
         Id,
