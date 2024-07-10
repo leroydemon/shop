@@ -13,19 +13,31 @@ namespace Infrastucture.Extentions
     {
         public static IServiceCollection AddScopedService(this IServiceCollection services)
         {
-            services.AddScoped<TokenGeneratorService>();
-            services.AddScoped(typeof(DbLevel.Repository<>));
-            services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IRepository<User>, Repository<User>>();
-            services.AddScoped<IRepository<Brand>, Repository<Brand>>();
-            services.AddScoped<IRepository<Cart>, Repository<Cart>>();
-            services.AddScoped<IRepository<Category>, Repository<Category>>();
-            services.AddScoped<IRepository<Order>, Repository<Order>>();
-            services.AddScoped<IRepository<Product>, Repository<Product>>();
-            services.AddScoped<IRepository<ProductStorage>, Repository<ProductStorage>>();
-            services.AddScoped<IRepository<Storage>, Repository<Storage>>();
-            services.AddScoped<IRepository<PromoCode>, Repository<PromoCode>>();
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
+            var repositoryAssembly = typeof(IBase).Assembly;
+            var repositoryTypes = repositoryAssembly.GetTypes()
+                .Where(t => typeof(IBase).IsAssignableFrom(t) && t.IsClass && !t.IsAbstract)
+                .ToList();
+            // IBase - я сущностей
+            foreach (var repoType in repositoryTypes)
+            {
+                var interfaceTypes = repoType.GetInterfaces()
+                    .Where(i => i != typeof(IBase) && typeof(IBase).IsAssignableFrom(i))
+                    .ToList();
+
+                if (interfaceTypes.Any())
+                {
+                    foreach (var interfaceType in interfaceTypes)
+                    {
+                        services.AddScoped(interfaceType, repoType);
+                    }
+                }
+            }
+            
+            
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<TokenGeneratorService>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IProductStorageService, ProductStorageService>();
             services.AddScoped<IProductService, ProductService>();

@@ -6,14 +6,10 @@ namespace ShopWebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PaymentController : ControllerBase
+    public class PaymentController(IPaymentService paymentService) : ControllerBase
     {
-        private readonly IPaymentService _paymentService;
+        private readonly IPaymentService _paymentService = paymentService;
 
-        public PaymentController(IPaymentService paymentService)
-        {
-            _paymentService = paymentService;
-        }
         [HttpGet]
         public async Task<IActionResult> ConfirmPurchaseAsync(Guid cartId, int quantity)
         {

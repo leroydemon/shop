@@ -1,4 +1,5 @@
 ﻿using BussinessLogicLevel.Interfaces;
+using DbLevel.SortByEnum;
 using FluentAssertions;
 using Infrastucture.DtoModels;
 using Microsoft.AspNetCore.Mvc;
@@ -27,11 +28,11 @@ namespace ShopWebApiTests.ControllerTests
                 new UserDto { UserName = "User2", Surname = "Surname2" }
             };
 
-            _mockUserService.Setup(service => service.GetSortedAsync(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<bool>()))
+            _mockUserService.Setup(service => service.GetSortedAsync(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<UserSortBy>(), It.IsAny<bool>()))
                 .ReturnsAsync(users);
 
             // Act
-            var result = await _userController.GetSortedAsync("search", 1, 10, "name", true);
+            var result = await _userController.GetSortedAsync("search", 1, 10, UserSortBy.UserName, true);
 
             // Assert
             var okResult = result as OkObjectResult;

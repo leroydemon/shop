@@ -6,6 +6,7 @@ using System.Text.Json;
 
 namespace BussinessLogicLevel.Services
 {
+    // навести красоту
     public class CartService : ICartService
     {
         private readonly IRepository<Cart> _cartRepository;
@@ -44,6 +45,7 @@ namespace BussinessLogicLevel.Services
                 TotalPrice = cart.TotalPrice, 
                 UserId = cart.UserId};
             return cartDto; //mapper doesn't work here
+            // вай?
         }
 
         public async Task ClearAsync(Guid cartId)
@@ -53,6 +55,7 @@ namespace BussinessLogicLevel.Services
             cart.ProductList = new Dictionary<Guid, int>();
             cart.TotalPrice = 0;
             cart.ProductAmount = 0;
+            // вызываем апдейт
             await _cartRepository.SaveChangesAsync();
         }
 
@@ -95,6 +98,8 @@ namespace BussinessLogicLevel.Services
             };
             return await _cartRepository.AddAsync(cart);
         }
+
+        //не используется нигде
         public async Task SaveChangesAsync()
         {
             await _cartRepository.SaveChangesAsync();

@@ -5,20 +5,17 @@ namespace ShopWebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CartController : ControllerBase
+    public class CartController(ICartService cartService) : ControllerBase
     {
-        private readonly ICartService _cartService;
-        public CartController(ICartService cartService)
-        {
-            _cartService = cartService;
-        }
+        private readonly ICartService _cartService = cartService;
+
         [HttpPost]
         public async Task<IActionResult> AddToAsync(Guid cartId, Guid productId, int quantity)
         {
             var cart = await _cartService.AddToAsync(cartId, productId, quantity);
             return Ok(cart);
         }
-        [HttpDelete("clearcart")]
+        [HttpDelete("{cartId}/clear")]
         public async Task<IActionResult> ClearAsync(Guid cartId)
         {
             await _cartService.ClearAsync(cartId);

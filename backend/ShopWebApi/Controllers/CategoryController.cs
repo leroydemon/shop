@@ -6,26 +6,21 @@ namespace ShopWebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CategoryController : ControllerBase
+    public class CategoryController(ICategoryService categoryService, ILogger<CategoryController> logger) : ControllerBase
     {
-        private readonly ICategoryService _categoryService;
-        private readonly ILogger<CategoryController> _logger;
-        public CategoryController(ICategoryService categoryService, ILogger<CategoryController> logger)
-        {
-            _categoryService = categoryService;
-            _logger = logger;
-        }
+        private readonly ICategoryService _categoryService = categoryService;
+        private readonly ILogger<CategoryController> _logger = logger;
 
         [HttpGet]
         public async Task<IActionResult> GetAllAsync()
         {
-            _logger.LogInformation("Я работаю!");
+            _logger.LogInformation("Я работаю!"); // не ври
             var item = await _categoryService.GetAllAsync();
 
             return Ok(item);
         }
 
-        [HttpGet("{id:int}")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetProductByIdAsync(Guid id)
         {
             var item = await _categoryService.GetCategoryByIdAsync(id);
@@ -48,7 +43,7 @@ namespace ShopWebApi.Controllers
             return Ok(updatedCategory);
         }
 
-        [HttpDelete("{id:int}")]
+        [HttpDelete]
         public async Task<IActionResult> DeleteAsync(Guid id)
         {
              await _categoryService.DeleteAsync(id);

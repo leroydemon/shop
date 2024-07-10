@@ -1,5 +1,7 @@
 ﻿using BussinessLogicLevel.Interfaces;
+using BussinessLogicLevel.Services;
 using DbLevel.Models;
+using DbLevel.SortByEnum;
 using Infrastucture.DtoModels;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,17 +9,18 @@ namespace ShopWebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductController : ControllerBase
+    public class ProductController(IProductService productService, ILogger<ProductController> logger) : ControllerBase
     {
-        private readonly IProductService _productService;
-        private readonly ILogger<ProductController> _logger;
-        public ProductController(IProductService productService, ILogger<ProductController> logger)
+        private readonly IProductService _productService = productService;
+        private readonly ILogger<ProductController> _logger = logger;
+
+        [HttpGet("search")]
+        public async Task<IActionResult> GetSortedAsync(string searchTerm, int pageNumber, int pageSize, SortBy sortBy, bool ascending)
         {
-            _productService = productService;
-            _logger = logger;
+            //var items = await _productService.GetSortedAsync(searchTerm, pageNumber, pageSize, sortBy, ascending);
+            return Ok();
         }
-        [HttpGet("all")]
-        //[Authorize(Roles = "Admin")]
+        [HttpGet]
         public async Task<IActionResult> GetAllAsync() 
         { 
             var item = await _productService.GetAllAsync();
@@ -25,17 +28,14 @@ namespace ShopWebApi.Controllers
             return Ok(item);
         }
 
-        [HttpGet("{id:int}")]
-        //[Authorize(Roles = "Admin")]    
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetProductByIdAsync(Guid id) 
         {
             var item = await _productService.GetByIdAsync(id);
             _logger.LogInformation("method works correctly");
             return Ok(item);
         }
-
         [HttpPost]
-        //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> AddAsync([FromBody] ProductDto productDto)
         {  
             var product = await _productService.AddAsync(productDto);
@@ -44,7 +44,6 @@ namespace ShopWebApi.Controllers
         }
 
         [HttpPut]
-        //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateAsync([FromBody] ProductDto product)
         {
             var updatedProduct = await _productService.UpdateAsync(product);
@@ -52,7 +51,6 @@ namespace ShopWebApi.Controllers
             return Ok(updatedProduct);
         }
         [HttpDelete]
-        //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteAsync(Guid id)
         {
             if (!ModelState.IsValid)
