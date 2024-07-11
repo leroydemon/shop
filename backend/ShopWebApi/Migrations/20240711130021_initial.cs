@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ShopWebApi.Migrations
 {
     /// <inheritdoc />
-    public partial class newMigration : Migration
+    public partial class initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -33,8 +33,13 @@ namespace ShopWebApi.Migrations
                     CartId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     Surname = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Phone = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AddressInfo_Country = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AddressInfo_City = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AddressInfo_Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsOnline = table.Column<bool>(type: "bit", nullable: false),
+                    Latitude = table.Column<double>(type: "float", nullable: false),
+                    Longitude = table.Column<double>(type: "float", nullable: false),
                     CreatedDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -105,11 +110,31 @@ namespace ShopWebApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PromoCodes",
+                name: "PostOffice",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Country = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    City = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PostalCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Latitude = table.Column<double>(type: "float", nullable: false),
+                    Longitude = table.Column<double>(type: "float", nullable: false),
+                    CreatedDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDateTime = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PostOffice", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PromoCode",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Code = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AmountDiscoint = table.Column<int>(type: "int", nullable: false),
                     ExpireDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
@@ -118,7 +143,7 @@ namespace ShopWebApi.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PromoCodes", x => x.Id);
+                    table.PrimaryKey("PK_PromoCode", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -127,6 +152,7 @@ namespace ShopWebApi.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Country = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     City = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Phone = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -249,9 +275,10 @@ namespace ShopWebApi.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CartId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     OrderDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProductListJson = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TotalPrice = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: true),
                     CreatedDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedDateTime = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -280,9 +307,9 @@ namespace ShopWebApi.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UnitPrice = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CreatedDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    UpdatedDateTime = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -413,10 +440,13 @@ namespace ShopWebApi.Migrations
                 name: "Orders");
 
             migrationBuilder.DropTable(
+                name: "PostOffice");
+
+            migrationBuilder.DropTable(
                 name: "ProductStorages");
 
             migrationBuilder.DropTable(
-                name: "PromoCodes");
+                name: "PromoCode");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

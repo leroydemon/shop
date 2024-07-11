@@ -7,19 +7,17 @@ namespace PostOfficeAPI.Controllers
     [Route("api/[controller]")]
     public class PostOfficesController : ControllerBase
     {
-        private readonly HttpClient _httpClient;
-        private readonly PostOfficeService postOfficeService;
+        private readonly PostOfficeService _postOfficeService;
 
-        public PostOfficesController(HttpClient httpClient, PostOfficeService postOfficeService)
+        public PostOfficesController(PostOfficeService postOfficeService)
         {
-            _httpClient = httpClient;
-            this.postOfficeService = postOfficeService;
+            _postOfficeService = postOfficeService;
         }
         [HttpGet]
-        public async Task<string> GetPostOfficesAsync()
+        public async Task<IActionResult> GetPostOfficesAsync()
         {
-            var stringjson = await postOfficeService.GetPostOfficesJsonAsync();
-            return stringjson;
+            var stringjson = await _postOfficeService.GetPostOfficesAsync();
+            return Ok(stringjson);
         }
     }
 }

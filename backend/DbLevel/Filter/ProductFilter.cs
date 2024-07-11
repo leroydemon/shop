@@ -1,9 +1,10 @@
 ﻿using DbLevel.Enum;
+using DbLevel.Filter;
 using DbLevel.SortableFields;
 
 namespace DbLevel.Filters
 {
-    public class ProductFilter
+    public class ProductFilter : FilterBase<ProductSortableFields>
     {
         public Guid? CategoryId { get; set; }
         public Guid? BrandId { get; set; }
@@ -14,9 +15,5 @@ namespace DbLevel.Filters
         public string? Name { get; set; }
         public decimal? MinPrice { get; set; }
         public decimal? MaxPrice { get; set; }
-        public ProductSortableFields SortBy { get; set; }
-        public bool Ascending { get; set; } = true;
-        public int Skip { get; set; } = 0;
-        public int Take { get; set; } = 10;
     }
 }

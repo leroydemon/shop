@@ -54,7 +54,7 @@ namespace DbLevel.Specifications
 
         protected void ApplyPaging(int skip, int take)
         {
-            Skip = skip;
+            Skip = (skip - 1) * take;
             Take = take;
             IsPagingEnabled = true;
         }

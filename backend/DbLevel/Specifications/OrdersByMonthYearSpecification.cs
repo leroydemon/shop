@@ -1,12 +1,13 @@
 ﻿using DbLevel.Models;
+using System.Data;
 
 namespace DbLevel.Specifications
 {
-    public class OrdersByMonthYearSpecification : SpecificationBase<Order>
+    public class OrderbyDateRangeSpecification : SpecificationBase<Order>
     {
-        public OrdersByMonthYearSpecification(int year, int month)
+        public OrderbyDateRangeSpecification(DateTime start, DateTime end)
         {
-            ApplyFilter(o => o.OrderDate.Month == month && o.OrderDate.Year == year);
+            ApplyFilter(order => order.OrderDate >= start && order.OrderDate <= end);
         }
     }
 }

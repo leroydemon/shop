@@ -1,4 +1,5 @@
-﻿using DbLevel.Filters;
+﻿using DbLevel.Enum;
+using DbLevel.Filters;
 using DbLevel.Models;
 using DbLevel.SortableFields;
 using System.Linq.Expressions;
@@ -54,10 +55,10 @@ namespace DbLevel.Specifications
                 ApplyFilter(p => p.UnitPrice <= filter.MaxPrice.Value);
             }
 
-            ApplySorting(filter.SortBy, filter.Ascending);
+            ApplySorting(filter.OrderBy, filter.Ascending);
             ApplyPaging(filter.Skip, filter.Take);
         }
-        private void ApplySorting(ProductSortableFields sortBy, bool ascending)
+        private void ApplySorting(ProductSortableFields sortBy, OrderByDirection ascending)
         {
             Expression<Func<Product, object>> orderByExpression = sortBy switch
             {
@@ -68,7 +69,7 @@ namespace DbLevel.Specifications
                 _ => p => p.Id
             };
 
-            if (ascending)
+            if (ascending == OrderByDirection.Ascending)
             {
                 ApplyOrderBy(orderByExpression);
             }

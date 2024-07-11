@@ -2,14 +2,12 @@
 
 namespace DbLevel.Models
 {
-    public class Order : IEntity
+    public class Order : EntityBase
     {
-        public Guid Id { get; set; }
-        public DateTime OrderDate { get; set; } = DateTime.Now;
-        public string CustomerName { get; set; }
+        public DateTime OrderDate { get; set; } = DateTime.UtcNow;
+        public Guid UserId { get; set; }
+        public User User { get; set; }
         public string? ProductListJson { get; set; }
         public decimal? TotalPrice { get; set; }
-        public DateTime CreatedDateTime { get; set; } = DateTime.Now;
-        public DateTime? UpdatedDateTime { get; set; } = DateTime.Now;
     }
 }

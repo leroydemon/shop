@@ -1,9 +1,8 @@
-﻿
-namespace DbLevel
+﻿namespace DbLevel.Settings
 {
     public class CacheSettings
     {
-        public string? PostOfficesCacheKey { get; set; }
+        public string PostOfficesCacheKey { get; set; }
         public int CacheExpirationInDays { get; set; }
     }
 }

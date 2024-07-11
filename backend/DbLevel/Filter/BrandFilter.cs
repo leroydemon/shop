@@ -1,15 +1,12 @@
-﻿using DbLevel.SortableFields;
+﻿using DbLevel.Filter;
+using DbLevel.SortableFields;
 
 namespace DbLevel.Filters
 {
-    public class BrandFilter
+    public class BrandFilter : FilterBase<BrandSortableFields>
     {
-        public string Name { get; set; }
+        public string? Name { get; set; }
         public string? Collection { get; set; }
-        public string Model { get; set; }
-        public BrandSortableFields SortBy { get; set; }
-        public bool Ascending {  get; set; } = true;
-        public int Skip {  get; set; } = 0;
-        public int Take { get; set; } = 10;
+        public string? Model { get; set; }
     }
 }

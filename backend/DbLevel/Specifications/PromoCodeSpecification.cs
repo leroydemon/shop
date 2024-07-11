@@ -1,4 +1,5 @@
-﻿using DbLevel.Filters;
+﻿using DbLevel.Enum;
+using DbLevel.Filters;
 using DbLevel.Models;
 using DbLevel.SortableFields;
 using System.Linq.Expressions;
@@ -23,11 +24,11 @@ namespace DbLevel.Specifications
             ApplyFilter(p => p.ExpireDate == filter.ExpireDate);
             ApplyFilter(p => p.IsActive == filter.IsActive);
 
-            ApplySorting(filter.SortBy, filter.Ascending);
+            ApplySorting(filter.OrderBy, filter.Ascending);
             ApplyPaging(filter.Skip, filter.Take);
         }
 
-        private void ApplySorting(PromoCodeSortableFields sortBy, bool ascending)
+        private void ApplySorting(PromoCodeSortableFields sortBy, OrderByDirection ascending)
         {
             Expression<Func<PromoCode, object>> orderByExpression = sortBy switch
             {
@@ -39,7 +40,7 @@ namespace DbLevel.Specifications
                 _ => p => p.Id
             };
 
-            if (ascending)
+            if (ascending == OrderByDirection.Ascending)
             {
                 ApplyOrderBy(orderByExpression);
             }

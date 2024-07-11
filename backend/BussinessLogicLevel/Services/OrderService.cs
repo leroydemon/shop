@@ -4,6 +4,7 @@ using DbLevel.Filters;
 using DbLevel.Interfaces;
 using DbLevel.Models;
 using DbLevel.Specifications;
+using Microsoft.EntityFrameworkCore;
 using System.Text;
 
 namespace BussinessLogicLevel.Services
@@ -53,23 +54,25 @@ namespace BussinessLogicLevel.Services
 
             return _mapper.Map<OrderDto>(updatedOrder);
         }
-        public async Task<byte[]> ExportOrdersToCsv(int year, int month)
+        public async Task<byte[]> ExportOrdersToCsv(DateTime startDate, DateTime endDate)
         {
-            var orders = await GetOrdersByMonthYearAsync(year, month);
+            var orders = await GetOrdersByDateRangeAsync(startDate, endDate);
 
             var csv = new StringBuilder();
             csv.AppendLine("Id,CustomerName,OrderDate,Amount");
 
             foreach (var order in orders)
             {
-                csv.AppendLine($"{order.Id},{order.CustomerName},{order.OrderDate:yyyy-MM-dd},{order.TotalPrice}");
+                csv.AppendLine($"{order.Id},{order.User.UserName},{order.User.Email},{order.OrderDate:yyyy-MM-dd},{order.TotalPrice}");
             }
 
             return Encoding.UTF8.GetBytes(csv.ToString());
         }
-        public async Task<IEnumerable<Order>> GetOrdersByMonthYearAsync(int year, int month)
+
+        private async Task<IEnumerable<Order>> GetOrdersByDateRangeAsync(DateTime startDate, DateTime endDate)
         {
-            var spec = new OrdersByMonthYearSpecification(year, month);
+            var spec = new OrderbyDateRangeSpecification(startDate, endDate);
+
             return await _orderRepository.ListAsync(spec);
         }
     }

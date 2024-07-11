@@ -12,11 +12,11 @@ namespace ShopWebApi.Controllers
         private readonly IOrderService _orderService = orderService;
 
         [HttpGet]
-        public async Task<IActionResult> GetOrdersByMonthYearAsync([FromQuery] int year, int month)
+        public async Task<IActionResult> GetOrdersByMonthYearAsync([FromQuery] DateTime startDate, DateTime endDate)
         {
-            var bytes = await _orderService.ExportOrdersToCsv(year, month);
+            var bytes = await _orderService.ExportOrdersToCsv(startDate, endDate);
 
-            return File(bytes, "text/csv", $"orders_{year}_{month:00}.csv"); ;
+            return File(bytes, "text/csv", $"orders_{startDate}_{endDate}.csv"); ;
         }
         [HttpGet("search")]
         public async Task<IActionResult> SearchAsync([FromQuery] OrderFilter filter)

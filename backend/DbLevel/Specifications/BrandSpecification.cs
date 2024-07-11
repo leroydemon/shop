@@ -1,4 +1,6 @@
-﻿using DbLevel.Filters;
+﻿using DbLevel.Enum;
+using DbLevel.Filter;
+using DbLevel.Filters;
 using DbLevel.Models;
 using DbLevel.SortableFields;
 using System.Linq.Expressions;
@@ -25,11 +27,11 @@ namespace DbLevel.Specifications
             }
 
 
-            ApplySorting(filter.SortBy, filter.Ascending);
+            ApplySorting(filter.OrderBy, filter.Ascending);
             ApplyPaging(filter.Skip, filter.Take);
         }
 
-        private void ApplySorting(BrandSortableFields sortBy, bool ascending)
+        private void ApplySorting(BrandSortableFields sortBy, OrderByDirection ascending)
         {
             Expression<Func<Brand, object>> orderByExpression = sortBy switch
             {
@@ -39,7 +41,7 @@ namespace DbLevel.Specifications
                 _ => b => b.Id
             };
 
-            if (ascending)
+            if (ascending == OrderByDirection.Ascending)
             {
                 ApplyOrderBy(orderByExpression);
             }

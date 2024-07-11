@@ -25,7 +25,7 @@ namespace BussinesLogicLevelTests.ServiceTests
         {
             // Arrange
             var storageId = Guid.NewGuid();
-            var storage = new Storage { Id = storageId, City = "City1", Address = "Address1", Phone = "123456789" };
+            var storage = new Storage { Id = storageId, Phone = "123456789" };
             var storageDto = new StorageDto { City = "City1", Address = "Address1", Phone = "123456789" };
 
             _mockStorageRepository.Setup(r => r.GetByIdAsync(storageId)).ReturnsAsync(storage);
@@ -44,8 +44,8 @@ namespace BussinesLogicLevelTests.ServiceTests
         {
             // Arrange
             var storageDto = new StorageDto { City = "City1", Address = "Address1", Phone = "123456789" };
-            var storage = new Storage { City = "City1", Address = "Address1", Phone = "123456789" };
-            var addedStorage = new Storage { Id = Guid.NewGuid(), City = "City1", Address = "Address1", Phone = "123456789" };
+            var storage = new Storage {  Phone = "123456789" };
+            var addedStorage = new Storage { Id = Guid.NewGuid(), Phone = "123456789" };
 
             _mockMapper.Setup(m => m.Map<Storage>(storageDto)).Returns(storage);
             _mockStorageRepository.Setup(r => r.AddAsync(storage)).ReturnsAsync(addedStorage);
@@ -63,7 +63,7 @@ namespace BussinesLogicLevelTests.ServiceTests
         {
             // Arrange
             var storageId = Guid.NewGuid();
-            var storage = new Storage { Id = storageId, City = "City1", Address = "Address1", Phone = "123456789" };
+            var storage = new Storage { Id = storageId, Phone = "123456789" };
 
             _mockStorageRepository.Setup(r => r.GetByIdAsync(storageId)).ReturnsAsync(storage);
             _mockStorageRepository.Setup(r => r.DeleteAsync(storage)).Returns(Task.CompletedTask);
@@ -80,7 +80,7 @@ namespace BussinesLogicLevelTests.ServiceTests
         {
             // Arrange
             var storageDto = new StorageDto { City = "Updated City", Address = "Updated Address", Phone = "987654321" };
-            var storage = new Storage { Id = Guid.NewGuid(), City = "Updated City", Address = "Updated Address", Phone = "987654321" };
+            var storage = new Storage { Id = Guid.NewGuid(), Phone = "987654321" };
 
             _mockMapper.Setup(m => m.Map<Storage>(storageDto)).Returns(storage);
             _mockStorageRepository.Setup(r => r.UpdateAsync(storage)).ReturnsAsync(storage);

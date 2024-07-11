@@ -1,12 +1,9 @@
-﻿using DbLevel.SortableFields;
+﻿using DbLevel.Filter;
+using DbLevel.SortableFields;
 
 namespace DbLevel.Filters
 {
-    public class CartFilter
+    public class CartFilter : FilterBase<CartSortableFields>
     {
-        public UserSortableFields SortBy { get; set; }
-        public bool Ascending {  get; set; } = true;
-        public int Skip {  get; set; } = 0;
-        public int Take { get; set; } = 10;
     }
 }

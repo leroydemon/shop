@@ -11,6 +11,6 @@ namespace BussinessLogicLevel.Interfaces
         Task<OrderDto> UpdateAsync(OrderDto orderDto);
         Task RemoveAsync(Guid id);
         Task<OrderDto> GetByIdAsync(Guid id);
-        Task<byte[]> ExportOrdersToCsv(int month, int year);
+        Task<byte[]> ExportOrdersToCsv(DateTime startDate, DateTime endDate);
     }
 }

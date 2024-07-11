@@ -1,5 +1,5 @@
 ﻿using BussinessLogicLevel.Interfaces;
-using DbLevel;
+using DbLevel.Settings;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 
@@ -10,12 +10,14 @@ namespace BussinessLogicLevel.Services
         private readonly HttpClient _httpClient;
         private readonly IMemoryCache _cache;
         private readonly CacheSettings _cacheSettings;
+        private readonly ApiSettings _apiSettings;
 
-        public PostOfficeService(HttpClient httpClient, IMemoryCache cache, IOptions<CacheSettings> cacheSettings)
+        public PostOfficeService(HttpClient httpClient, IMemoryCache cache, IOptions<CacheSettings> cacheSettings, ApiSettings apiSettings)
         {
             _httpClient = httpClient;
             _cache = cache;
             _cacheSettings = cacheSettings.Value;
+            _apiSettings = apiSettings;
         }
 
         public async Task<string> GetPostOfficesJsonAsync()
@@ -25,7 +27,7 @@ namespace BussinessLogicLevel.Services
                 return cachedData;
             }
 
-            var response = await _httpClient.GetAsync("https://localhost:7223/api/postoffices");
+            var response = await _httpClient.GetAsync(_apiSettings.PostOfficesApiUrl);
             response.EnsureSuccessStatusCode();
 
             var responseString = await response.Content.ReadAsStringAsync();

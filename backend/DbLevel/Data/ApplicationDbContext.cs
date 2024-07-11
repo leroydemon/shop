@@ -18,6 +18,7 @@ namespace DbLevel.Data
         public DbSet<ProductStorage> ProductStorages { get; set; }
         public DbSet<Storage> Storages { get; set; }
         public DbSet<PromoCode> PromoCodes { get; set; }
+        public DbSet<PromoCode> PostOffices { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -26,6 +27,8 @@ namespace DbLevel.Data
             modelBuilder.ApplyConfiguration(new ProductConfiguration());
             modelBuilder.ApplyConfiguration(new CategoryConfiguration());
             modelBuilder.ApplyConfiguration(new OrderConfiguration());
+            modelBuilder.ApplyConfiguration(new PostOfficeConfiguration());
+            modelBuilder.ApplyConfiguration(new StorageConfiguration());
         }
     }
 }

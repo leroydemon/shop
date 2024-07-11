@@ -1,5 +1,5 @@
-﻿using DbLevel;
-using DbLevel.Data;
+﻿using DbLevel.Data;
+using DbLevel.Settings;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Infrastucture.MappingProfilies;
@@ -27,7 +27,9 @@ namespace Infrastucture.Extentions
             services.AddFluentValidationClientsideAdapters();
             services.AddValidatorsFromAssembly(typeof(ProductDtoValidator).Assembly);
             services.Configure<CacheSettings>(configuration.GetSection("CacheSettings"));
+            services.Configure<ApiSettings>(configuration.GetSection("ApiSettings"));
             services.AddSingleton(resolver => resolver.GetRequiredService<IOptions<CacheSettings>>().Value);
+            services.AddSingleton(resolver => resolver.GetRequiredService<IOptions<ApiSettings>>().Value);
 
             return services;
         }

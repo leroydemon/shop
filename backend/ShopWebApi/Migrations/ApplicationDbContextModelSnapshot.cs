@@ -138,10 +138,6 @@ namespace ShopWebApi.Migrations
                     b.Property<DateTime>("CreatedDateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("CustomerName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
 
@@ -155,7 +151,7 @@ namespace ShopWebApi.Migrations
                     b.Property<DateTime?>("UpdatedDateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("UserId")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
@@ -163,6 +159,37 @@ namespace ShopWebApi.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("DbLevel.Models.PostOffice", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("Latitude")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Longitude")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PostalCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PostOffice");
                 });
 
             modelBuilder.Entity("DbLevel.Models.Product", b =>
@@ -259,7 +286,6 @@ namespace ShopWebApi.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Code")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedDateTime")
@@ -276,7 +302,7 @@ namespace ShopWebApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PromoCodes");
+                    b.ToTable("PromoCode");
                 });
 
             modelBuilder.Entity("DbLevel.Models.Storage", b =>
@@ -284,12 +310,6 @@ namespace ShopWebApi.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("City")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedDateTime")
                         .HasColumnType("datetime2");
@@ -317,20 +337,11 @@ namespace ShopWebApi.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<Guid?>("CartId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("City")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Country")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedDateTime")
@@ -515,9 +526,44 @@ namespace ShopWebApi.Migrations
 
             modelBuilder.Entity("DbLevel.Models.Order", b =>
                 {
-                    b.HasOne("DbLevel.Models.User", null)
+                    b.HasOne("DbLevel.Models.User", "User")
                         .WithMany("HistoryOrders")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("DbLevel.Models.PostOffice", b =>
+                {
+                    b.OwnsOne("DbLevel.Models.AddressInfo", "AddressInfo", b1 =>
+                        {
+                            b1.Property<Guid>("PostOfficeId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("Address")
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnName("Address");
+
+                            b1.Property<string>("City")
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnName("City");
+
+                            b1.Property<string>("Country")
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnName("Country");
+
+                            b1.HasKey("PostOfficeId");
+
+                            b1.ToTable("PostOffice");
+
+                            b1.WithOwner()
+                                .HasForeignKey("PostOfficeId");
+                        });
+
+                    b.Navigation("AddressInfo")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("DbLevel.Models.Product", b =>
@@ -539,6 +585,65 @@ namespace ShopWebApi.Migrations
                         .WithMany("ProductStorage")
                         .HasForeignKey("StorageId")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DbLevel.Models.Storage", b =>
+                {
+                    b.OwnsOne("DbLevel.Models.AddressInfo", "AddressInfo", b1 =>
+                        {
+                            b1.Property<Guid>("StorageId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("Address")
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnName("Address");
+
+                            b1.Property<string>("City")
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnName("City");
+
+                            b1.Property<string>("Country")
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnName("Country");
+
+                            b1.HasKey("StorageId");
+
+                            b1.ToTable("Storages");
+
+                            b1.WithOwner()
+                                .HasForeignKey("StorageId");
+                        });
+
+                    b.Navigation("AddressInfo")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DbLevel.Models.User", b =>
+                {
+                    b.OwnsOne("DbLevel.Models.AddressInfo", "AddressInfo", b1 =>
+                        {
+                            b1.Property<Guid>("UserId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("Address")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("City")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("Country")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("UserId");
+
+                            b1.ToTable("AspNetUsers");
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserId");
+                        });
+
+                    b.Navigation("AddressInfo")
                         .IsRequired();
                 });
 

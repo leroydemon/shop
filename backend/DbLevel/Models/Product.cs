@@ -3,9 +3,8 @@ using DbLevel.Interfaces;
 
 namespace DbLevel.Models
 {
-    public  class Product : IEntity
+    public  class Product : EntityBase
     {
-        public Guid Id { get; set; }
         public Guid? CategoryId { get; set; }
         public Guid BrandId { get; set; }
         public Size Size { get; set; }
@@ -16,7 +15,5 @@ namespace DbLevel.Models
         public decimal UnitPrice { get; set; }
         public string? Description { get; set; }
         public ICollection<ProductStorage> ProductStorage { get; set; }
-        public DateTime CreatedDateTime { get; set; } = DateTime.Now;
-        public DateTime? UpdatedDateTime { get; set; } = DateTime.Now;  
     }
 }

@@ -1,7 +1,7 @@
 ﻿using BussinessLogicLevel.Interfaces;
-using DbLevel;
 using DbLevel.Interfaces;
 using DbLevel.Models;
+using DbLevel.Settings;
 using DbLevel.Specifications;
 using Microsoft.Extensions.Caching.Memory;
 using System.Text.Json;
@@ -48,17 +48,14 @@ namespace BussinessLogicLevel.Services
                 .GroupBy(ps => ps.ProductId)
                 .ToDictionary(g => g.Key, g => g.ToList());
 
-            foreach (var cartItem in cart.ProductList)
+
+            foreach (var cartItem in cart.ProductList)  
             {
                 if (!productStorageDict.TryGetValue(cartItem.Key, out var storages) || storages.Sum(s => s.Quantity) < cartItem.Value)
                 {
                     return false;
                 }
-            }
 
-            foreach (var cartItem in cart.ProductList)
-            {
-                var storages = productStorageDict[cartItem.Key];
                 int quantityToDeduct = cartItem.Value;
 
                 foreach (var storage in storages)
@@ -88,7 +85,7 @@ namespace BussinessLogicLevel.Services
             var order = new Order()
             {
                 OrderDate = DateTime.Now,
-                CustomerName = user.UserName,
+                User = user,
                 ProductListJson = cart.ProductListJson,
 
             };
@@ -99,30 +96,14 @@ namespace BussinessLogicLevel.Services
 
             return true;
         }
-        public async Task<IEnumerable<PostOffice>> GetNearbyPostOffice(Guid userId, int maxResults)
+        public async Task<IEnumerable<PostOffice>> GetNearestPostOfficesAsync(Guid userId, int maxResults)
         {
             var user = await _userRepo.GetByIdAsync(userId);
-
-            IEnumerable<PostOffice> postOffices = new List<PostOffice>();
-            double minDistance = double.MaxValue;
-            PostOffice nearestPostOffice = null;
-            var postOfficesWithDistance = new List<(PostOffice PostOffice, double Distance)>();
+            IEnumerable<PostOffice> postOffices;
 
             if (_memoryCache.TryGetValue(_cacheSettings.PostOfficesCacheKey, out string cachedData))
             {
                 postOffices = JsonSerializer.Deserialize<IEnumerable<PostOffice>>(cachedData);
-
-                foreach (var postOffice in postOffices)
-                {
-                    double distance = GetDistance(user.Latitude, user.Longitude, postOffice.Latitude, postOffice.Longitude);
-                    postOfficesWithDistance.Add((postOffice, distance));
-                }
-                var nearestPostOffices = postOfficesWithDistance
-                            .OrderBy(p => p.Distance)
-                            .Take(maxResults)
-                            .Select(p => p.PostOffice);
-
-                return nearestPostOffices;
             }
             else
             {
@@ -135,22 +116,42 @@ namespace BussinessLogicLevel.Services
                 });
             }
 
-            return postOffices;
+            return GetNearestPostOffices(postOffices, user, maxResults);
         }
-        private double GetDistance(double lat1, double lon1, double lat2, double lon2)
-        {
-            const double R = 6371e3; 
-            var φ1 = lat1 * Math.PI / 180; 
-            var φ2 = lat2 * Math.PI / 180;
-            var Δφ = (lat2 - lat1) * Math.PI / 180;
-            var Δλ = (lon2 - lon1) * Math.PI / 180;
 
-            var a = Math.Sin(Δφ / 2) * Math.Sin(Δφ / 2) +
-                    Math.Cos(φ1) * Math.Cos(φ2) *
-                    Math.Sin(Δλ / 2) * Math.Sin(Δλ / 2);
+        private IEnumerable<PostOffice> GetNearestPostOffices(IEnumerable<PostOffice> postOffices, User user, int maxResults)
+        {
+            var postOfficesWithDistance = new List<(PostOffice PostOffice, double Distance)>();
+
+            foreach (var postOffice in postOffices)
+            {
+                double distance = GetDistance(user.Latitude, user.Longitude, postOffice.Latitude, postOffice.Longitude);
+                postOfficesWithDistance.Add((postOffice, distance));
+            }
+
+            var nearestPostOffices = postOfficesWithDistance
+                .OrderBy(p => p.Distance)
+                .Take(maxResults)
+                .Select(p => p.PostOffice);
+
+            return nearestPostOffices;
+        }
+        private double GetDistance(double latitude1, double longitude1, double latitude2, double longitude2)
+        {
+            const double EarthRadius = 6371e3;
+
+            var latitude1Rad = latitude1 * Math.PI / 180;
+            var latitude2Rad = latitude2 * Math.PI / 180;
+            var deltaLatitude = (latitude2 - latitude1) * Math.PI / 180;
+            var deltaLongitude = (longitude2 - longitude1) * Math.PI / 180;
+
+            var a = Math.Sin(deltaLatitude / 2) * Math.Sin(deltaLatitude / 2) +
+                    Math.Cos(latitude1Rad) * Math.Cos(latitude2Rad) *
+                    Math.Sin(deltaLongitude / 2) * Math.Sin(deltaLongitude / 2);
             var c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
 
-            var distance = R * c;
+            var distance = EarthRadius * c;
+
             return distance;
         }
     }
