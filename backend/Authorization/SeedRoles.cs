@@ -18,7 +18,6 @@ namespace Authorization
                     .GetRequiredService<UserManager<User>>();
 
                 string[] roleNames = { "Admin", "User", "Manager" };
-                IdentityResult roleResult;
 
                 var powerUser = new User
                 {

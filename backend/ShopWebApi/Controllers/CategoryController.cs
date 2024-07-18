@@ -1,4 +1,5 @@
 ﻿using BussinessLogicLevel.Interfaces;
+using DbLevel.Filters;
 using DbLevel.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,12 +13,12 @@ namespace ShopWebApi.Controllers
         private readonly ILogger<CategoryController> _logger = logger;
 
         [HttpGet]
-        public async Task<IActionResult> GetAllAsync()
+        public async Task<IActionResult> SearchAsync([FromQuery] CategoryFilter filter)
         {
-            _logger.LogInformation("Я работаю!"); // не ври
-            var item = await _categoryService.GetAllAsync();
+            _logger.LogInformation("Я работаю!");
+            var items = await _categoryService.SearchAsync(filter);
 
-            return Ok(item);
+            return Ok(items);
         }
 
         [HttpGet("{id}")]
@@ -40,6 +41,7 @@ namespace ShopWebApi.Controllers
         public async Task<IActionResult> UpdateAsync([FromBody] CategoryDto category)
         {
             var updatedCategory = await _categoryService.UpdateAsync(category);
+
             return Ok(updatedCategory);
         }
 

@@ -1,34 +1,40 @@
 ﻿using DbLevel.Data;
 using DbLevel.Interfaces;
-using DbLevel.Models;
-using DbLevel.SortByEnum;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-
 namespace DbLevel
 {
-    public class Repository<T> : IRepository<T> where T : class, IBase
+    public class Repository<T> : IRepository<T> where T : class, IEntity
     {
         private readonly ApplicationDbContext _context;
         public Repository(ApplicationDbContext context)
         {
             _context = context;
         }
-        public async Task<IEnumerable<T>> ListAsync(ISpecification<T> spec, int pageNumber, int pageSize)
+        
+        public async Task<IEnumerable<T>> ListAsync(ISpecification<T> spec)
         {
             IQueryable<T> query = _context.Set<T>();
 
-            if (spec.Criteria != null)
-            {
-                query = query.Where(spec.Criteria);
-            }
+            query = spec.Criterias.Aggregate(query, (current, criteria) => current.Where(criteria));
+
             if (spec.OrderBy != null)
             {
-                query = spec.OrderBy(query);
+                query = query.OrderBy(spec.OrderBy);
             }
-
-            query = query.Skip((pageNumber - 1) * pageSize).Take(pageSize);
+            else if (spec.OrderByDescending != null)
+            {
+                query = query.OrderByDescending(spec.OrderByDescending);
+            }
+            if (spec.GroupBy != null)
+            {
+                query = query.GroupBy(spec.GroupBy).SelectMany(x => x);
+            }
+            query = spec.Includes.Aggregate(query, (current, include) => current.Include(include));
+            query = spec.IncludeStrings.Aggregate(query, (current, include) => current.Include(include));
+            if (spec.IsPagingEnabled)
+            {
+                query = query.Skip(spec.Skip).Take(spec.Take);
+            }
 
             return await query.ToListAsync();
         }
@@ -36,16 +42,13 @@ namespace DbLevel
         {
             await _context.Set<T>().AddAsync(entity);
             await _context.SaveChangesAsync();
+
             return entity;
         }
         public async Task DeleteAsync(T entity)
         {
             _context.Set<T>().Remove(entity);
             await _context.SaveChangesAsync();
-        }
-        public async Task<IEnumerable<T>> GetAllAsync()
-        {
-            return await _context.Set<T>().ToListAsync();
         }
         public async Task<T> GetByIdAsync(Guid id)
         {
@@ -55,6 +58,7 @@ namespace DbLevel
         {
             _context.Set<T>().Update(entity);
             await _context.SaveChangesAsync();
+
             return entity;
         }
         public async Task SaveChangesAsync()

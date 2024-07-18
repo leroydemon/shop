@@ -1,4 +1,5 @@
 ﻿using BussinessLogicLevel.Interfaces;
+using DbLevel.Filters;
 using DbLevel.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,20 +7,21 @@ namespace ShopWebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BrandController(IBrandService brandService) : ControllerBase
+    public class BrandController : ControllerBase
     {
-        private readonly IBrandService _brandService = brandService;
-
-        // создать фильтр по которому будет фильтрация айтемов
-        // нельзя доставать все сразу
-        [HttpGet]
-        public async Task<IActionResult> GetAllAsync()
+        private readonly IBrandService _brandService;
+        public BrandController(IBrandService brandService)
         {
-            var brands = await _brandService.GetAllAsync();
+            _brandService = brandService;
+        }
+        [HttpGet("search")]
+        public async Task<IActionResult> SearchAsync([FromQuery] BrandFilter filter)
+        {
+            var brands = await _brandService.SearchAsync(filter);
             return Ok(brands);
 
         }
-        [HttpGet("{id}")]
+        [HttpGet("getbyid")]
         public async Task<IActionResult> GetByIdAsync(Guid id)
         {
             var brand = await _brandService.GetByIdAsync(id);
@@ -40,8 +42,8 @@ namespace ShopWebApi.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateAsync(BrandDto brand)
         {
-            var updatedBrand = await _brandService.UpdateAsync(brand);
-            return Ok(updatedBrand);
+            await _brandService.UpdateAsync(brand);
+            return Ok();
         }
     }
 }

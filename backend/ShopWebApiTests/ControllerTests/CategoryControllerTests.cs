@@ -23,36 +23,6 @@ namespace ShopWebApiTests.ControllerTests
         }
 
         [Fact]
-        public async Task GetAllAsync_ShouldReturnOkWithCategories()
-        {
-            // Arrange
-            var categories = new List<CategoryDto>
-            {
-                new CategoryDto { Name = "Category1" },
-                new CategoryDto { Name = "Category2" }
-            };
-            _mockCategoryService.Setup(service => service.GetAllAsync()).ReturnsAsync((IEnumerable<CategoryDto>)categories);
-
-            // Act
-            var result = await _categoryController.GetAllAsync();
-
-            // Assert
-            _mockLogger.Verify(
-                x => x.Log(
-                    LogLevel.Information,
-                    It.IsAny<EventId>(),
-                    It.Is<It.IsAnyType>((v, t) => v.ToString().Contains("Я работаю!")),
-                    It.IsAny<Exception>(),
-                    It.Is<Func<It.IsAnyType, Exception, string>>((v, t) => true)),
-                Times.Once);
-
-            var okResult = result as OkObjectResult;
-            okResult.Should().NotBeNull();
-            okResult.StatusCode.Should().Be(200);
-            okResult.Value.Should().BeEquivalentTo(categories);
-        }
-
-        [Fact]
         public async Task GetProductByIdAsync_ShouldReturnOkWithCategory()
         {
             // Arrange

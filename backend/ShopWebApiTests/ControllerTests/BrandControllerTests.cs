@@ -18,26 +18,7 @@ namespace ShopWebApiTests.ControllerTests
             _mockBrandService = new Mock<IBrandService>();
             _brandController = new BrandController(_mockBrandService.Object);
         }
-        [Fact]
-        public async Task GetAllAsync_ShouldReturnOkWithBrands()
-        {
-            // Arrange
-            var brands = new List<BrandDto>
-            {
-                new BrandDto { Name = "Brand1" },
-                new BrandDto { Name = "Brand2" }
-            };
-            _mockBrandService.Setup(service => service.GetAllAsync()).ReturnsAsync(brands);
 
-            // Act
-            var result = await _brandController.GetAllAsync();
-
-            // Assert
-            var okResult = result as OkObjectResult;
-            okResult.Should().NotBeNull();
-            okResult.StatusCode.Should().Be(200);
-            okResult.Value.Should().BeEquivalentTo(brands);
-        }
         [Fact]
         public async Task GetByIdAsync_ShouldReturnOkWithBrand()
         {

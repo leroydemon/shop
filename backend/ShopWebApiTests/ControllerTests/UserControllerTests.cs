@@ -1,5 +1,5 @@
 ﻿using BussinessLogicLevel.Interfaces;
-using DbLevel.SortByEnum;
+using DbLevel.SortableFields;
 using FluentAssertions;
 using Infrastucture.DtoModels;
 using Microsoft.AspNetCore.Mvc;
@@ -17,28 +17,6 @@ namespace ShopWebApiTests.ControllerTests
         {
             _mockUserService = new Mock<IUserService>();
             _userController = new UserController(_mockUserService.Object);
-        }
-        [Fact]
-        public async Task GetSortedAsync_ShouldReturnOkWithSortedUsers()
-        {
-            // Arrange
-            var users = new List<UserDto>
-            {
-                new UserDto { UserName = "User1", Surname = "Surname1" },
-                new UserDto { UserName = "User2", Surname = "Surname2" }
-            };
-
-            _mockUserService.Setup(service => service.GetSortedAsync(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<UserSortBy>(), It.IsAny<bool>()))
-                .ReturnsAsync(users);
-
-            // Act
-            var result = await _userController.GetSortedAsync("search", 1, 10, UserSortBy.UserName, true);
-
-            // Assert
-            var okResult = result as OkObjectResult;
-            okResult.Should().NotBeNull();
-            okResult.StatusCode.Should().Be(200);
-            okResult.Value.Should().BeEquivalentTo(users);
         }
         [Fact]
         public async Task SetOfflineAsync_ShouldReturnOk()

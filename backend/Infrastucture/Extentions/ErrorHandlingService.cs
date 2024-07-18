@@ -8,11 +8,13 @@ namespace Infrastucture.Services
     {
         private readonly ILogger<ErrorHandlingService> _logger;
         private readonly RequestDelegate _next;
+
         public ErrorHandlingService(ILogger<ErrorHandlingService> logger, RequestDelegate next)
         {
             _logger = logger;
             _next = next;
         }
+
         public async Task InvokeAsync(HttpContext context)
         {
             try
@@ -25,6 +27,7 @@ namespace Infrastucture.Services
                 await HandleExceptionAsync(context, ex);
             }
         }
+
         private Task HandleExceptionAsync(HttpContext context, Exception ex)
         {
             context.Response.ContentType = "application/json";

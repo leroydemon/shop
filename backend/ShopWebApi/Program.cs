@@ -1,6 +1,8 @@
 using Infrastucture.Services;
 using Infrastucture.Extentions;
 using Authorization;
+using DbLevel;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +12,10 @@ builder.Services.AddCustomIdentity();
 builder.Services.AddScopedService();
 builder.Services.ServiceCollections(builder.Configuration);
 builder.Services.AddLoggingService();
+builder.Services.AddHttpClient();
+builder.Services.AddMemoryCache();
+
+
 
 var app = builder.Build();
 

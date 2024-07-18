@@ -1,4 +1,5 @@
 ﻿using BussinessLogicLevel.Interfaces;
+using DbLevel.Filters;
 using DbLevel.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,10 +13,11 @@ namespace ShopWebApi.Controllers
         private readonly ILogger<StorageController> _logger = logger;
 
         [HttpGet]
-        public async Task<IActionResult> GetAllAsync()
+        public async Task<IActionResult> SearchAsync([FromQuery] StorageFilter filter)
         {
-            var item = await _storageService.GetAllAsync();
+            var item = await _storageService.SearchAsync(filter);
             _logger.LogInformation("method works correctly");
+
             return Ok(item);
         }
         [HttpGet("{id}")]

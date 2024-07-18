@@ -1,4 +1,5 @@
 ﻿using BussinessLogicLevel.Interfaces;
+using DbLevel.Filters;
 using DbLevel.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,33 +12,45 @@ namespace ShopWebApi.Controllers
         private readonly IOrderService _orderService = orderService;
 
         [HttpGet]
-        public async Task<IActionResult> GetAllAsync()
+        public async Task<IActionResult> GetOrdersByMonthYearAsync([FromQuery] DateTime startDate, DateTime endDate)
         {
-            var brands = await _orderService.GetAllAsync();
-            return Ok(brands);
+            var bytes = await _orderService.ExportOrdersToCsv(startDate, endDate);
+
+            return File(bytes, "text/csv", $"orders_{startDate}_{endDate}.csv"); ;
+        }
+        [HttpGet("search")]
+        public async Task<IActionResult> SearchAsync([FromQuery] OrderFilter filter)
+        {
+            var items = await _orderService.SearchAsync(filter);
+
+            return Ok(items);
         }
         [HttpGet("{id}")]
         public async Task<IActionResult> GetByIdAsync(Guid id)
         {
-            var brand = await _orderService.GetByIdAsync(id);
-            return Ok(brand);
+            var item = await _orderService.GetByIdAsync(id);
+
+            return Ok(item);
         }
         [HttpPost]
         public async Task<IActionResult> AddAsync(OrderDto orderDto)
         {
             var item = await _orderService.AddAsync(orderDto);
+
             return Ok(item);
         }
         [HttpDelete]
         public async Task<IActionResult> RemoveAsync(Guid id)
         {
             await _orderService.RemoveAsync(id);
+
             return Ok();
         }
         [HttpPut]
         public async Task<IActionResult> UpdateAsync(OrderDto order)
         {
             var updatedOrder = await _orderService.UpdateAsync(order);
+
             return Ok(updatedOrder);
         }
     }

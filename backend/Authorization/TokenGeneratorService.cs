@@ -1,6 +1,4 @@
-﻿using Authorization;
-using DbLevel.Models;
-using Microsoft.AspNetCore.Identity;
+﻿using DbLevel.Models;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;

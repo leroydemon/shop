@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using BussinessLogicLevel.Interfaces;
+using DbLevel.Filters;
 using DbLevel.Interfaces;
 using DbLevel.Models;
+using DbLevel.Specifications;
 
 namespace BussinessLogicLevel.Services
 {
@@ -19,18 +21,22 @@ namespace BussinessLogicLevel.Services
         public async Task<BrandDto> AddAsync(BrandDto brandDto)
         {
             var addedBrand = await _brandRepository.AddAsync(_mapper.Map<Brand>(brandDto));
+
             return _mapper.Map<BrandDto>(addedBrand);
         }
 
-        public async Task<IEnumerable<BrandDto>> GetAllAsync()
+        public async Task<IEnumerable<BrandDto>> SearchAsync(BrandFilter filter)
         {
-            var brand = await _brandRepository.GetAllAsync();
+            var spec = new BrandSpecification(filter);
+            var brand = await _brandRepository.ListAsync(spec);
+
             return _mapper.Map<IEnumerable<BrandDto>>(brand);
         }
 
         public async Task<BrandDto> GetByIdAsync(Guid id)
         {
             var brand = await _brandRepository.GetByIdAsync(id);
+
             return _mapper.Map<BrandDto>(brand);
         }
 
@@ -43,6 +49,7 @@ namespace BussinessLogicLevel.Services
         public async Task<BrandDto> UpdateAsync(BrandDto brand)
         {
             var updatedBrand = await _brandRepository.UpdateAsync(_mapper.Map<Brand>(brand));
+
             return _mapper.Map<BrandDto>(updatedBrand);
         }
     }

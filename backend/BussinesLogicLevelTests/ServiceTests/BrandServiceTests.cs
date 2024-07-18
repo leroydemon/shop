@@ -46,29 +46,6 @@ namespace BussinesLogicLevelTests.ServiceTests
         }
 
         [Fact]
-        public async Task GetAllAsync_ShouldReturnAllBrandDtos()
-        {
-            // Arrange
-            var brands = new List<Brand>
-            {
-                new Brand { Id = Guid.NewGuid(), Name = "Brand 1" },
-                new Brand { Id = Guid.NewGuid(), Name = "Brand 2" }
-            };
-
-            var brandDtos = brands.Select(b => new BrandDto { Name = b.Name }).ToList();
-
-            _mockBrandRepository.Setup(r => r.GetAllAsync()).ReturnsAsync(brands);
-            _mockMapper.Setup(m => m.Map<IEnumerable<BrandDto>>(brands)).Returns(brandDtos);
-
-            // Act
-            var result = await _brandService.GetAllAsync();
-
-            // Assert
-            result.Should().BeEquivalentTo(brandDtos, options => options.ComparingByMembers<BrandDto>());
-            _mockBrandRepository.Verify(r => r.GetAllAsync(), Times.Once);
-        }
-
-        [Fact]
         public async Task GetByIdAsync_ShouldReturnCorrectBrand()
         {
             // Arrange

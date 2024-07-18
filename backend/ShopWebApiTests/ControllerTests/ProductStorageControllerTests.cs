@@ -19,36 +19,7 @@ namespace ShopWebApiTests.ControllerTests
             _mockProductStorageService = new Mock<IProductStorageService>();
             _mockLogger = new Mock<ILogger<ProductStorageController>>();
             _productStorageController = new ProductStorageController(_mockProductStorageService.Object, _mockLogger.Object);
-        }
-        [Fact]
-        public async Task GetAllAsync_ShouldReturnOkWithProductStorages()
-        {
-            // Arrange
-            var productStorages = new List<ProductStorageDto>
-            {
-                new ProductStorageDto { StorageId = Guid.NewGuid(), ProductId = Guid.NewGuid(), Quantity = 10 },
-                new ProductStorageDto { StorageId = Guid.NewGuid(), ProductId = Guid.NewGuid(), Quantity = 20 }
-            };
-            _mockProductStorageService.Setup(service => service.GetAllAsync()).ReturnsAsync(productStorages);
-
-            // Act
-            var result = await _productStorageController.GetAllAsync();
-
-            // Assert
-            _mockLogger.Verify(
-                x => x.Log(
-                    LogLevel.Information,
-                    It.IsAny<EventId>(),
-                    It.Is<It.IsAnyType>((v, t) => v.ToString().Contains("method works correctly")),
-                    It.IsAny<Exception>(),
-                    It.Is<Func<It.IsAnyType, Exception, string>>((v, t) => true)),
-                Times.Once);
-
-            var okResult = result as OkObjectResult;
-            okResult.Should().NotBeNull();
-            okResult.StatusCode.Should().Be(200);
-            okResult.Value.Should().BeEquivalentTo(productStorages);
-        }
+        }  
         [Fact]
         public async Task GetProductByIdAsync_ShouldReturnOkWithProductStorage()
         {

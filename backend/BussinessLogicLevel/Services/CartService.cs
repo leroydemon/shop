@@ -18,50 +18,42 @@ namespace BussinessLogicLevel.Services
             _productRepo = productService;
             _mapper = mapper;
         }
-        // Task<Cart>
         public async Task<CartDto> AddToAsync(Guid cartId, Guid productId, int quantity)
         {
             var cart = await _cartRepository.GetByIdAsync(cartId);
             var product = await _productRepo.GetByIdAsync(productId);
 
-            var productList = JsonSerializer.Deserialize<Dictionary<Guid, int>>(cart.ProductListJson);
-
-            if (!productList.ContainsKey(product.Id))
+            if (!cart.ProductList.ContainsKey(product.Id))
             {
-                productList.Add(product.Id, quantity);
+                cart.ProductList.Add(product.Id, quantity);
             }
             else
             {
-                productList[product.Id] += quantity;
+                cart.ProductList[product.Id] += quantity;
             }
+            cart.ProductListJson = JsonSerializer.Serialize(cart.ProductList);
             cart.TotalPrice += product.UnitPrice * quantity;
-            cart.ProductAmount = productList.Count;
-            cart.ProductListJson = JsonSerializer.Serialize(productList);
+            cart.ProductAmount = cart.ProductList.Count;
 
-            await _cartRepository.SaveChangesAsync();
-            var cartDto = new CartDto { ProductAmount = cart.ProductAmount,
-                ProductList = cart.ProductList, 
-                ProductListJson = cart.ProductListJson, 
-                TotalPrice = cart.TotalPrice, 
-                UserId = cart.UserId};
-            return cartDto; //mapper doesn't work here
-            // вай?
+            await _cartRepository.UpdateAsync(cart);
+
+            return _mapper.Map<CartDto>(cart);
         }
 
         public async Task ClearAsync(Guid cartId)
         {
             var cart = await _cartRepository.GetByIdAsync(cartId);
-            cart.ProductListJson = "{}";
             cart.ProductList = new Dictionary<Guid, int>();
+            cart.ProductListJson = "{}";
             cart.TotalPrice = 0;
             cart.ProductAmount = 0;
-            // вызываем апдейт
             await _cartRepository.SaveChangesAsync();
         }
 
         public async Task<CartDto> GetAsync(Guid cartId)
         {
             var cart = await _cartRepository.GetByIdAsync(cartId);
+
             return _mapper.Map<CartDto>(cart);
         }
 
@@ -69,40 +61,38 @@ namespace BussinessLogicLevel.Services
         {
             var cart = await _cartRepository.GetByIdAsync(cartId);
             var product = await _productRepo.GetByIdAsync(productId);
-            var productList = JsonSerializer.Deserialize<Dictionary<Guid, int>>(cart.ProductListJson);
 
-            if (productList.ContainsKey(productId))
+            if (cart.ProductList.ContainsKey(productId))
             {
-                var itemQuantity = productList[productId];
+                var itemQuantity = cart.ProductList[productId];
                 var finalQuantity = itemQuantity - quantity;
                 if (finalQuantity <= 0)
                 {
-                    productList.Remove(productId);
+                    cart.ProductList.Remove(productId);
                     cart.TotalPrice -= product.UnitPrice * itemQuantity;
                 }
                 else
                 {
-                    productList[productId] = finalQuantity;
+                    cart.ProductList[productId] = finalQuantity;
                     cart.TotalPrice -= product.UnitPrice * quantity;
                 }
-                cart.ProductAmount = productList.Count;
+                cart.ProductAmount = cart.ProductList.Count;
+                cart.ProductListJson = JsonSerializer.Serialize(cart.ProductList);
             }
-            cart.ProductListJson = JsonSerializer.Serialize(productList);
-            await _cartRepository.SaveChangesAsync();
+            await _cartRepository.UpdateAsync(cart);
         }
         public async Task<Cart> CreateCartAsync(Guid userId)
         {
-            var cart =  new Cart()
+            var cart = new Cart()
             {
                 UserId = userId
             };
+
             return await _cartRepository.AddAsync(cart);
         }
-
-        //не используется нигде
         public async Task SaveChangesAsync()
         {
             await _cartRepository.SaveChangesAsync();
         }
-    }
+    }   
 }

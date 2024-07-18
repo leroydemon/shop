@@ -20,31 +20,7 @@ namespace BussinesLogicLevelTests.ServiceTests
             _mockMapper = new Mock<IMapper>();
             _productStorageService = new ProductStorageService(_mockProductStorageRepository.Object, _mockMapper.Object);
         }
-        [Fact]
-        public async Task GetAllAsync_ShouldReturnProductStorageDtos()
-        {
-            // Arrange
-            var productStorages = new List<ProductStorage>
-            {
-                new ProductStorage { StorageId = Guid.NewGuid(), ProductId = Guid.NewGuid(), Quantity = 50 },
-                new ProductStorage { StorageId = Guid.NewGuid(), ProductId = Guid.NewGuid(), Quantity = 100 }
-            };
-            var productStorageDtos = new List<ProductStorageDto>
-            {
-                new ProductStorageDto { StorageId = Guid.NewGuid(), ProductId = Guid.NewGuid(), Quantity = 50 },
-                new ProductStorageDto { StorageId = Guid.NewGuid(), ProductId = Guid.NewGuid(), Quantity = 100 }
-            };
-
-            _mockProductStorageRepository.Setup(r => r.GetAllAsync()).ReturnsAsync(productStorages);
-            _mockMapper.Setup(m => m.Map<IEnumerable<ProductStorageDto>>(productStorages)).Returns(productStorageDtos);
-
-            // Act
-            var result = await _productStorageService.GetAllAsync();
-
-            // Assert
-            result.Should().BeEquivalentTo(productStorageDtos);
-            _mockProductStorageRepository.Verify(r => r.GetAllAsync(), Times.Once);
-        }
+       
         [Fact]
         public async Task GetByIdAsync_ShouldReturnProductStorageDto()
         {

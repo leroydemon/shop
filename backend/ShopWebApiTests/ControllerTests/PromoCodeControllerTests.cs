@@ -70,27 +70,6 @@ namespace ShopWebApiTests.ControllerTests
             _mockPromoCodeService.Verify(service => service.UpdateAsync(promoCodeDto), Times.Once);
         }
         [Fact]
-        public async Task GetAllPromoCodesAsync_ShouldReturnOkWithPromoCodes()
-        {
-            // Arrange
-            var promoCodes = new List<PromoCodeDto>
-            {
-                new PromoCodeDto { Code = "PROMO2023", AmountDiscoint = 10 },
-                new PromoCodeDto { Code = "PROMO2024", AmountDiscoint = 15 }
-            };
-
-            _mockPromoCodeService.Setup(service => service.GetAllAsync()).ReturnsAsync(promoCodes);
-
-            // Act
-            var result = await _promoCodeController.GetAllPromoCodesAsync();
-
-            // Assert
-            var okResult = result as OkObjectResult;
-            okResult.Should().NotBeNull();
-            okResult.StatusCode.Should().Be(200);
-            okResult.Value.Should().BeEquivalentTo(promoCodes);
-        }
-        [Fact]
         public async Task GetByIdAsync_ShouldReturnOkWithPromoCode()
         {
             // Arrange

@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using BussinessLogicLevel.Interfaces;
+using DbLevel.Filters;
 using DbLevel.Interfaces;
 using DbLevel.Models;
+using DbLevel.Specifications;
 using Infrastucture.DtoModels;
 
 namespace BussinessLogicLevel.Services
@@ -19,6 +21,7 @@ namespace BussinessLogicLevel.Services
         public async Task<ProductDto> AddAsync(ProductDto productDto)
         {
             var addedProduct = await _productRepository.AddAsync(_mapper.Map<Product>(productDto));
+
             return _mapper.Map<ProductDto>(addedProduct);
         }
 
@@ -28,21 +31,25 @@ namespace BussinessLogicLevel.Services
             await _productRepository.DeleteAsync(item);
         }
 
-        public async Task<IEnumerable<ProductDto>> GetAllAsync()
+        public async Task<IEnumerable<ProductDto>> SearchAsync(ProductFilter filter)
         {
-            var product = await _productRepository.GetAllAsync();
-            return _mapper.Map<IEnumerable<ProductDto>>(product);
+            var spec = new ProductSpecification(filter);
+            var products = await _productRepository.ListAsync(spec);
+
+            return _mapper.Map<IEnumerable<ProductDto>>(products);
         }
 
         public async Task<ProductDto> GetByIdAsync(Guid id)
         {
             var product = await _productRepository.GetByIdAsync(id);
+
             return _mapper.Map<ProductDto>(product);
         }
 
         public async Task<ProductDto> UpdateAsync(ProductDto product)
         {
             var updatedProduct = await _productRepository.UpdateAsync(_mapper.Map<Product>(product));
+
             return _mapper.Map<ProductDto>(updatedProduct);
         }
     }

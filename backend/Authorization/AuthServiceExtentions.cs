@@ -17,12 +17,17 @@ namespace Authorization
         public static IServiceCollection AddAuthorizationService(this IServiceCollection services, IConfiguration configuration)
         {
             var authOptions = new AuthOptions();
-            configuration.GetSection("AuthOptions").Bind(authOptions);
+            configuration
+                .GetSection("AuthOptions").Bind(authOptions);
 
-            var key = Encoding.ASCII.GetBytes(authOptions.Secret);
+            var key = Encoding
+                .ASCII
+                .GetBytes(authOptions.Secret);
 
-            services.Configure<AuthOptions>(configuration.GetSection("AuthOptions"));
-            services.AddAuthentication(options =>
+            services
+                .Configure<AuthOptions>(configuration.GetSection("AuthOptions"));
+            services
+                .AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -51,19 +56,32 @@ namespace Authorization
         {
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
+                options
+                .AddPolicy("Admin", policy => policy
+                .RequireRole("Admin"));
             });
             return services;
         }
         public static IServiceCollection AddCustomIdentity(this IServiceCollection services)
         {
-            services.AddIdentity<User, Role>(options =>
+            services
+                .AddIdentity<User, Role>(options =>
             {
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireDigit = false;
-                options.Password.RequireLowercase = false;
-                options.Password.RequireUppercase = false;
-            }).AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
+                options
+                .Password
+                .RequireNonAlphanumeric = false;
+                options
+                .Password
+                .RequireDigit = false;
+                options
+                .Password
+                .RequireLowercase = false;
+                options
+                .Password
+                .RequireUppercase = false;
+            }).AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddDefaultTokenProviders();
+
             return services;
         }
     }

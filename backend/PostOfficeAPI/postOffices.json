@@ -1,0 +1,242 @@
+[
+  {
+    "Name": "Post Office 1",
+    "Address": "ул. Хрещатик, 22",
+    "City": "Киев",
+    "PostalCode": "01001",
+    "Latitude": 50.447731,
+    "Longitude": 30.524920
+  },
+  {
+    "Name": "Post Office 2",
+    "Address": "ул. Сумская, 15",
+    "City": "Харьков",
+    "PostalCode": "61000",
+    "Latitude": 49.993500,
+    "Longitude": 36.230383
+  },
+  {
+    "Name": "Post Office 3",
+    "Address": "ул. Дерибасовская, 5",
+    "City": "Одесса",
+    "PostalCode": "65000",
+    "Latitude": 46.484583,
+    "Longitude": 30.732600
+  },
+  {
+    "Name": "Post Office 4",
+    "Address": "ул. Греческая, 10",
+    "City": "Одесса",
+    "PostalCode": "65001",
+    "Latitude": 46.482500,
+    "Longitude": 30.732800
+  },
+  {
+    "Name": "Post Office 5",
+    "Address": "пр. Победы, 25",
+    "City": "Киев",
+    "PostalCode": "01002",
+    "Latitude": 50.4501,
+    "Longitude": 30.5234
+  },
+  {
+    "Name": "Post Office 6",
+    "Address": "ул. Ленина, 12",
+    "City": "Днепр",
+    "PostalCode": "49000",
+    "Latitude": 48.4647,
+    "Longitude": 35.0462
+  },
+  {
+    "Name": "Post Office 7",
+    "Address": "ул. Шевченко, 30",
+    "City": "Львов",
+    "PostalCode": "79000",
+    "Latitude": 49.8397,
+    "Longitude": 24.0297
+  },
+  {
+    "Name": "Post Office 8",
+    "Address": "ул. Пушкинская, 18",
+    "City": "Киев",
+    "PostalCode": "01003",
+    "Latitude": 50.4501,
+    "Longitude": 30.5234
+  },
+  {
+    "Name": "Post Office 9",
+    "Address": "ул. Соборная, 23",
+    "City": "Винница",
+    "PostalCode": "21000",
+    "Latitude": 49.2331,
+    "Longitude": 28.4682
+  },
+  {
+    "Name": "Post Office 10",
+    "Address": "пр. Центральный, 7",
+    "City": "Запорожье",
+    "PostalCode": "69000",
+    "Latitude": 47.8388,
+    "Longitude": 35.1396
+  },
+  {
+    "Name": "Post Office 11",
+    "Address": "ул. Гагарина, 6",
+    "City": "Кривой Рог",
+    "PostalCode": "50000",
+    "Latitude": 47.9105,
+    "Longitude": 33.3918
+  },
+  {
+    "Name": "Post Office 12",
+    "Address": "ул. Франко, 11",
+    "City": "Ивано-Франковск",
+    "PostalCode": "76000",
+    "Latitude": 48.9226,
+    "Longitude": 24.7111
+  },
+  {
+    "Name": "Post Office 13",
+    "Address": "ул. Коцюбинского, 22",
+    "City": "Чернигов",
+    "PostalCode": "14000",
+    "Latitude": 51.4982,
+    "Longitude": 31.2893
+  },
+  {
+    "Name": "Post Office 14",
+    "Address": "ул. Гоголя, 5",
+    "City": "Полтава",
+    "PostalCode": "36000",
+    "Latitude": 49.5883,
+    "Longitude": 34.5514
+  },
+  {
+    "Name": "Post Office 15",
+    "Address": "ул. Леси Украинки, 3",
+    "City": "Луцк",
+    "PostalCode": "43000",
+    "Latitude": 50.7472,
+    "Longitude": 25.3254
+  },
+  {
+    "Name": "Post Office 16",
+    "Address": "ул. Короленко, 16",
+    "City": "Черкассы",
+    "PostalCode": "18000",
+    "Latitude": 49.4444,
+    "Longitude": 32.0598
+  },
+  {
+    "Name": "Post Office 17",
+    "Address": "ул. Карла Маркса, 8",
+    "City": "Житомир",
+    "PostalCode": "10000",
+    "Latitude": 50.2547,
+    "Longitude": 28.6587
+  },
+  {
+    "Name": "Post Office 18",
+    "Address": "ул. Шевченко, 12",
+    "City": "Ужгород",
+    "PostalCode": "88000",
+    "Latitude": 48.6208,
+    "Longitude": 22.2879
+  },
+  {
+    "Name": "Post Office 19",
+    "Address": "ул. Кирова, 4",
+    "City": "Херсон",
+    "PostalCode": "73000",
+    "Latitude": 46.6534,
+    "Longitude": 32.6178
+  },
+  {
+    "Name": "Post Office 20",
+    "Address": "ул. Пирогова, 19",
+    "City": "Сумы",
+    "PostalCode": "40000",
+    "Latitude": 50.9077,
+    "Longitude": 34.7981
+  },
+  {
+    "Name": "Post Office 21",
+    "Address": "ул. Московская, 8",
+    "City": "Мариуполь",
+    "PostalCode": "87500",
+    "Latitude": 47.0971,
+    "Longitude": 37.5434
+  },
+  {
+    "Name": "Post Office 22",
+    "Address": "ул. Парковая, 9",
+    "City": "Краматорск",
+    "PostalCode": "84300",
+    "Latitude": 48.7231,
+    "Longitude": 37.5836
+  },
+  {
+    "Name": "Post Office 23",
+    "Address": "ул. Бандеры, 14",
+    "City": "Тернополь",
+    "PostalCode": "46000",
+    "Latitude": 49.5535,
+    "Longitude": 25.5948
+  },
+  {
+    "Name": "Post Office 24",
+    "Address": "ул. Котляревского, 2",
+    "City": "Ровно",
+    "PostalCode": "33000",
+    "Latitude": 50.6199,
+    "Longitude": 26.2516
+  },
+  {
+    "Name": "Post Office 25",
+    "Address": "ул. Грушевского, 11",
+    "City": "Каменец-Подольский",
+    "PostalCode": "32300",
+    "Latitude": 48.6848,
+    "Longitude": 26.5855
+  },
+  {
+    "Name": "Post Office 26",
+    "Address": "ул. Богдана Хмельницкого, 7",
+    "City": "Николаев",
+    "PostalCode": "54000",
+    "Latitude": 46.9750,
+    "Longitude": 31.9946
+  },
+  {
+    "Name": "Post Office 27",
+    "Address": "ул. Миронова, 13",
+    "City": "Харьков",
+    "PostalCode": "61001",
+    "Latitude": 49.9935,
+    "Longitude": 36.2304
+  },
+  {
+    "Name": "Post Office 28",
+    "Address": "ул. Артема, 10",
+    "City": "Киев",
+    "PostalCode": "01004",
+    "Latitude": 50.4501,
+    "Longitude": 30.5234
+  },
+  {
+    "Name": "Post Office 29",
+    "Address": "ул. Сечевых Стрельцов, 20",
+    "City": "Черновцы",
+    "PostalCode": "58000",
+    "Latitude": 48.2915,
+    "Longitude": 25.9358
+  },
+  {
+    "Name": "Post Office 30",
+    "Address": "ул. Чапаева, 3",
+    "City": "Кировоград",
+    "PostalCode": "25000",
+    "Latitude": 48.5079,
+    "Longitude": 32.2623
+  }
+]
