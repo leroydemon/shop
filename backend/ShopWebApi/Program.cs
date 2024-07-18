@@ -1,7 +1,6 @@
 using Infrastucture.Services;
 using Infrastucture.Extentions;
 using Authorization;
-using DbLevel;
 
 
 var builder = WebApplication.CreateBuilder(args);

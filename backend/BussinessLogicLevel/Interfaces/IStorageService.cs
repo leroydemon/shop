@@ -1,5 +1,4 @@
-﻿
-using DbLevel.Filters;
+﻿using DbLevel.Filters;
 using DbLevel.Models;
 
 namespace BussinessLogicLevel.Interfaces

@@ -6,7 +6,6 @@ using System.Text.Json;
 
 namespace BussinessLogicLevel.Services
 {
-    // навести красоту
     public class CartService : ICartService
     {
         private readonly IRepository<Cart> _cartRepository;
@@ -47,7 +46,8 @@ namespace BussinessLogicLevel.Services
             cart.ProductListJson = "{}";
             cart.TotalPrice = 0;
             cart.ProductAmount = 0;
-            await _cartRepository.SaveChangesAsync();
+
+            await _cartRepository.UpdateAsync(cart);
         }
 
         public async Task<CartDto> GetAsync(Guid cartId)
@@ -90,9 +90,14 @@ namespace BussinessLogicLevel.Services
 
             return await _cartRepository.AddAsync(cart);
         }
-        public async Task SaveChangesAsync()
+        public async Task<Dictionary<Guid, int>> ItemInCart(Guid userId)
         {
-            await _cartRepository.SaveChangesAsync();
+            var cart = await _cartRepository.GetByIdAsync(userId);
+            if (!string.IsNullOrEmpty(cart.ProductListJson))
+            {
+                cart.ProductList = JsonSerializer.Deserialize<Dictionary<Guid, int>>(cart.ProductListJson);
+            }
+            return cart.ProductList;
         }
-    }   
+    }
 }

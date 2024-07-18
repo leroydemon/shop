@@ -6,7 +6,6 @@ using System.Security.Claims;
 using System.Text;
 namespace Authorization
 {
-    // навести красоту 
     public class TokenGeneratorService
     {
         private readonly AuthOptions _authSettings;

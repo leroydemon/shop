@@ -49,10 +49,9 @@ namespace BussinessLogicLevel.Services
                 .ToDictionary(g => g.Key, g => g.ToList());
 
 
-            foreach (var cartItem in cart.ProductList)  
+            foreach (var cartItem in cart.ProductList)
             {
-                var productStorage = productStorageList.FirstOrDefault(ps => ps.ProductId == cartItem.Key);
-                if (productStorage == null || productStorage.Quantity < cartItem.Value)
+                if (!productStorageDict.TryGetValue(cartItem.Key, out var storages) || storages.Sum(s => s.Quantity) < cartItem.Value)
                 {
                     return false;
                 }
@@ -85,9 +84,11 @@ namespace BussinessLogicLevel.Services
 
             var order = new Order()
             {
-                var productStorage = productStorageList.First(ps => ps.ProductId == cartItem.Key);
-                productStorage.Quantity -= cartItem.Value;
-            }
+                OrderDate = DateTime.Now,
+                User = user,
+                ProductListJson = cart.ProductListJson,
+
+            };
 
             await _orderRepo.AddAsync(order);
             await _cartRepo.UpdateAsync(cart);

@@ -1,5 +1,4 @@
-﻿
-namespace DbLevel.Enum
+﻿namespace DbLevel.Enum
 {
     public enum OrderByDirection
     {

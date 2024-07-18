@@ -4,7 +4,6 @@ using DbLevel.Filters;
 using DbLevel.Interfaces;
 using DbLevel.Models;
 using DbLevel.Specifications;
-using Microsoft.EntityFrameworkCore;
 using System.Text;
 
 namespace BussinessLogicLevel.Services

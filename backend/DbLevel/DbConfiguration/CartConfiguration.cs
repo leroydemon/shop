@@ -1,7 +1,6 @@
 ﻿using DbLevel.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System.Text.Json;
 
 namespace DbLevel.DbConfiguration
 {

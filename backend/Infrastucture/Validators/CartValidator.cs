@@ -8,16 +8,20 @@ namespace Infrastucture.Validators
         public CartValidator()
         {
             RuleFor(cart => cart.Id)
-                .NotEmpty().WithMessage("Cart ID is required.");
+                .NotEmpty()
+                .WithMessage("Cart ID is required.");
 
             RuleFor(cart => cart.UserId)
-                .NotEmpty().WithMessage("User ID is required.");
+                .NotEmpty()
+                .WithMessage("User ID is required.");
 
             RuleFor(cart => cart.TotalPrice)
-                .GreaterThanOrEqualTo(0).WithMessage("Total Price must be greater than or equal to 0.");
+                .GreaterThanOrEqualTo(0)
+                .WithMessage("Total Price must be greater than or equal to 0.");
 
             RuleFor(cart => cart.ProductAmount)
-                .GreaterThanOrEqualTo(0).WithMessage("Product Amount must be greater than or equal to 0.");
+                .GreaterThanOrEqualTo(0)
+                .WithMessage("Product Amount must be greater than or equal to 0.");
         }
     }
 }
