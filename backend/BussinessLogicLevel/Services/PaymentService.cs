@@ -48,7 +48,6 @@ namespace BussinessLogicLevel.Services
                 .GroupBy(ps => ps.ProductId)
                 .ToDictionary(g => g.Key, g => g.ToList());
 
-
             foreach (var cartItem in cart.ProductList)
             {
                 if (!productStorageDict.TryGetValue(cartItem.Key, out var storages) || storages.Sum(s => s.Quantity) < cartItem.Value)

@@ -1,6 +1,7 @@
 ﻿using DbLevel.Data;
 using DbLevel.Interfaces;
 using Microsoft.EntityFrameworkCore;
+
 namespace DbLevel
 {
     public class Repository<T> : IRepository<T> where T : class, IEntity

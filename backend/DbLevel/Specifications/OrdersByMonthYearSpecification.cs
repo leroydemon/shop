@@ -1,5 +1,4 @@
 ﻿using DbLevel.Models;
-using System.Data;
 
 namespace DbLevel.Specifications
 {

@@ -1,0 +1,15 @@
+C:\Users\leroy\source\repos\shop\task\bin\Debug\net8.0\task.exe
+C:\Users\leroy\source\repos\shop\task\bin\Debug\net8.0\task.deps.json
+C:\Users\leroy\source\repos\shop\task\bin\Debug\net8.0\task.runtimeconfig.json
+C:\Users\leroy\source\repos\shop\task\bin\Debug\net8.0\task.dll
+C:\Users\leroy\source\repos\shop\task\bin\Debug\net8.0\task.pdb
+C:\Users\leroy\source\repos\shop\task\obj\Debug\net8.0\task.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\leroy\source\repos\shop\task\obj\Debug\net8.0\task.AssemblyInfoInputs.cache
+C:\Users\leroy\source\repos\shop\task\obj\Debug\net8.0\task.AssemblyInfo.cs
+C:\Users\leroy\source\repos\shop\task\obj\Debug\net8.0\task.csproj.CoreCompileInputs.cache
+C:\Users\leroy\source\repos\shop\task\obj\Debug\net8.0\task.sourcelink.json
+C:\Users\leroy\source\repos\shop\task\obj\Debug\net8.0\task.dll
+C:\Users\leroy\source\repos\shop\task\obj\Debug\net8.0\refint\task.dll
+C:\Users\leroy\source\repos\shop\task\obj\Debug\net8.0\task.pdb
+C:\Users\leroy\source\repos\shop\task\obj\Debug\net8.0\task.genruntimeconfig.cache
+C:\Users\leroy\source\repos\shop\task\obj\Debug\net8.0\ref\task.dll
